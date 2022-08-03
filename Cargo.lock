@@ -434,6 +434,7 @@ dependencies = [
  "js-sys",
  "serde",
  "tap",
+ "wasm-bindgen",
  "web-sys",
  "yew",
  "yewdux",

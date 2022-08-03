@@ -1,6 +1,8 @@
 use std::rc::Rc;
+use wasm_bindgen::JsCast;
+use web_sys::HtmlInputElement;
 use yew::prelude::*;
-use yewdux::{dispatch, prelude::*};
+use yewdux::prelude::*;
 
 use serde::{Deserialize, Serialize};
 
@@ -28,6 +30,7 @@ struct Model {
 
 enum Msg {
     SwitchScreen(Screen),
+    PlayerNameEntryUpdated(String),
 }
 
 impl Reducer<Model> for Msg {
@@ -35,6 +38,7 @@ impl Reducer<Model> for Msg {
         let state = Rc::make_mut(&mut model);
         match self {
             Msg::SwitchScreen(s) => state.current_screen = s.to_owned(),
+            Msg::PlayerNameEntryUpdated(s) => state.player.name = s.to_owned(),
         };
 
         model
@@ -68,6 +72,19 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     root_container(html! {
         <>
         <h2>{"New character"}</h2>
+        <br/>
+        <label>{"Name"}</label>
+        <br/>
+        <input placeholder="Jefferson" required=true type="text" value={model.player.name.clone()}
+            onkeypress={dispatch.reduce_mut_callback_with(move |model, e: KeyboardEvent| {
+                if e.key() == "Enter" {
+                    let input: HtmlInputElement = e.target_unchecked_into();
+
+                    model.player.name = input.value()
+                }
+            })}
+        />
+        <br/>
         { onclick_switch_screen(dispatch, Screen::MainNavigation, "Continue") }
         { onclick_switch_screen(dispatch, Screen::MainMenu, "Back") }
         </>
