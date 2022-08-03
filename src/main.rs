@@ -16,6 +16,58 @@ enum Screen {
 }
 
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
+enum Nationality {
+    #[default]
+    British,
+    Spanish,
+    French,
+}
+
+#[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
+struct Cargo {
+    name: String,
+    description: String,
+    price: u32,
+    unit: u32,
+}
+
+#[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
+struct CargoItems {
+    wood: Cargo,
+    sugar: Cargo,
+}
+
+#[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
+enum ShipSize {
+    #[default]
+    Light,
+    Medium,
+    Heavy,
+    Flag,
+}
+
+#[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
+enum ShipClass {
+    Cutter,
+    #[default]
+    Sloop,
+    Brig,
+    Junk,
+    Galleon,
+    Frigate,
+}
+
+#[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
+struct Ship {
+    name: String,
+    size: ShipSize,
+    class: ShipClass,
+    cargo: CargoItems,
+    crew: u32,
+    nationality: Nationality,
+}
+
+#[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 struct Player {
     name: String,
     age: u8,
@@ -97,7 +149,7 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         <br/>
         <label>{"Name"}</label>
         <br/>
-        <input placeholder="Jefferson" required=true type="text" value={model.player.name.clone()}
+        <input placeholder="Jefferson" required=true type="text" value={model.player.name.to_owned()}
             onkeypress={dispatch.reduce_mut_callback_with(move |model, e: KeyboardEvent| {
                 if e.key() == "Enter" {
                     let input: HtmlInputElement = e.target_unchecked_into();
