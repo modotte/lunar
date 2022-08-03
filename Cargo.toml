@@ -1,0 +1,16 @@
+[package]
+name = "lunar"
+version = "0.1.0"
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0"
+tap = "*"
+im = "*"
+serde = { version = "1.0.114" }
+yew = { git = "https://github.com/yewstack/yew.git", features = ["csr"] }
+yewdux = { git = "https://github.com/intendednull/yewdux.git" }
+web-sys = "*"
+js-sys = "*"
