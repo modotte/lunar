@@ -13,9 +13,17 @@ enum Screen {
 }
 
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
+struct Player {
+    name: String,
+    age: u8,
+    coins: i64,
+}
+
+#[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 #[store(storage = "local")]
 struct Model {
     current_screen: Screen,
+    player: Player,
 }
 
 enum Msg {
@@ -33,7 +41,7 @@ impl Reducer<Model> for Msg {
     }
 }
 
-fn root_container(model: Rc<Model>, dispatch: &Dispatch<Model>, view: Html) -> Html {
+fn root_container(view: Html) -> Html {
     html! {
         <div>
         { view }
@@ -42,43 +50,31 @@ fn root_container(model: Rc<Model>, dispatch: &Dispatch<Model>, view: Html) -> H
 }
 
 fn show_main_menu(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
-    root_container(
-        model,
-        dispatch,
-        html! {
-            <>
-            <p>{"Hello world!"}</p>
-            <button onclick={dispatch.apply_callback(|_| Msg::SwitchScreen(Screen::NewCharacter))}>{"Start"}</button>
-            </>
-        },
-    )
+    root_container(html! {
+        <>
+        <p>{"Hello world!"}</p>
+        <button onclick={dispatch.apply_callback(|_| Msg::SwitchScreen(Screen::NewCharacter))}>{"Start"}</button>
+        </>
+    })
 }
 
 fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
-    root_container(
-        model,
-        dispatch,
-        html! {
-            <>
-            <h2>{"New character"}</h2>
-            <button onclick={dispatch.apply_callback(|_| Msg::SwitchScreen(Screen::MainNavigation))}>{"Confirm & Continue"}</button>
-            <button onclick={dispatch.apply_callback(|_| Msg::SwitchScreen(Screen::MainMenu))}>{"Back"}</button>
-            </>
-        },
-    )
+    root_container(html! {
+        <>
+        <h2>{"New character"}</h2>
+        <button onclick={dispatch.apply_callback(|_| Msg::SwitchScreen(Screen::MainNavigation))}>{"Confirm & Continue"}</button>
+        <button onclick={dispatch.apply_callback(|_| Msg::SwitchScreen(Screen::MainMenu))}>{"Back"}</button>
+        </>
+    })
 }
 
 fn show_main_navigation(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
-    root_container(
-        model,
-        dispatch,
-        html! {
-            <>
-            <h2>{"Navigation page"}</h2>
-            <button onclick={dispatch.apply_callback(|_| Msg::SwitchScreen(Screen::MainMenu))}>{"Back to main menu"}</button>
-            </>
-        },
-    )
+    root_container(html! {
+        <>
+        <h2>{"Navigation page"}</h2>
+        <button onclick={dispatch.apply_callback(|_| Msg::SwitchScreen(Screen::MainMenu))}>{"Back to main menu"}</button>
+        </>
+    })
 }
 
 #[function_component]
