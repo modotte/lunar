@@ -10,6 +10,7 @@ use serde::{Deserialize, Serialize};
 enum Screen {
     #[default]
     MainNavigation,
+    About,
     MainMenu,
     NewCharacter,
 }
@@ -67,11 +68,23 @@ fn debug_header(dispatch: &Dispatch<Model>) -> Html {
     }
 }
 
+fn show_about(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
+    root_container(html! {
+        <>
+        { debug_header(dispatch) }
+        <p>{"About screen"}</p>
+        { onclick_switch_screen(dispatch, Screen::MainMenu, "Back") }
+        </>
+    })
+}
+
 fn show_main_menu(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     root_container(html! {
         <>
         <p>{"Hello world!"}</p>
         { onclick_switch_screen(dispatch, Screen::NewCharacter, "Start") }
+        <br/>
+        { onclick_switch_screen(dispatch, Screen::About, "About") }
         </>
     })
 }
@@ -116,6 +129,7 @@ fn View() -> Html {
     let (model, dispatch) = use_store::<Model>();
 
     match model.current_screen {
+        Screen::About => show_about(model, &dispatch),
         Screen::MainMenu => show_main_menu(model, &dispatch),
         Screen::NewCharacter => show_new_character(model, &dispatch),
         Screen::MainNavigation => show_main_navigation(model, &dispatch),
