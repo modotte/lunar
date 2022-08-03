@@ -30,7 +30,6 @@ struct Model {
 
 enum Msg {
     SwitchScreen(Screen),
-    PlayerNameEntryUpdated(String),
 }
 
 impl Reducer<Model> for Msg {
@@ -38,7 +37,6 @@ impl Reducer<Model> for Msg {
         let state = Rc::make_mut(&mut model);
         match self {
             Msg::SwitchScreen(s) => state.current_screen = s.to_owned(),
-            Msg::PlayerNameEntryUpdated(s) => state.player.name = s.to_owned(),
         };
 
         model
@@ -59,6 +57,16 @@ fn onclick_switch_screen(dispatch: &Dispatch<Model>, screen: Screen, name: &str)
     }
 }
 
+fn debug_header(dispatch: &Dispatch<Model>) -> Html {
+    html! {
+        <div>
+            <h1>{"Lunar"}</h1>
+            { onclick_switch_screen(dispatch, Screen::MainMenu, "Back to main menu") }
+            <hr/>
+        </div>
+    }
+}
+
 fn show_main_menu(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     root_container(html! {
         <>
@@ -71,6 +79,7 @@ fn show_main_menu(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
 fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     root_container(html! {
         <>
+        { debug_header(dispatch) }
         <h2>{"New character"}</h2>
         <br/>
         <label>{"Name"}</label>
@@ -94,6 +103,7 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
 fn show_main_navigation(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     root_container(html! {
         <>
+        { debug_header(dispatch) }
         <h2>{"Navigation page"}</h2>
         { onclick_switch_screen(dispatch, Screen::MainMenu, "Back to main menu") }
 
