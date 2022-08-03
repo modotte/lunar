@@ -1,6 +1,6 @@
 use std::rc::Rc;
 use yew::prelude::*;
-use yewdux::prelude::*;
+use yewdux::{dispatch, prelude::*};
 
 use serde::{Deserialize, Serialize};
 
@@ -49,11 +49,17 @@ fn root_container(view: Html) -> Html {
     }
 }
 
+fn onclick_switch_screen(dispatch: &Dispatch<Model>, screen: Screen, name: &str) -> Html {
+    html! {
+        <button onclick={dispatch.apply_callback(move |_| Msg::SwitchScreen(screen.to_owned()))}>{name}</button>
+    }
+}
+
 fn show_main_menu(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     root_container(html! {
         <>
         <p>{"Hello world!"}</p>
-        <button onclick={dispatch.apply_callback(|_| Msg::SwitchScreen(Screen::NewCharacter))}>{"Start"}</button>
+        { onclick_switch_screen(dispatch, Screen::NewCharacter, "Start") }
         </>
     })
 }
@@ -62,8 +68,8 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     root_container(html! {
         <>
         <h2>{"New character"}</h2>
-        <button onclick={dispatch.apply_callback(|_| Msg::SwitchScreen(Screen::MainNavigation))}>{"Confirm & Continue"}</button>
-        <button onclick={dispatch.apply_callback(|_| Msg::SwitchScreen(Screen::MainMenu))}>{"Back"}</button>
+        { onclick_switch_screen(dispatch, Screen::MainNavigation, "Continue") }
+        { onclick_switch_screen(dispatch, Screen::MainMenu, "Back") }
         </>
     })
 }
@@ -72,7 +78,8 @@ fn show_main_navigation(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     root_container(html! {
         <>
         <h2>{"Navigation page"}</h2>
-        <button onclick={dispatch.apply_callback(|_| Msg::SwitchScreen(Screen::MainMenu))}>{"Back to main menu"}</button>
+        { onclick_switch_screen(dispatch, Screen::MainMenu, "Back to main menu") }
+
         </>
     })
 }
