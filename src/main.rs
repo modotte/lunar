@@ -1,5 +1,4 @@
 use std::rc::Rc;
-use wasm_bindgen::JsCast;
 use web_sys::HtmlInputElement;
 use yew::prelude::*;
 use yewdux::prelude::*;
@@ -68,10 +67,26 @@ struct Ship {
 }
 
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
+enum PortPopulation {
+    Small,
+    #[default]
+    Medium,
+    Large,
+    Huge,
+}
+
+#[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
+struct Port {
+    name: String,
+    description: String,
+}
+
+#[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 struct Player {
     name: String,
     age: u8,
     coins: i64,
+    ship: Ship,
 }
 
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
