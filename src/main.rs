@@ -170,6 +170,8 @@ enum Msg {
     SwitchPlayerLocation(Location),
     WoodBought(Location),
     SugarBought(Location),
+    WoodSold(Location),
+    SugarSold(Location),
 }
 
 impl Reducer<Model> for Msg {
@@ -188,6 +190,14 @@ impl Reducer<Model> for Msg {
             Msg::SugarBought(l) => {
                 state.locations.get_mut(l).unwrap().cargo.sugar.unit -= 1;
                 state.player.ship.cargo.sugar.unit += 1;
+            }
+            Msg::WoodSold(l) => {
+                state.locations.get_mut(l).unwrap().cargo.wood.unit += 1;
+                state.player.ship.cargo.wood.unit -= 1;
+            }
+            Msg::SugarSold(l) => {
+                state.locations.get_mut(l).unwrap().cargo.sugar.unit += 1;
+                state.player.ship.cargo.sugar.unit -= 1;
             }
         };
 
@@ -295,18 +305,20 @@ fn show_dock(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
 }
 
 fn cargo_market(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
-    let cl = model.current_location.clone();
+    let current_location = model.current_location.clone();
     html! {
         <div>
             <ul>
                 <li>
                     <p>{"Wood"}</p>
-                    <button onclick={dispatch.apply_callback(move |_| Msg::WoodBought(cl))}>{"Buy"}</button>
+                    <button onclick={dispatch.apply_callback(move |_| Msg::WoodBought(current_location))}>{"Buy 1"}</button>
+                    <button onclick={dispatch.apply_callback(move |_| Msg::WoodSold(current_location))}>{"Sell 1"}</button>
                 </li>
 
                 <li>
                     <p>{"Sugar"}</p>
-                    <button onclick={dispatch.apply_callback(move |_|  Msg::SugarBought(cl))}>{"Buy"}</button>
+                    <button onclick={dispatch.apply_callback(move |_|  Msg::SugarBought(current_location))}>{"Buy 1"}</button>
+                    <button onclick={dispatch.apply_callback(move |_| Msg::SugarSold(current_location))}>{"Sell 1"}</button>
                 </li>
             </ul>
         </div>
