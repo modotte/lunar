@@ -177,6 +177,8 @@ enum Msg {
 impl Reducer<Model> for Msg {
     fn apply(&self, mut model: Rc<Model>) -> Rc<Model> {
         let state = Rc::make_mut(&mut model);
+
+        // TODO: Send alert on insufficient fund or empty cargo unit
         match self {
             Msg::SwitchScreen(s) => state.current_screen = s.to_owned(),
             Msg::SwitchPlayerLocation(l) => state.current_location = l.to_owned(),
