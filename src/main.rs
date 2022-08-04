@@ -15,6 +15,8 @@ enum Screen {
     About,
     MainMenu,
     NewCharacter,
+    Dock,
+    DockMarket,
 }
 
 #[derive(Default, Display, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
@@ -224,6 +226,8 @@ fn show_main_navigation(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         <>
         { debug_header(dispatch) }
         <h2>{"Navigation page"}</h2>
+
+        { onclick_switch_screen(dispatch, Screen::Dock, "Dock") }
         { onclick_switch_screen(dispatch, Screen::MainMenu, "Back to main menu") }
 
         <hr/>
@@ -236,6 +240,26 @@ fn show_main_navigation(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     })
 }
 
+fn show_dock(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
+    html! {
+        <>
+        { debug_header(dispatch) }
+        <h2>{"Dock screen"}</h2>
+
+        { onclick_switch_screen(dispatch, Screen::DockMarket, "Market") }
+        </>
+    }
+}
+
+fn show_dock_market(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
+    html! {
+        <>
+        { debug_header(dispatch) }
+        <h2>{"Market screen"}</h2>
+        </>
+    }
+}
+
 #[function_component]
 fn View() -> Html {
     let (model, dispatch) = use_store::<Model>();
@@ -245,6 +269,8 @@ fn View() -> Html {
         Screen::MainMenu => show_main_menu(model, &dispatch),
         Screen::NewCharacter => show_new_character(model, &dispatch),
         Screen::MainNavigation => show_main_navigation(model, &dispatch),
+        Screen::Dock => show_dock(model, &dispatch),
+        Screen::DockMarket => show_dock_market(model, &dispatch),
     }
 }
 
