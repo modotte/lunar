@@ -37,15 +37,6 @@ struct CargoItems {
 }
 
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
-enum ShipSize {
-    #[default]
-    Light,
-    Medium,
-    Heavy,
-    Flag,
-}
-
-#[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 enum ShipClass {
     Cutter,
     #[default]
@@ -59,7 +50,6 @@ enum ShipClass {
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 struct Ship {
     name: String,
-    size: ShipSize,
     class: ShipClass,
     cargo: CargoItems,
     crew: u32,
@@ -104,11 +94,32 @@ struct Player {
     ship: Ship,
 }
 
-#[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
+#[derive(Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 #[store(storage = "local")]
 struct Model {
     current_screen: Screen,
     player: Player,
+    current_location: Location,
+}
+
+// Initializer for our whole model at launch
+impl Default for Model {
+    fn default() -> Self {
+        Self {
+            player: Player {
+                name: String::from("Jameson"),
+                age: 18,
+                coins: 1000,
+                ship: Ship {
+                    name: String::from("The Duchess"),
+                    crew: 12,
+                    ..Ship::default()
+                },
+            },
+            current_screen: Screen::default(),
+            current_location: Location::default(),
+        }
+    }
 }
 
 enum Msg {
