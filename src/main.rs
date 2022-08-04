@@ -87,7 +87,7 @@ struct Player {
     ship: Ship,
 }
 
-#[derive(Default, Display, Hash, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
+#[derive(Default, Copy, Display, Hash, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 enum Location {
     Barbados,
     #[default]
@@ -256,17 +256,18 @@ fn show_dock(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
 }
 
 fn cargoMarket(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
+    let cl = model.current_location.clone();
     html! {
         <div>
             <ul>
                 <li>
                     <p>{"Wood"}</p>
-                    <button onclick={dispatch.apply_callback(|_| Msg::WoodBought(Location::PortRoyal))}>{"Buy"}</button>
+                    <button onclick={dispatch.apply_callback(move |_| Msg::WoodBought(cl))}>{"Buy"}</button>
                 </li>
 
                 <li>
                     <p>{"Sugar"}</p>
-                    <button onclick={dispatch.apply_callback(|_| Msg::SugarBought(Location::PortRoyal))}>{"Buy"}</button>
+                    <button onclick={dispatch.apply_callback(move |_|  Msg::SugarBought(cl))}>{"Buy"}</button>
                 </li>
             </ul>
         </div>
