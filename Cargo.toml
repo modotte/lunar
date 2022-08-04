@@ -17,4 +17,3 @@ js-sys = "*"
 wasm-bindgen = "0.2"
 enum-display-derive = "0.1.1"
 random = "*"
-yew_styles = { version="0.11", features=["button", "text", "navbar"] }
