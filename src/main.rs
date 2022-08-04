@@ -255,7 +255,7 @@ fn show_dock(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     }
 }
 
-fn cargoMarket(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
+fn cargo_market(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     let cl = model.current_location.clone();
     html! {
         <div>
@@ -280,7 +280,7 @@ fn show_dock_market(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         { debug_header(dispatch) }
         <h2>{"Market screen"}</h2>
 
-        { cargoMarket(model, dispatch) }
+        { cargo_market(model, dispatch) }
         </>
     }
 }
