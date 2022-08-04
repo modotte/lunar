@@ -7,9 +7,9 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 pub enum Screen {
-    #[default]
     MainNavigation,
     About,
+    #[default]
     MainMenu,
     NewCharacter,
     Dock,
