@@ -14,7 +14,10 @@ impl Reducer<Model> for Msg {
         // TODO: Send alert on insufficient fund or empty cargo unit
         match self {
             Msg::SwitchScreen(s) => state.current_screen = s.to_owned(),
-            Msg::SwitchPlayerLocation(l) => state.current_location = l.to_owned(),
+            Msg::SwitchPlayerLocation(l) => {
+                state.date += 1;
+                state.current_location = l.to_owned()
+            }
 
             // We don't need to pattern match the get_mut(l)
             // because of enum as hashmap key usage

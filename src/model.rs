@@ -156,6 +156,7 @@ pub enum Location {
 #[derive(Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 #[store(storage = "local")]
 pub struct Model {
+    pub date: u32, // TODO: Change to date and randomly
     pub current_screen: Screen,
     pub player: Player,
     pub locations: HashMap<Location, Port>,
@@ -167,6 +168,7 @@ pub struct Model {
 impl Default for Model {
     fn default() -> Self {
         Self {
+            date: 1,
             player: Player {
                 name: String::from("Jameson"),
                 age: 18,
