@@ -1,8 +1,11 @@
+use std::collections::HashMap;
+use std::fmt::Display;
 use std::rc::Rc;
 use web_sys::HtmlInputElement;
 use yew::prelude::*;
 use yewdux::prelude::*;
 
+use enum_display_derive::Display;
 use serde::{Deserialize, Serialize};
 
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
@@ -14,7 +17,7 @@ enum Screen {
     NewCharacter,
 }
 
-#[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
+#[derive(Default, Display, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 enum Nationality {
     #[default]
     British,
@@ -73,18 +76,6 @@ struct Port {
     nationality: Nationality,
     cargo: CargoItems,
 }
-#[derive(Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
-enum Location {
-    Barbados(Port),
-    PortRoyal(Port),
-    Nassau(Port),
-}
-
-impl Default for Location {
-    fn default() -> Self {
-        Self::PortRoyal(Port::default())
-    }
-}
 
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 struct Player {
@@ -94,11 +85,20 @@ struct Player {
     ship: Ship,
 }
 
+#[derive(Default, Display, Hash, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
+enum Location {
+    Barbados,
+    #[default]
+    PortRoyal,
+    Nassau,
+}
+
 #[derive(Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 #[store(storage = "local")]
 struct Model {
     current_screen: Screen,
     player: Player,
+    locations: HashMap<Location, Port>,
     current_location: Location,
 }
 
@@ -113,9 +113,20 @@ impl Default for Model {
                 ship: Ship {
                     name: String::from("The Duchess"),
                     crew: 12,
-                    ..Ship::default()
+                    ..Default::default()
                 },
             },
+            locations: HashMap::from([
+                (
+                    Location::Barbados,
+                    Port {
+                        name: String::from("Barbados"),
+                        ..Default::default()
+                    },
+                ),
+                (Location::PortRoyal, Port::default()),
+                (Location::Nassau, Port::default()),
+            ]),
             current_screen: Screen::default(),
             current_location: Location::default(),
         }
@@ -124,6 +135,7 @@ impl Default for Model {
 
 enum Msg {
     SwitchScreen(Screen),
+    SwitchPlayerLocation(Location),
 }
 
 impl Reducer<Model> for Msg {
@@ -131,6 +143,7 @@ impl Reducer<Model> for Msg {
         let state = Rc::make_mut(&mut model);
         match self {
             Msg::SwitchScreen(s) => state.current_screen = s.to_owned(),
+            Msg::SwitchPlayerLocation(l) => state.current_location = l.to_owned(),
         };
 
         model
@@ -212,6 +225,12 @@ fn show_main_navigation(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         { debug_header(dispatch) }
         <h2>{"Navigation page"}</h2>
         { onclick_switch_screen(dispatch, Screen::MainMenu, "Back to main menu") }
+
+        <hr/>
+
+        <button onclick={dispatch.apply_callback(|_| Msg::SwitchPlayerLocation(Location::Barbados) )}>{ Location::Barbados }</button>
+        <button onclick={dispatch.apply_callback(|_| Msg::SwitchPlayerLocation(Location::PortRoyal) )}>{Location::PortRoyal}</button>
+        <button onclick={dispatch.apply_callback(|_| Msg::SwitchPlayerLocation(Location::Nassau) )}>{Location::Nassau}</button>
 
         </>
     })
