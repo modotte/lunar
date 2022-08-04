@@ -7,7 +7,7 @@ use crate::model::*;
 
 fn root_container(view: Html) -> Html {
     html! {
-        <div>
+        <div class="container">
         { view }
         </div>
     }
@@ -15,7 +15,7 @@ fn root_container(view: Html) -> Html {
 
 fn onclick_switch_screen(dispatch: &Dispatch<Model>, screen: Screen, name: &str) -> Html {
     html! {
-        <button onclick={dispatch.apply_callback(move |_| Msg::SwitchScreen(screen.to_owned()))}>{name}</button>
+        <button class={"button"} onclick={dispatch.apply_callback(move |_| Msg::SwitchScreen(screen.to_owned()))}>{name}</button>
     }
 }
 
@@ -85,9 +85,9 @@ fn show_main_navigation(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
 
         <hr/>
 
-        <button onclick={dispatch.apply_callback(|_| Msg::SwitchPlayerLocation(Location::Barbados) )}>{ Location::Barbados }</button>
-        <button onclick={dispatch.apply_callback(|_| Msg::SwitchPlayerLocation(Location::PortRoyal) )}>{Location::PortRoyal}</button>
-        <button onclick={dispatch.apply_callback(|_| Msg::SwitchPlayerLocation(Location::Nassau) )}>{Location::Nassau}</button>
+        <button class="button" onclick={dispatch.apply_callback(|_| Msg::SwitchPlayerLocation(Location::Barbados) )}>{ Location::Barbados }</button>
+        <button class="button" onclick={dispatch.apply_callback(|_| Msg::SwitchPlayerLocation(Location::PortRoyal) )}>{Location::PortRoyal}</button>
+        <button class="button" onclick={dispatch.apply_callback(|_| Msg::SwitchPlayerLocation(Location::Nassau) )}>{Location::Nassau}</button>
 
         </>
     })
