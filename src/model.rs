@@ -14,6 +14,7 @@ pub enum Screen {
     NewCharacter,
     Dock,
     DockMarket,
+    Skirmish,
 }
 
 #[derive(Default, Display, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
@@ -71,6 +72,30 @@ pub struct Ship {
     pub cargo: CargoItems,
     pub crew: u32,
     pub nationality: Nationality,
+}
+
+#[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
+pub enum EnemyMovement {
+    Chase,
+    #[default]
+    Idle,
+    Evade,
+}
+
+#[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
+pub enum EnemyDistance {
+    Escape,
+    #[default]
+    Far,
+    Close,
+    Board,
+}
+
+#[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
+pub struct Enemy {
+    ship: Ship,
+    movement: EnemyMovement,
+    distance: EnemyDistance,
 }
 
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
@@ -135,6 +160,7 @@ pub struct Model {
     pub player: Player,
     pub locations: HashMap<Location, Port>,
     pub current_location: Location,
+    pub enemy: Option<Enemy>,
 }
 
 // Initializer for our whole model at launch
@@ -158,6 +184,7 @@ impl Default for Model {
             ]),
             current_screen: Screen::default(),
             current_location: Location::default(),
+            enemy: None,
         }
     }
 }
