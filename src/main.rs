@@ -79,6 +79,21 @@ enum PortPopulation {
 struct Port {
     name: String,
     description: String,
+    population: PortPopulation,
+    nationality: Nationality,
+    cargo: CargoItems,
+}
+#[derive(Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
+enum Location {
+    Barbados(Port),
+    PortRoyal(Port),
+    Nassau(Port),
+}
+
+impl Default for Location {
+    fn default() -> Self {
+        Self::PortRoyal(Port::default())
+    }
 }
 
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
