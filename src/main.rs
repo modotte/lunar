@@ -119,7 +119,7 @@ impl Default for Port {
 struct Player {
     name: String,
     age: u8,
-    coins: i64,
+    coins: u32,
     ship: Ship,
 }
 
@@ -184,20 +184,32 @@ impl Reducer<Model> for Msg {
             // We don't need to pattern match the get_mut(l)
             // because of enum as hashmap key usage
             Msg::WoodBought(l) => {
-                state.locations.get_mut(l).unwrap().cargo.wood.unit -= 1;
-                state.player.ship.cargo.wood.unit += 1;
+                let mut port_wood = &mut state.locations.get_mut(l).unwrap().cargo.wood;
+                if state.player.coins > port_wood.price {
+                    port_wood.unit -= 1;
+                    state.player.ship.cargo.wood.unit += 1;
+                }
             }
             Msg::SugarBought(l) => {
-                state.locations.get_mut(l).unwrap().cargo.sugar.unit -= 1;
-                state.player.ship.cargo.sugar.unit += 1;
+                let mut port_sugar = &mut state.locations.get_mut(l).unwrap().cargo.sugar;
+                if state.player.coins > port_sugar.price {
+                    port_sugar.unit -= 1;
+                    state.player.ship.cargo.sugar.unit += 1;
+                }
             }
             Msg::WoodSold(l) => {
-                state.locations.get_mut(l).unwrap().cargo.wood.unit += 1;
-                state.player.ship.cargo.wood.unit -= 1;
+                let mut port_wood = &mut state.locations.get_mut(l).unwrap().cargo.wood;
+                if state.player.ship.cargo.wood.unit != 0 {
+                    port_wood.unit += 1;
+                    state.player.ship.cargo.wood.unit -= 1;
+                }
             }
             Msg::SugarSold(l) => {
-                state.locations.get_mut(l).unwrap().cargo.sugar.unit += 1;
-                state.player.ship.cargo.sugar.unit -= 1;
+                let mut port_sugar = &mut state.locations.get_mut(l).unwrap().cargo.sugar;
+                if state.player.ship.cargo.sugar.unit != 0 {
+                    port_sugar.unit += 1;
+                    state.player.ship.cargo.sugar.unit -= 1;
+                }
             }
         };
 
