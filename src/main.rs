@@ -138,6 +138,8 @@ impl Default for Model {
 enum Msg {
     SwitchScreen(Screen),
     SwitchPlayerLocation(Location),
+    WoodBought(Location),
+    SugarBought(Location),
 }
 
 impl Reducer<Model> for Msg {
@@ -146,6 +148,8 @@ impl Reducer<Model> for Msg {
         match self {
             Msg::SwitchScreen(s) => state.current_screen = s.to_owned(),
             Msg::SwitchPlayerLocation(l) => state.current_location = l.to_owned(),
+            Msg::WoodBought(l) => state.player.ship.cargo.wood.unit += 1,
+            Msg::SugarBought(l) => state.player.ship.cargo.sugar.unit += 1,
         };
 
         model
@@ -251,11 +255,31 @@ fn show_dock(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     }
 }
 
+fn cargoMarket(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
+    html! {
+        <div>
+            <ul>
+                <li>
+                    <p>{"Wood"}</p>
+                    <button onclick={dispatch.apply_callback(|_| Msg::WoodBought(Location::PortRoyal))}>{"Buy"}</button>
+                </li>
+
+                <li>
+                    <p>{"Sugar"}</p>
+                    <button onclick={dispatch.apply_callback(|_| Msg::SugarBought(Location::PortRoyal))}>{"Buy"}</button>
+                </li>
+            </ul>
+        </div>
+    }
+}
+
 fn show_dock_market(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
         <>
         { debug_header(dispatch) }
         <h2>{"Market screen"}</h2>
+
+        { cargoMarket(model, dispatch) }
         </>
     }
 }
