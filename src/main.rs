@@ -35,10 +35,25 @@ struct Cargo {
     unit: u32,
 }
 
-#[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
+#[derive(Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 struct CargoItems {
     wood: Cargo,
     sugar: Cargo,
+}
+
+impl Default for CargoItems {
+    fn default() -> Self {
+        CargoItems {
+            wood: Cargo {
+                price: 40,
+                ..Default::default()
+            },
+            sugar: Cargo {
+                price: 60,
+                ..Default::default()
+            },
+        }
+    }
 }
 
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
@@ -70,13 +85,34 @@ enum PortPopulation {
     Huge,
 }
 
-#[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
+#[derive(Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 struct Port {
     name: String,
     description: String,
     population: PortPopulation,
     nationality: Nationality,
     cargo: CargoItems,
+}
+
+impl Default for Port {
+    fn default() -> Self {
+        Port {
+            cargo: CargoItems {
+                wood: Cargo {
+                    unit: 35,
+                    ..Default::default()
+                },
+                sugar: Cargo {
+                    unit: 70,
+                    ..Default::default()
+                },
+            },
+            name: String::from(""),
+            description: String::from(""),
+            population: PortPopulation::default(),
+            nationality: Nationality::default(),
+        }
+    }
 }
 
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
@@ -119,13 +155,7 @@ impl Default for Model {
                 },
             },
             locations: HashMap::from([
-                (
-                    Location::Barbados,
-                    Port {
-                        name: String::from("Barbados"),
-                        ..Default::default()
-                    },
-                ),
+                (Location::Barbados, Port::default()),
                 (Location::PortRoyal, Port::default()),
                 (Location::Nassau, Port::default()),
             ]),
@@ -148,8 +178,14 @@ impl Reducer<Model> for Msg {
         match self {
             Msg::SwitchScreen(s) => state.current_screen = s.to_owned(),
             Msg::SwitchPlayerLocation(l) => state.current_location = l.to_owned(),
-            Msg::WoodBought(l) => state.player.ship.cargo.wood.unit += 1,
-            Msg::SugarBought(l) => state.player.ship.cargo.sugar.unit += 1,
+            Msg::WoodBought(l) => {
+                state.locations.get_mut(l).unwrap().cargo.wood.unit -= 1;
+                state.player.ship.cargo.wood.unit += 1;
+            }
+            Msg::SugarBought(l) => {
+                state.locations.get_mut(l).unwrap().cargo.sugar.unit -= 1;
+                state.player.ship.cargo.sugar.unit += 1;
+            }
         };
 
         model
