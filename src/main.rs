@@ -178,6 +178,9 @@ impl Reducer<Model> for Msg {
         match self {
             Msg::SwitchScreen(s) => state.current_screen = s.to_owned(),
             Msg::SwitchPlayerLocation(l) => state.current_location = l.to_owned(),
+
+            // We don't need to pattern match the get_mut(l)
+            // because of enum as hashmap key usage
             Msg::WoodBought(l) => {
                 state.locations.get_mut(l).unwrap().cargo.wood.unit -= 1;
                 state.player.ship.cargo.wood.unit += 1;
