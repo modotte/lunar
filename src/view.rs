@@ -64,7 +64,7 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         <br/>
         <label>{"Name"}</label>
         <br/>
-        <input placeholder="Jefferson" required=true type="text" value={model.player.name.to_owned()}
+        <input placeholder="Player" required=true type="text" value={model.player.name.to_owned()}
             onkeypress={dispatch.reduce_mut_callback_with(move |model, e: KeyboardEvent| {
                 if e.key() == "Enter" {
                     let input: HtmlInputElement = e.target_unchecked_into();
@@ -130,14 +130,14 @@ fn cargo_market(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
             <ul>
                 <li>
                     <p>{"Wood"}</p>
-                    <button onclick={dispatch.apply_callback(move |_| Msg::WoodBought(current_location))}>{"Buy 1"}</button>
-                    <button onclick={dispatch.apply_callback(move |_| Msg::WoodSold(current_location))}>{"Sell 1"}</button>
+                    <button onclick={dispatch.apply_callback(move |_| Msg::BuyWood(current_location))}>{"Buy 1"}</button>
+                    <button onclick={dispatch.apply_callback(move |_| Msg::SellWood(current_location))}>{"Sell 1"}</button>
                 </li>
 
                 <li>
                     <p>{"Sugar"}</p>
-                    <button onclick={dispatch.apply_callback(move |_|  Msg::SugarBought(current_location))}>{"Buy 1"}</button>
-                    <button onclick={dispatch.apply_callback(move |_| Msg::SugarSold(current_location))}>{"Sell 1"}</button>
+                    <button onclick={dispatch.apply_callback(move |_|  Msg::BuySugar(current_location))}>{"Buy 1"}</button>
+                    <button onclick={dispatch.apply_callback(move |_| Msg::SellSugar(current_location))}>{"Sell 1"}</button>
                 </li>
             </ul>
         </div>

@@ -213,8 +213,8 @@ impl Default for Model {
 pub enum Msg {
     SwitchScreen(Screen),
     SwitchPlayerLocation(Location),
-    WoodBought(Location),
-    SugarBought(Location),
-    WoodSold(Location),
-    SugarSold(Location),
+    BuyWood(Location),
+    BuySugar(Location),
+    SellWood(Location),
+    SellSugar(Location),
 }
