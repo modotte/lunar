@@ -22,12 +22,18 @@ impl Reducer<Model> for Msg {
         match self {
             Msg::SwitchScreen(s) => match s {
                 model::Screen::Skirmish => {
-                    let names = vec!["Shady Wave", "Palm West", "Southern Seas"];
+                    let names = vec![
+                        "Shady Wave",
+                        "Palm West",
+                        "Southern Seas",
+                        "Morning Star",
+                        "Blue Ocean",
+                    ];
                     let new_enemy = Enemy {
                         ship: model::Ship {
                             name: names
                                 .choose(&mut rand::thread_rng())
-                                .unwrap_or(&"Blue Sky")
+                                .unwrap_or(&names[0])
                                 .to_string(),
                             class: ShipClass::Sloop,
                             nationality: Nationality::British,
