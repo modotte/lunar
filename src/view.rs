@@ -167,6 +167,18 @@ fn show_skirmish(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         <>
         { debug_header(dispatch) }
         <h2>{"Skirmish"}</h2>
+
+        { onclick_switch_screen(dispatch, Screen::SkirmishChase, "Chase") }
+        { onclick_switch_screen(dispatch, Screen::MainNavigation, "Abort")}
+        </>
+    }
+}
+
+fn show_skirmish_chase(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
+    html! {
+        <>
+        { debug_header(dispatch) }
+        <h2>{"Skirmish Chase"}</h2>
         </>
     }
 }
@@ -192,6 +204,7 @@ pub fn View() -> Html {
         Screen::Dock => show_dock(model, &dispatch),
         Screen::DockMarket => show_dock_market(model, &dispatch),
         Screen::Skirmish => show_skirmish(model, &dispatch),
+        Screen::SkirmishChase => show_skirmish_chase(model, &dispatch),
         Screen::SkirmishBattle => show_skirmish_battle(model, &dispatch),
     })
 }

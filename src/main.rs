@@ -21,6 +21,10 @@ impl Reducer<Model> for Msg {
         // TODO: Send alert on insufficient fund or empty cargo unit
         match self {
             Msg::SwitchScreen(s) => match s {
+                model::Screen::MainNavigation => {
+                    state.enemy = None;
+                    state.current_screen = s.to_owned()
+                }
                 model::Screen::Skirmish => {
                     let names = vec![
                         "Shady Wave",
@@ -48,8 +52,9 @@ impl Reducer<Model> for Msg {
                         ..Default::default()
                     };
                     state.enemy = Some(new_enemy);
-                    state.current_screen = s.to_owned()
+                    state.current_screen = s.to_owned();
                 }
+                model::Screen::SkirmishChase => {}
                 _ => state.current_screen = s.to_owned(),
             },
 

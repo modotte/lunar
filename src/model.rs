@@ -17,6 +17,7 @@ pub enum Screen {
     Dock,
     DockMarket,
     Skirmish,
+    SkirmishChase,
     SkirmishBattle,
 }
 
