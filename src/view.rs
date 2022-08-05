@@ -13,15 +13,19 @@ fn root_container(view: Html) -> Html {
     }
 }
 
+fn onclick_styled_btn(callback: Callback<MouseEvent>, btn_text: &str) -> Html {
+    html! { <button class="button" onclick={callback}>{btn_text}</button> }
+}
+
 fn onclick_switch_screen(dispatch: &Dispatch<Model>, screen: Screen, name: &str) -> Html {
     html! {
-        <button class={"button"} onclick={dispatch.apply_callback(move |_| Msg::SwitchScreen(screen.to_owned()))}>{name}</button>
+        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SwitchScreen(screen.to_owned())), name) }
     }
 }
 
-fn onclick_switch_location(dispatch: &Dispatch<Model>, location: Location) -> Html {
+fn onclick_switch_location(dispatch: &Dispatch<Model>, location: Location, name: &str) -> Html {
     html! {
-        <button class={"button"} onclick={dispatch.apply_callback(move |_| Msg::SwitchPlayerLocation(location))}>{location}</button>
+        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SwitchPlayerLocation(location)), name) }
     }
 }
 
@@ -93,9 +97,9 @@ fn show_main_navigation(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
 
         <hr/>
 
-        { onclick_switch_location(dispatch, Location::Barbados) }
-        { onclick_switch_location(dispatch, Location::PortRoyal) }
-        { onclick_switch_location(dispatch, Location::Nassau) }
+        { onclick_switch_location(dispatch, Location::Barbados, "Barbados") }
+        { onclick_switch_location(dispatch, Location::PortRoyal, "Port Royal") }
+        { onclick_switch_location(dispatch, Location::Nassau, "Nassau") }
         </>
     })
 }
@@ -130,14 +134,14 @@ fn cargo_market(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
             <ul>
                 <li>
                     <p>{"Wood"}</p>
-                    <button onclick={dispatch.apply_callback(move |_| Msg::BuyWood(current_location))}>{"Buy 1"}</button>
-                    <button onclick={dispatch.apply_callback(move |_| Msg::SellWood(current_location))}>{"Sell 1"}</button>
+                    { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::BuyWood(current_location)), "Buy 1") }
+                    { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SellWood(current_location)), "Sell 1") }
                 </li>
 
                 <li>
                     <p>{"Sugar"}</p>
-                    <button onclick={dispatch.apply_callback(move |_|  Msg::BuySugar(current_location))}>{"Buy 1"}</button>
-                    <button onclick={dispatch.apply_callback(move |_| Msg::SellSugar(current_location))}>{"Sell 1"}</button>
+                    { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::BuySugar(current_location)), "Buy 1") }
+                    { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SellSugar(current_location)), "Buy 1") }
                 </li>
             </ul>
         </div>
