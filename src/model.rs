@@ -55,6 +55,12 @@ impl Default for CargoItems {
     }
 }
 
+impl CargoItems {
+    pub fn total_unit(&self) -> u32 {
+        self.wood.unit + self.sugar.unit
+    }
+}
+
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 pub enum ShipClass {
     Cutter,
@@ -70,9 +76,15 @@ pub enum ShipClass {
 pub struct Ship {
     pub name: String,
     pub class: ShipClass,
-    pub cargo: CargoItems,
-    pub crew: u32,
     pub nationality: Nationality,
+    pub cargo: CargoItems,
+    pub cargo_capacity: u32,
+    pub crew: u32,
+    pub crew_capacity: u32,
+    pub hull: u16,
+    pub hull_capacity: u16,
+    pub cannon: u16,
+    pub cannon_capacity: u16,
 }
 
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
@@ -177,6 +189,11 @@ impl Default for Model {
                 ship: Ship {
                     name: String::from("The Duchess"),
                     crew: 12,
+                    cargo_capacity: 32,
+                    hull: 10,
+                    hull_capacity: 10,
+                    cannon: 4,
+                    cannon_capacity: 4,
                     ..Default::default()
                 },
             },

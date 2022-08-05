@@ -6,11 +6,15 @@ mod model;
 mod view;
 
 use chrono::Duration;
-use model::{Model, Msg};
+use model::{Cargo, Model, Msg, Player};
 
 impl Reducer<Model> for Msg {
     fn apply(&self, mut model: Rc<Model>) -> Rc<Model> {
         let state = Rc::make_mut(&mut model);
+        let is_valid_buy = |player: &Player, port_cargo: &Cargo| -> bool {
+            player.coins > port_cargo.price
+                && player.ship.cargo.total_unit() <= player.ship.cargo_capacity
+        };
 
         // TODO: Send alert on insufficient fund or empty cargo unit
         match self {
@@ -25,18 +29,18 @@ impl Reducer<Model> for Msg {
             // We don't need to pattern match the get_mut(l)
             // because of enum as hashmap key usage
             Msg::WoodBought(l) => {
-                let mut port_wood = &mut state.locations.get_mut(l).unwrap().cargo.wood;
-                if state.player.coins > port_wood.price {
-                    state.player.coins -= port_wood.price;
-                    port_wood.unit -= 1;
+                let mut port_cgi = &mut state.locations.get_mut(l).unwrap().cargo;
+                if is_valid_buy(&state.player, &port_cgi.wood) {
+                    state.player.coins -= port_cgi.wood.price;
+                    port_cgi.wood.unit -= 1;
                     state.player.ship.cargo.wood.unit += 1;
                 }
             }
             Msg::SugarBought(l) => {
-                let mut port_sugar = &mut state.locations.get_mut(l).unwrap().cargo.sugar;
-                if state.player.coins > port_sugar.price {
-                    state.player.coins -= port_sugar.price;
-                    port_sugar.unit -= 1;
+                let mut port_cgi = &mut state.locations.get_mut(l).unwrap().cargo;
+                if is_valid_buy(&state.player, &port_cgi.sugar) {
+                    state.player.coins -= port_cgi.wood.price;
+                    port_cgi.wood.unit -= 1;
                     state.player.ship.cargo.sugar.unit += 1;
                 }
             }
