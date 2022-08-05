@@ -40,28 +40,28 @@ fn debug_header(dispatch: &Dispatch<Model>) -> Html {
 }
 
 fn show_about(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
-    root_container(html! {
+    html! {
         <>
         { debug_header(dispatch) }
         <p>{"About screen"}</p>
         { onclick_switch_screen(dispatch, Screen::MainMenu, "Back") }
         </>
-    })
+    }
 }
 
 fn show_main_menu(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
-    root_container(html! {
+    html! {
         <>
         <p>{"Hello world!"}</p>
         { onclick_switch_screen(dispatch, Screen::NewCharacter, "Start") }
         <br/>
         { onclick_switch_screen(dispatch, Screen::About, "About") }
         </>
-    })
+    }
 }
 
 fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
-    root_container(html! {
+    html! {
         <>
         { debug_header(dispatch) }
         <h2>{"New character"}</h2>
@@ -81,11 +81,11 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         { onclick_switch_screen(dispatch, Screen::MainNavigation, "Continue") }
         { onclick_switch_screen(dispatch, Screen::MainMenu, "Back") }
         </>
-    })
+    }
 }
 
 fn show_main_navigation(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
-    root_container(html! {
+    html! {
         <>
         { debug_header(dispatch) }
         <h2>{"Navigation page"}</h2>
@@ -101,7 +101,7 @@ fn show_main_navigation(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         { onclick_switch_location(dispatch, Location::PortRoyal, "Port Royal") }
         { onclick_switch_location(dispatch, Location::Nassau, "Nassau") }
         </>
-    })
+    }
 }
 
 fn show_profile(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
@@ -129,6 +129,7 @@ fn show_dock(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
 
 fn cargo_market(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     let current_location = model.current_location.clone();
+
     html! {
         <div>
             <ul>
@@ -163,7 +164,10 @@ fn show_dock_market(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
 
 fn show_skirmish(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
+        <>
         { debug_header(dispatch) }
+        <h2>{"Skirmish"}</h2>
+        </>
     }
 }
 
@@ -171,7 +175,7 @@ fn show_skirmish(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
 pub fn View() -> Html {
     let (model, dispatch) = use_store::<Model>();
 
-    match model.current_screen {
+    root_container(match model.current_screen {
         Screen::About => show_about(model, &dispatch),
         Screen::MainMenu => show_main_menu(model, &dispatch),
         Screen::NewCharacter => show_new_character(model, &dispatch),
@@ -180,5 +184,5 @@ pub fn View() -> Html {
         Screen::Dock => show_dock(model, &dispatch),
         Screen::DockMarket => show_dock_market(model, &dispatch),
         Screen::Skirmish => show_skirmish(model, &dispatch),
-    }
+    })
 }
