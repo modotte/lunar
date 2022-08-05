@@ -7,6 +7,7 @@ mod view;
 
 use chrono::Duration;
 use model::{Cargo, Enemy, Model, Msg, Nationality, Player, ShipClass};
+use rand::seq::SliceRandom;
 
 impl Reducer<Model> for Msg {
     fn apply(&self, mut model: Rc<Model>) -> Rc<Model> {
@@ -21,9 +22,13 @@ impl Reducer<Model> for Msg {
         match self {
             Msg::SwitchScreen(s) => match s {
                 model::Screen::Skirmish => {
+                    let names = vec!["Shady Wave", "Palm West", "Southern Seas"];
                     let new_enemy = Enemy {
                         ship: model::Ship {
-                            name: String::from("Ocean"),
+                            name: names
+                                .choose(&mut rand::thread_rng())
+                                .unwrap_or(&"Blue Sky")
+                                .to_string(),
                             class: ShipClass::Sloop,
                             nationality: Nationality::British,
                             crew: 7,
