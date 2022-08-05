@@ -54,7 +54,6 @@ impl Reducer<Model> for Msg {
                     state.enemy = Some(new_enemy);
                     state.current_screen = s.to_owned();
                 }
-                model::Screen::SkirmishChase => {}
                 _ => state.current_screen = s.to_owned(),
             },
 
@@ -100,6 +99,18 @@ impl Reducer<Model> for Msg {
                     state.player.coins += port_sugar.price;
                     port_sugar.unit += 1;
                     state.player.ship.cargo.sugar.unit -= 1;
+                }
+            }
+            Msg::SkirmishChaseClose => {
+                if let Some(enemy) = &mut state.enemy {
+                    match enemy.distance {
+                        model::EnemyDistance::Escape => enemy.distance = model::EnemyDistance::Far,
+                        model::EnemyDistance::Far => enemy.distance = model::EnemyDistance::Close,
+                        model::EnemyDistance::Close => enemy.distance = model::EnemyDistance::Board,
+                        model::EnemyDistance::Board => {
+                            state.current_screen = model::Screen::SkirmishBattle;
+                        }
+                    }
                 }
             }
         };

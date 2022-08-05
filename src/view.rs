@@ -169,7 +169,7 @@ fn show_skirmish(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         <h2>{"Skirmish"}</h2>
 
         { onclick_switch_screen(dispatch, Screen::SkirmishChase, "Chase") }
-        { onclick_switch_screen(dispatch, Screen::MainNavigation, "Abort")}
+        { onclick_switch_screen(dispatch, Screen::MainNavigation, "Abort") }
         </>
     }
 }
@@ -179,6 +179,7 @@ fn show_skirmish_chase(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         <>
         { debug_header(dispatch) }
         <h2>{"Skirmish Chase"}</h2>
+        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SkirmishChaseClose), "Close") }
         </>
     }
 }
@@ -187,6 +188,7 @@ fn show_skirmish_battle(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
         <>
         { debug_header(dispatch) }
+        <h2>{"Battle!"}</h2>
         </>
     }
 }
