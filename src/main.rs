@@ -24,6 +24,7 @@ impl Reducer<Model> for Msg {
             Msg::WoodBought(l) => {
                 let mut port_wood = &mut state.locations.get_mut(l).unwrap().cargo.wood;
                 if state.player.coins > port_wood.price {
+                    state.player.coins -= port_wood.price;
                     port_wood.unit -= 1;
                     state.player.ship.cargo.wood.unit += 1;
                 }
@@ -31,6 +32,7 @@ impl Reducer<Model> for Msg {
             Msg::SugarBought(l) => {
                 let mut port_sugar = &mut state.locations.get_mut(l).unwrap().cargo.sugar;
                 if state.player.coins > port_sugar.price {
+                    state.player.coins -= port_sugar.price;
                     port_sugar.unit -= 1;
                     state.player.ship.cargo.sugar.unit += 1;
                 }
@@ -38,6 +40,7 @@ impl Reducer<Model> for Msg {
             Msg::WoodSold(l) => {
                 let mut port_wood = &mut state.locations.get_mut(l).unwrap().cargo.wood;
                 if state.player.ship.cargo.wood.unit != 0 {
+                    state.player.coins += port_wood.price;
                     port_wood.unit += 1;
                     state.player.ship.cargo.wood.unit -= 1;
                 }
@@ -45,6 +48,7 @@ impl Reducer<Model> for Msg {
             Msg::SugarSold(l) => {
                 let mut port_sugar = &mut state.locations.get_mut(l).unwrap().cargo.sugar;
                 if state.player.ship.cargo.sugar.unit != 0 {
+                    state.player.coins += port_sugar.price;
                     port_sugar.unit += 1;
                     state.player.ship.cargo.sugar.unit -= 1;
                 }
