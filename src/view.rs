@@ -19,6 +19,12 @@ fn onclick_switch_screen(dispatch: &Dispatch<Model>, screen: Screen, name: &str)
     }
 }
 
+fn onclick_switch_location(dispatch: &Dispatch<Model>, location: Location) -> Html {
+    html! {
+        <button class={"button"} onclick={dispatch.apply_callback(move |_| Msg::SwitchPlayerLocation(location))}>{location}</button>
+    }
+}
+
 fn debug_header(dispatch: &Dispatch<Model>) -> Html {
     html! {
         <div>
@@ -87,10 +93,9 @@ fn show_main_navigation(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
 
         <hr/>
 
-        <button class="button" onclick={dispatch.apply_callback(|_| Msg::SwitchPlayerLocation(Location::Barbados) )}>{ Location::Barbados }</button>
-        <button class="button" onclick={dispatch.apply_callback(|_| Msg::SwitchPlayerLocation(Location::PortRoyal) )}>{Location::PortRoyal}</button>
-        <button class="button" onclick={dispatch.apply_callback(|_| Msg::SwitchPlayerLocation(Location::Nassau) )}>{Location::Nassau}</button>
-
+        { onclick_switch_location(dispatch, Location::Barbados) }
+        { onclick_switch_location(dispatch, Location::PortRoyal) }
+        { onclick_switch_location(dispatch, Location::Nassau) }
         </>
     })
 }
