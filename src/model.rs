@@ -13,6 +13,7 @@ pub enum Screen {
     #[default]
     MainMenu,
     NewCharacter,
+    Profile,
     Dock,
     DockMarket,
     Skirmish,
