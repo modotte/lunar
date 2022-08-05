@@ -180,6 +180,7 @@ fn show_skirmish_chase(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         { debug_header(dispatch) }
         <h2>{"Skirmish Chase"}</h2>
         { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SkirmishChaseClose), "Close") }
+        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SkirmishChaseDistant), "Distant") }
         </>
     }
 }

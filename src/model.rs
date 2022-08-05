@@ -220,4 +220,5 @@ pub enum Msg {
     SellWood(Location),
     SellSugar(Location),
     SkirmishChaseClose,
+    SkirmishChaseDistant,
 }

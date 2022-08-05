@@ -108,7 +108,22 @@ impl Reducer<Model> for Msg {
                         model::EnemyDistance::Far => enemy.distance = model::EnemyDistance::Close,
                         model::EnemyDistance::Close => enemy.distance = model::EnemyDistance::Board,
                         model::EnemyDistance::Board => {
-                            state.current_screen = model::Screen::SkirmishBattle;
+                            state.current_screen = model::Screen::SkirmishBattle
+                        }
+                    }
+                }
+            }
+            Msg::SkirmishChaseDistant => {
+                if let Some(enemy) = &mut state.enemy {
+                    match enemy.distance {
+                        model::EnemyDistance::Escape => {
+                            state.enemy = None;
+                            state.current_screen = model::Screen::MainNavigation
+                        }
+                        model::EnemyDistance::Far => enemy.distance = model::EnemyDistance::Escape,
+                        model::EnemyDistance::Close => enemy.distance = model::EnemyDistance::Far,
+                        model::EnemyDistance::Board => {
+                            state.current_screen = model::Screen::SkirmishBattle
                         }
                     }
                 }
