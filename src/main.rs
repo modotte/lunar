@@ -48,8 +48,11 @@ impl Reducer<Model> for Msg {
             },
 
             Msg::SwitchPlayerLocation(l) => {
+                let days: Vec<i64> = (1..12).collect();
                 if state.current_location != *l {
-                    state.date.add_assign(Duration::days(1));
+                    state.date.add_assign(Duration::days(
+                        *days.choose(&mut rand::thread_rng()).unwrap_or(&1),
+                    ));
                     state.current_location = *l
                 }
             }
