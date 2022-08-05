@@ -16,8 +16,10 @@ impl Reducer<Model> for Msg {
         match self {
             Msg::SwitchScreen(s) => state.current_screen = s.to_owned(),
             Msg::SwitchPlayerLocation(l) => {
-                state.date.add_assign(Duration::days(1));
-                state.current_location = l.to_owned()
+                if state.current_location != *l {
+                    state.date.add_assign(Duration::days(1));
+                    state.current_location = *l
+                }
             }
 
             // We don't need to pattern match the get_mut(l)
