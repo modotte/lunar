@@ -2,6 +2,7 @@ use std::collections::HashMap;
 use std::fmt::Display;
 use yewdux::prelude::*;
 
+use chrono::NaiveDate;
 use enum_display_derive::Display;
 use serde::{Deserialize, Serialize};
 
@@ -156,7 +157,7 @@ pub enum Location {
 #[derive(Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 #[store(storage = "local")]
 pub struct Model {
-    pub date: u32, // TODO: Change to date and randomly
+    pub date: NaiveDate,
     pub current_screen: Screen,
     pub player: Player,
     pub locations: HashMap<Location, Port>,
@@ -168,7 +169,7 @@ pub struct Model {
 impl Default for Model {
     fn default() -> Self {
         Self {
-            date: 1,
+            date: NaiveDate::from_ymd(1680, 01, 01),
             player: Player {
                 name: String::from("Jameson"),
                 age: 18,

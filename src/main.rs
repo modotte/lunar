@@ -1,10 +1,11 @@
-use std::rc::Rc;
+use std::{ops::AddAssign, rc::Rc};
 use view::View;
 use yewdux::prelude::*;
 
 mod model;
 mod view;
 
+use chrono::Duration;
 use model::{Model, Msg};
 
 impl Reducer<Model> for Msg {
@@ -15,7 +16,7 @@ impl Reducer<Model> for Msg {
         match self {
             Msg::SwitchScreen(s) => state.current_screen = s.to_owned(),
             Msg::SwitchPlayerLocation(l) => {
-                state.date += 1;
+                state.date.add_assign(Duration::days(1));
                 state.current_location = l.to_owned()
             }
 
