@@ -6,7 +6,7 @@ mod model;
 mod view;
 
 use chrono::Duration;
-use model::{Cargo, Model, Msg, Player};
+use model::{Cargo, Enemy, Model, Msg, Nationality, Player, ShipClass};
 
 impl Reducer<Model> for Msg {
     fn apply(&self, mut model: Rc<Model>) -> Rc<Model> {
@@ -19,7 +19,29 @@ impl Reducer<Model> for Msg {
 
         // TODO: Send alert on insufficient fund or empty cargo unit
         match self {
-            Msg::SwitchScreen(s) => state.current_screen = s.to_owned(),
+            Msg::SwitchScreen(s) => match s {
+                model::Screen::Skirmish => {
+                    let new_enemy = Enemy {
+                        ship: model::Ship {
+                            name: String::from("Ocean"),
+                            class: ShipClass::Sloop,
+                            nationality: Nationality::British,
+                            crew: 7,
+                            crew_capacity: 8,
+                            hull: 8,
+                            hull_capacity: 8,
+                            cannon: 4,
+                            cannon_capacity: 4,
+                            ..Default::default()
+                        },
+                        ..Default::default()
+                    };
+                    state.enemy = Some(new_enemy);
+                    state.current_screen = s.to_owned()
+                }
+                _ => state.current_screen = s.to_owned(),
+            },
+
             Msg::SwitchPlayerLocation(l) => {
                 if state.current_location != *l {
                     state.date.add_assign(Duration::days(1));

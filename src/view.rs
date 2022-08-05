@@ -171,6 +171,14 @@ fn show_skirmish(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     }
 }
 
+fn show_skirmish_battle(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
+    html! {
+        <>
+        { debug_header(dispatch) }
+        </>
+    }
+}
+
 #[function_component]
 pub fn View() -> Html {
     let (model, dispatch) = use_store::<Model>();
@@ -184,5 +192,6 @@ pub fn View() -> Html {
         Screen::Dock => show_dock(model, &dispatch),
         Screen::DockMarket => show_dock_market(model, &dispatch),
         Screen::Skirmish => show_skirmish(model, &dispatch),
+        Screen::SkirmishBattle => show_skirmish_battle(model, &dispatch),
     })
 }

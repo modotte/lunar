@@ -17,6 +17,7 @@ pub enum Screen {
     Dock,
     DockMarket,
     Skirmish,
+    SkirmishBattle,
 }
 
 #[derive(Default, Display, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
@@ -107,9 +108,9 @@ pub enum EnemyDistance {
 
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 pub struct Enemy {
-    ship: Ship,
-    movement: EnemyMovement,
-    distance: EnemyDistance,
+    pub ship: Ship,
+    pub movement: EnemyMovement,
+    pub distance: EnemyDistance,
 }
 
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
