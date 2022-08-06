@@ -187,11 +187,11 @@ impl Default for Model {
         Self {
             date: NaiveDate::from_ymd(1680, 01, 01),
             player: Player {
-                name: String::from("Jameson"),
+                name: String::from("Player"),
                 age: 18,
                 coins: 1000,
                 ship: Ship {
-                    name: String::from("The Duchess"),
+                    name: String::from("Luna"),
                     crew: 12,
                     cargo_capacity: 32,
                     hull: 10,
