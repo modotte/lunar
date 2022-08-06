@@ -84,13 +84,22 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     }
 }
 
+fn player_info(model: &Rc<Model>) -> Html {
+    html! {
+        <>
+        <p>{"Date: "} {model.date}</p>
+        <p>{"Current location: "} {model.current_location}</p>
+        <p>{"Coins: "} {model.player.coins}</p>
+        </>
+    }
+}
+
 fn show_main_navigation(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
         <>
         { debug_header(dispatch) }
-        <h2>{"Navigation page"}</h2>
+        { player_info(&model) }
         <hr/>
-
 
         { onclick_switch_screen(dispatch, Screen::Profile, "Profile") }
         { onclick_switch_screen(dispatch, Screen::Dock, "Dock") }
@@ -167,6 +176,8 @@ fn show_dock_market(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
         <>
         { debug_header(dispatch) }
+        { player_info(&model) }
+        <hr/>
         <h2>{"Market screen"}</h2>
 
         { cargo_market(model, dispatch) }
