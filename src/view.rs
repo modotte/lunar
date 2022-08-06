@@ -90,6 +90,7 @@ fn player_info(model: &Rc<Model>) -> Html {
         <p>{"Date: "} {model.date}</p>
         <p>{"Current location: "} {model.current_location}</p>
         <p>{"Coins: "} {model.player.coins}</p>
+        <p>{"Total cargo: "} {model.player.ship.cargo.total_unit()}</p>
         </>
     }
 }
@@ -165,7 +166,7 @@ fn cargo_market(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
                 <li>
                     <p>{"Sugar"}</p>
                     { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::BuySugar(current_location)), "Buy 1") }
-                    { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SellSugar(current_location)), "Buy 1") }
+                    { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SellSugar(current_location)), "Sell 1") }
                 </li>
             </ul>
         </div>
