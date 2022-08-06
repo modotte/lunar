@@ -72,7 +72,7 @@ impl Reducer<Model> for Msg {
             Msg::BuyWood(l) => {
                 let mut port_cgi = &mut state.locations.get_mut(l).unwrap().cargo;
                 if is_valid_buy(&state.player, &port_cgi.wood) {
-                    state.player.coins -= port_cgi.wood.price;
+                    state.player.coins -= &port_cgi.wood.price;
                     port_cgi.wood.unit -= 1;
                     state.player.ship.cargo.wood.unit += 1;
                 }

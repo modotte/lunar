@@ -38,25 +38,10 @@ pub struct Cargo {
     pub unit: u32,
 }
 
-#[derive(Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
+#[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 pub struct CargoItems {
     pub wood: Cargo,
     pub sugar: Cargo,
-}
-
-impl Default for CargoItems {
-    fn default() -> Self {
-        CargoItems {
-            wood: Cargo {
-                price: 40,
-                ..Default::default()
-            },
-            sugar: Cargo {
-                price: 60,
-                ..Default::default()
-            },
-        }
-    }
 }
 
 impl CargoItems {
@@ -202,9 +187,49 @@ impl Default for Model {
                 },
             },
             locations: HashMap::from([
-                (Location::Barbados, Port::default()),
-                (Location::PortRoyal, Port::default()),
-                (Location::Nassau, Port::default()),
+                (
+                    Location::Barbados,
+                    Port {
+                        name: String::from("Barbados"),
+                        description: String::from(""),
+                        population: PortPopulation::Large,
+                        nationality: Nationality::British,
+                        cargo: CargoItems {
+                            wood: Cargo {
+                                name: String::from("Wood"),
+                                description: String::from(""),
+                                price: 22,
+                                unit: 250,
+                            },
+                            sugar: Cargo {
+                                name: String::from("Sugar"),
+                                description: String::from(""),
+                                price: 30,
+                                unit: 250,
+                            },
+                        },
+                    },
+                ),
+                (
+                    Location::PortRoyal,
+                    Port {
+                        name: String::from("Port Royal"),
+                        description: String::from(""),
+                        population: PortPopulation::Huge,
+                        nationality: Nationality::British,
+                        cargo: CargoItems::default(),
+                    },
+                ),
+                (
+                    Location::Nassau,
+                    Port {
+                        name: String::from("Nassau"),
+                        description: String::from(""),
+                        population: PortPopulation::Medium,
+                        nationality: Nationality::British,
+                        cargo: CargoItems::default(),
+                    },
+                ),
             ]),
             current_screen: Screen::default(),
             current_location: Location::default(),
