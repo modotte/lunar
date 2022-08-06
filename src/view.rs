@@ -89,6 +89,8 @@ fn show_main_navigation(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         <>
         { debug_header(dispatch) }
         <h2>{"Navigation page"}</h2>
+        <hr/>
+
 
         { onclick_switch_screen(dispatch, Screen::Profile, "Profile") }
         { onclick_switch_screen(dispatch, Screen::Dock, "Dock") }
@@ -115,12 +117,24 @@ fn show_profile(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     }
 }
 
+fn show_tavern(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
+    html! {
+        <>
+        { debug_header(dispatch) }
+        <h2>{"Tavern screen"}</h2>
+
+        { onclick_switch_screen(dispatch, Screen::Dock, "Back") }
+        </>
+    }
+}
+
 fn show_dock(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
         <>
         { debug_header(dispatch) }
         <h2>{"Dock screen"}</h2>
 
+        { onclick_switch_screen(dispatch, Screen::Tavern, "Tavern") }
         { onclick_switch_screen(dispatch, Screen::DockMarket, "Market") }
         { onclick_switch_screen(dispatch, Screen::MainNavigation, "Back") }
         </>
@@ -204,6 +218,7 @@ pub fn View() -> Html {
         Screen::NewCharacter => show_new_character(model, &dispatch),
         Screen::MainNavigation => show_main_navigation(model, &dispatch),
         Screen::Profile => show_profile(model, &dispatch),
+        Screen::Tavern => show_tavern(model, &dispatch),
         Screen::Dock => show_dock(model, &dispatch),
         Screen::DockMarket => show_dock_market(model, &dispatch),
         Screen::Skirmish => show_skirmish(model, &dispatch),

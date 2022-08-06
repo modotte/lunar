@@ -14,6 +14,7 @@ pub enum Screen {
     MainMenu,
     NewCharacter,
     Profile,
+    Tavern,
     Dock,
     DockMarket,
     Skirmish,
