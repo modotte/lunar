@@ -217,7 +217,20 @@ impl Default for Model {
                         description: String::from(""),
                         population: PortPopulation::Huge,
                         nationality: Nationality::British,
-                        cargo: CargoItems::default(),
+                        cargo: CargoItems {
+                            wood: Cargo {
+                                name: String::from("Wood"),
+                                description: String::from(""),
+                                price: 18,
+                                unit: 500,
+                            },
+                            sugar: Cargo {
+                                name: String::from("Sugar"),
+                                description: String::from(""),
+                                price: 50,
+                                unit: 120,
+                            },
+                        },
                     },
                 ),
                 (
@@ -227,7 +240,20 @@ impl Default for Model {
                         description: String::from(""),
                         population: PortPopulation::Medium,
                         nationality: Nationality::British,
-                        cargo: CargoItems::default(),
+                        cargo: CargoItems {
+                            wood: Cargo {
+                                name: String::from("Wood"),
+                                description: String::from(""),
+                                price: 32,
+                                unit: 150,
+                            },
+                            sugar: Cargo {
+                                name: String::from("Sugar"),
+                                description: String::from(""),
+                                price: 20,
+                                unit: 180,
+                            },
+                        },
                     },
                 ),
             ]),
