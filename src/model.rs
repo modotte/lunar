@@ -7,6 +7,7 @@ use enum_display_derive::Display;
 use serde::{Deserialize, Serialize};
 
 pub const MINIMUM_SHIP_HULL: u8 = 2;
+pub const MINIMUM_SHIP_CREW: u8 = 2;
 
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 pub enum Screen {
@@ -22,6 +23,7 @@ pub enum Screen {
     Skirmish,
     SkirmishChase,
     SkirmishBattle,
+    SkirmishLoot,
 }
 
 #[derive(Default, Display, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]

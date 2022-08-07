@@ -229,6 +229,16 @@ fn show_skirmish_chase(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     }
 }
 
+fn show_skirmish_loot(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
+    html! {
+        <>
+        <h2>{"Loot"}</h2>
+
+        { onclick_switch_screen(dispatch, Screen::MainNavigation, "Continue") }
+        </>
+    }
+}
+
 fn show_skirmish_battle(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
         <>
@@ -236,8 +246,19 @@ fn show_skirmish_battle(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         <h2>{"Battle!"}</h2>
         { enemy_info(&model, dispatch) }
         <hr/>
-        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SkirmishBattleSwingSword), "Sword Attack") }
-        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SkirmishBattleShootFalconet), "Shoot Falconet volleys") }
+
+        { match &model.enemy {
+            Some(enemy) => {
+                if enemy.ship.crew < MINIMUM_SHIP_CREW.into() {
+                    onclick_switch_screen(dispatch, Screen::SkirmishLoot, "Loot enemy")
+                }
+                else {
+                    onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SkirmishBattleSwingSword), "Sword Attack");
+                    onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SkirmishBattleShootFalconet), "Shoot Falconet volleys")
+                }
+            },
+            None => { onclick_switch_screen(dispatch, Screen::MainNavigation, "Back") },
+        }}
         </>
     }
 }
@@ -258,5 +279,6 @@ pub fn View() -> Html {
         Screen::Skirmish => show_skirmish(model, &dispatch),
         Screen::SkirmishChase => show_skirmish_chase(model, &dispatch),
         Screen::SkirmishBattle => show_skirmish_battle(model, &dispatch),
+        Screen::SkirmishLoot => show_skirmish_loot(model, &dispatch),
     })
 }
