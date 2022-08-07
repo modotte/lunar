@@ -250,11 +250,20 @@ fn show_skirmish_battle(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         { match &model.enemy {
             Some(enemy) => {
                 if enemy.ship.crew < MINIMUM_SHIP_CREW.into() {
-                    onclick_switch_screen(dispatch, Screen::SkirmishLoot, "Loot enemy")
+                    html! {
+                        <>
+                        { onclick_switch_screen(dispatch, Screen::SkirmishLoot, "Loot enemy") }
+                        { onclick_switch_screen(dispatch, Screen::MainNavigation, "Continue") }
+                        </>
+                    }
                 }
                 else {
-                    onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SkirmishBattleSwingSword), "Sword Attack");
-                    onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SkirmishBattleShootFalconet), "Shoot Falconet volleys")
+                    html! {
+                        <>
+                        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SkirmishBattleSwingSword), "Sword Attack") }
+                        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SkirmishBattleShootFalconet), "Shoot Falconet volleys") }
+                        </>
+                    }
                 }
             },
             None => { onclick_switch_screen(dispatch, Screen::MainNavigation, "Back") },
