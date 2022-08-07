@@ -29,10 +29,12 @@ fn onclick_switch_location(dispatch: &Dispatch<Model>, location: Location, name:
     }
 }
 
+// TODO: Find a way to make it work with cfg! and debug_assertions.
 fn debug_header(dispatch: &Dispatch<Model>) -> Html {
     html! {
         <div>
             <h1>{"Lunar"}</h1>
+            { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::ResetModel), "!!!RESET MODEL!!!")}
             { onclick_switch_screen(dispatch, Screen::MainMenu, "Back to main menu") }
             <hr/>
         </div>

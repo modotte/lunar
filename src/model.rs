@@ -244,6 +244,8 @@ impl Default for Model {
 }
 
 pub enum Msg {
+    // TODO: Remove ResetData when debug isn't needed anymore!!!
+    ResetModel,
     SwitchScreen(Screen),
     SwitchPlayerLocation(Location),
     BuyWood(Location),
