@@ -221,6 +221,8 @@ fn show_skirmish_battle(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         <>
         { debug_header(dispatch) }
         <h2>{"Battle!"}</h2>
+
+        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SkirmishBattleBroadside), "Broadside") }
         </>
     }
 }

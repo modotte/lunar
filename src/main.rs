@@ -137,6 +137,13 @@ impl Reducer<Model> for Msg {
                     }
                 }
             }
+            Msg::SkirmishBattleBroadside => {
+                if let Some(enemy) = &mut state.enemy {
+                    let enemy_crew = enemy.ship.crew;
+                    let enemy_hull = enemy.ship.hull;
+                    let enemy_cannon = enemy.ship.cannon;
+                }
+            }
         };
 
         model

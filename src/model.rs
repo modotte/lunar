@@ -254,4 +254,5 @@ pub enum Msg {
     SellSugar(Location),
     SkirmishChaseClose,
     SkirmishChaseDistant,
+    SkirmishBattleBroadside,
 }
