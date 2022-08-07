@@ -109,34 +109,13 @@ pub enum PortPopulation {
     Huge,
 }
 
-#[derive(Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
+#[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 pub struct Port {
     pub name: String,
     pub description: String,
     pub population: PortPopulation,
     pub nationality: Nationality,
     pub cargo: CargoItems,
-}
-
-impl Default for Port {
-    fn default() -> Self {
-        Port {
-            cargo: CargoItems {
-                wood: Cargo {
-                    unit: 35,
-                    ..Default::default()
-                },
-                sugar: Cargo {
-                    unit: 70,
-                    ..Default::default()
-                },
-            },
-            name: String::from(""),
-            description: String::from(""),
-            population: PortPopulation::default(),
-            nationality: Nationality::default(),
-        }
-    }
 }
 
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
