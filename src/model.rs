@@ -6,6 +6,8 @@ use chrono::NaiveDate;
 use enum_display_derive::Display;
 use serde::{Deserialize, Serialize};
 
+pub const MINIMUM_SHIP_HULL: u8 = 2;
+
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 pub enum Screen {
     MainNavigation,
@@ -254,5 +256,5 @@ pub enum Msg {
     SellSugar(Location),
     SkirmishChaseClose,
     SkirmishChaseDistant,
-    SkirmishBattleBroadside,
+    SkirmishChaseBroadside,
 }

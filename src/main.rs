@@ -6,7 +6,7 @@ mod model;
 mod view;
 
 use chrono::Duration;
-use model::{Cargo, Enemy, Model, Msg, Nationality, Player, ShipClass};
+use model::{Cargo, Enemy, Model, Msg, Nationality, Player, ShipClass, MINIMUM_SHIP_HULL};
 use rand::seq::SliceRandom;
 
 impl Reducer<Model> for Msg {
@@ -137,11 +137,18 @@ impl Reducer<Model> for Msg {
                     }
                 }
             }
-            Msg::SkirmishBattleBroadside => {
+            Msg::SkirmishChaseBroadside => {
                 if let Some(enemy) = &mut state.enemy {
-                    let enemy_crew = enemy.ship.crew;
-                    let enemy_hull = enemy.ship.hull;
-                    let enemy_cannon = enemy.ship.cannon;
+                    if enemy.ship.hull < MINIMUM_SHIP_HULL.into() {
+                        state.current_screen = model::Screen::MainNavigation;
+                    } else {
+                        match enemy.distance {
+                            model::EnemyDistance::Escape => enemy.ship.hull -= 1,
+                            model::EnemyDistance::Far => enemy.ship.hull -= 2,
+                            model::EnemyDistance::Close => enemy.ship.hull -= 3,
+                            model::EnemyDistance::Board => (),
+                        }
+                    }
                 }
             }
         };

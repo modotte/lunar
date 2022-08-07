@@ -205,13 +205,25 @@ fn show_skirmish(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     }
 }
 
+fn chase_info(model: &Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
+    html! {
+        <>
+            <p>{"Enemy hull: "} {model.enemy.as_ref().unwrap().ship.hull}</p>
+        </>
+    }
+}
+
 fn show_skirmish_chase(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
         <>
         { debug_header(dispatch) }
         <h2>{"Skirmish Chase"}</h2>
+        { chase_info(&model, dispatch) }
+        <hr/>
+
         { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SkirmishChaseClose), "Close") }
         { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SkirmishChaseDistant), "Distant") }
+        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SkirmishChaseBroadside), "Broadside") }
         </>
     }
 }
@@ -221,8 +233,6 @@ fn show_skirmish_battle(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         <>
         { debug_header(dispatch) }
         <h2>{"Battle!"}</h2>
-
-        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SkirmishBattleBroadside), "Broadside") }
         </>
     }
 }
