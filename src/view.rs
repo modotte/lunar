@@ -205,10 +205,11 @@ fn show_skirmish(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     }
 }
 
-fn chase_info(model: &Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
+fn enemy_info(model: &Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
         <>
             <p>{"Enemy hull: "} {model.enemy.as_ref().unwrap().ship.hull}</p>
+            <p>{"Enemy crew: "} {model.enemy.as_ref().unwrap().ship.crew}</p>
         </>
     }
 }
@@ -218,7 +219,7 @@ fn show_skirmish_chase(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         <>
         { debug_header(dispatch) }
         <h2>{"Skirmish Chase"}</h2>
-        { chase_info(&model, dispatch) }
+        { enemy_info(&model, dispatch) }
         <hr/>
 
         { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SkirmishChaseClose), "Close") }
@@ -233,6 +234,10 @@ fn show_skirmish_battle(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         <>
         { debug_header(dispatch) }
         <h2>{"Battle!"}</h2>
+        { enemy_info(&model, dispatch) }
+        <hr/>
+        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SkirmishBattleSwingSword), "Sword Attack") }
+        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SkirmishBattleShootFalconet), "Shoot Falconet volleys") }
         </>
     }
 }

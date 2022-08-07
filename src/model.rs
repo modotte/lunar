@@ -257,4 +257,6 @@ pub enum Msg {
     SkirmishChaseClose,
     SkirmishChaseDistant,
     SkirmishChaseBroadside,
+    SkirmishBattleSwingSword,
+    SkirmishBattleShootFalconet,
 }

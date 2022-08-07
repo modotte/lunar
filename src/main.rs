@@ -151,6 +151,16 @@ impl Reducer<Model> for Msg {
                     }
                 }
             }
+            Msg::SkirmishBattleSwingSword => {
+                if let Some(enemy) = &mut state.enemy {
+                    enemy.ship.crew -= 1;
+                }
+            }
+            Msg::SkirmishBattleShootFalconet => {
+                if let Some(enemy) = &mut state.enemy {
+                    enemy.ship.crew -= 2;
+                }
+            }
         };
 
         model
