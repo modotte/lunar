@@ -149,20 +149,40 @@ impl Reducer<model::Model> for model::Msg {
 
             // We don't need to pattern match the get_mut(l)
             // because of enum as hashmap key usage
-            model::Msg::BuyCargo(l, c) => {
+            model::Msg::BuyCargo(l, port_cargo) => {
                 let mut port_cgs = &mut state.ports.get_mut(l).unwrap().cargos;
-                if is_valid_buy(&state.player, &port_cgs.wood) {
-                    state.player.coins -= &port_cgs.wood.price;
-                    port_cgs.wood.unit -= 1;
-                    state.player.ship.cargos.wood.unit += 1;
+                if is_valid_buy(&state.player, port_cargo) {
+                    state.player.coins -= port_cargo.price;
+                    match port_cargo.kind {
+                        model::CargoKind::Wood => {
+                            port_cgs.wood.unit -= 1;
+                            state.player.ship.cargos.wood.unit += 1;
+                        }
+                        model::CargoKind::Sugar => {
+                            port_cgs.sugar.unit -= 1;
+                            state.player.ship.cargos.sugar.unit += 1;
+                        }
+                    }
                 }
             }
-            model::Msg::SellCargo(l, c) => {
-                let mut port_wood = &mut state.ports.get_mut(l).unwrap().cargos.wood;
-                if state.player.ship.cargos.wood.unit != 0 {
-                    state.player.coins += port_wood.price;
-                    port_wood.unit += 1;
-                    state.player.ship.cargos.wood.unit -= 1;
+            model::Msg::SellCargo(l, port_cargo) => {
+                let mut ports_cgs = &mut state.ports.get_mut(l).unwrap().cargos;
+
+                match port_cargo.kind {
+                    model::CargoKind::Wood => {
+                        if state.player.ship.cargos.wood.unit != 0 {
+                            state.player.coins += port_cargo.price;
+                            ports_cgs.wood.unit += 1;
+                            state.player.ship.cargos.wood.unit -= 1;
+                        }
+                    }
+                    model::CargoKind::Sugar => {
+                        if state.player.ship.cargos.sugar.unit != 0 {
+                            state.player.coins += port_cargo.price;
+                            ports_cgs.sugar.unit += 1;
+                            state.player.ship.cargos.sugar.unit -= 1;
+                        }
+                    }
                 }
             }
             model::Msg::SkirmishChaseClose => {

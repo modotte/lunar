@@ -37,10 +37,18 @@ pub enum Nationality {
     French,
 }
 
+#[derive(Default, EnumIter, Display, Copy, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
+pub enum CargoKind {
+    #[default]
+    Wood,
+    Sugar,
+}
+
 #[derive(Default, Copy, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 pub struct Cargo {
     pub price: u32,
     pub unit: u32,
+    pub kind: CargoKind,
 }
 
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
@@ -186,10 +194,12 @@ impl Default for Model {
                             wood: Cargo {
                                 price: 22,
                                 unit: 250,
+                                kind: CargoKind::Wood,
                             },
                             sugar: Cargo {
                                 price: 30,
                                 unit: 250,
+                                kind: CargoKind::Sugar,
                             },
                         },
                     },
@@ -205,10 +215,12 @@ impl Default for Model {
                             wood: Cargo {
                                 price: 18,
                                 unit: 500,
+                                kind: CargoKind::Wood,
                             },
                             sugar: Cargo {
                                 price: 50,
                                 unit: 120,
+                                kind: CargoKind::Sugar,
                             },
                         },
                     },
@@ -224,10 +236,12 @@ impl Default for Model {
                             wood: Cargo {
                                 price: 32,
                                 unit: 150,
+                                kind: CargoKind::Wood,
                             },
                             sugar: Cargo {
                                 price: 20,
                                 unit: 180,
+                                kind: CargoKind::Sugar,
                             },
                         },
                     },
