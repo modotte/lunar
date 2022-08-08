@@ -45,7 +45,8 @@ fn show_about(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
         <>
         { debug_header(dispatch) }
-        <p>{"About screen"}</p>
+        <a target="_blank" href="https://github.com/modotte/lunar">{"Source code on Github"}</a>
+        <p>{"Licensed under the GPL-3.0-or-later license"}</p>
         { onclick_switch_screen(dispatch, Screen::MainMenu, "Back") }
         </>
     }

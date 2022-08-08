@@ -21,13 +21,13 @@ impl Reducer<Model> for Msg {
         // TODO: Send alert on insufficient fund or empty cargo unit
         match self {
             Msg::ResetModel => {
-                let default_model = Model::default();
-                state.date = default_model.date;
-                state.current_screen = default_model.current_screen;
-                state.current_location = default_model.current_location;
-                state.player = default_model.player;
-                state.locations = default_model.locations;
-                state.enemy = default_model.enemy;
+                let defmodel = Model::default();
+                state.date = defmodel.date;
+                state.current_screen = defmodel.current_screen;
+                state.current_location = defmodel.current_location;
+                state.player = defmodel.player;
+                state.locations = defmodel.locations;
+                state.enemy = defmodel.enemy;
             }
             Msg::SwitchScreen(s) => match s {
                 model::Screen::MainNavigation => {
