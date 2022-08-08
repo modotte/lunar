@@ -154,23 +154,28 @@ fn show_dock(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     }
 }
 
+fn cargo_item(
+    buy_callback: Callback<MouseEvent>,
+    sell_callback: Callback<MouseEvent>,
+    name: &str,
+) -> Html {
+    html! {
+        <li>
+            <p>{name}</p>
+            { onclick_styled_btn(buy_callback, "Buy 1") }
+            { onclick_styled_btn(sell_callback, "Sell 1")}
+        </li>
+    }
+}
+
 fn cargo_market(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     let current_location = model.current_location.clone();
 
     html! {
         <div>
             <ul>
-                <li>
-                    <p>{"Wood"}</p>
-                    { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::BuyWood(current_location)), "Buy 1") }
-                    { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SellWood(current_location)), "Sell 1") }
-                </li>
-
-                <li>
-                    <p>{"Sugar"}</p>
-                    { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::BuySugar(current_location)), "Buy 1") }
-                    { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SellSugar(current_location)), "Sell 1") }
-                </li>
+                { cargo_item(dispatch.apply_callback(move |_| Msg::BuyWood(current_location)), dispatch.apply_callback(move |_| Msg::SellWood(current_location)), "Wood") }
+                { cargo_item(dispatch.apply_callback(move |_| Msg::BuySugar(current_location)), dispatch.apply_callback(move |_| Msg::SellSugar(current_location)), "Sugar") }
             </ul>
         </div>
     }
