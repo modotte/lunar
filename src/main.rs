@@ -23,13 +23,13 @@ impl Reducer<model::Model> for model::Msg {
         // TODO: Send alert on insufficient fund or empty cargo unit
         match self {
             model::Msg::ResetModel => {
-                let defmodel = model::Model::default();
-                state.date = defmodel.date;
-                state.current_screen = defmodel.current_screen;
-                state.current_port_location = defmodel.current_port_location;
-                state.player = defmodel.player;
-                state.ports = defmodel.ports;
-                state.enemy = defmodel.enemy;
+                let m = model::Model::default();
+                state.date = m.date;
+                state.current_screen = m.current_screen;
+                state.current_port_location = m.current_port_location;
+                state.player = m.player;
+                state.ports = m.ports;
+                state.enemy = m.enemy;
             }
             model::Msg::SwitchScreen(s) => match s {
                 model::Screen::MainNavigation => {
@@ -206,9 +206,9 @@ impl Reducer<model::Model> for model::Msg {
 
             // TODO: Subtract with hull and other items cost
             model::Msg::RepairShip(c) => {
-                let defship = model::Model::default().player.ship;
-                state.player.ship.hull = defship.hull;
-                state.player.ship.cannons = defship.cannons;
+                let s = model::Model::default().player.ship;
+                state.player.ship.hull = s.hull;
+                state.player.ship.cannons = s.cannons;
             }
         };
 
