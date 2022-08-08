@@ -90,9 +90,9 @@ fn player_info(model: &Rc<Model>) -> Html {
         <p>{"Date: "} {model.date}</p>
         <p>{"Current location: "} {model.current_port_location}</p>
         <p>{"Coins: "} {model.player.coins}</p>
-        <p>{"Owned Wood: "} {model.player.ship.cargo.wood.unit}</p>
-        <p>{"Owned Sugar: "} {model.player.ship.cargo.sugar.unit}</p>
-        <p>{"Total cargo: "} {model.player.ship.cargo.total_unit()}</p>
+        <p>{"Owned Wood: "} {model.player.ship.cargos.wood.unit}</p>
+        <p>{"Owned Sugar: "} {model.player.ship.cargos.sugar.unit}</p>
+        <p>{"Total cargo: "} {model.player.ship.cargos.total_unit()}</p>
         <p>{"Cargo capacity: "} {model.player.ship.cargo_capacity}</p>
         </>
     }

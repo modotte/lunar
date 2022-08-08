@@ -43,12 +43,12 @@ pub struct Cargo {
 }
 
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
-pub struct CargoItems {
+pub struct Cargos {
     pub wood: Cargo,
     pub sugar: Cargo,
 }
 
-impl CargoItems {
+impl Cargos {
     pub fn total_unit(&self) -> u32 {
         self.wood.unit + self.sugar.unit
     }
@@ -70,7 +70,7 @@ pub struct Ship {
     pub name: String,
     pub class: ShipClass,
     pub nationality: Nationality,
-    pub cargo: CargoItems,
+    pub cargos: Cargos,
     pub cargo_capacity: u32,
     pub crew: u32,
     pub crew_capacity: u32,
@@ -119,7 +119,7 @@ pub struct Port {
     pub description: String,
     pub population: PortPopulation,
     pub nationality: Nationality,
-    pub cargo: CargoItems,
+    pub cargo: Cargos,
 }
 
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
@@ -177,7 +177,7 @@ impl Default for Model {
                         description: String::from(""),
                         population: PortPopulation::Large,
                         nationality: Nationality::British,
-                        cargo: CargoItems {
+                        cargo: Cargos {
                             wood: Cargo {
                                 name: String::from("Wood"),
                                 description: String::from(""),
@@ -200,7 +200,7 @@ impl Default for Model {
                         description: String::from(""),
                         population: PortPopulation::Huge,
                         nationality: Nationality::British,
-                        cargo: CargoItems {
+                        cargo: Cargos {
                             wood: Cargo {
                                 name: String::from("Wood"),
                                 description: String::from(""),
@@ -223,7 +223,7 @@ impl Default for Model {
                         description: String::from(""),
                         population: PortPopulation::Medium,
                         nationality: Nationality::British,
-                        cargo: CargoItems {
+                        cargo: Cargos {
                             wood: Cargo {
                                 name: String::from("Wood"),
                                 description: String::from(""),
@@ -248,7 +248,7 @@ impl Default for Model {
 }
 
 pub enum Msg {
-    // TODO: Remove ResetData when debug isn't needed anymore!!!
+    // TODO: Remove ResetModel when debug isn't needed anymore!!!
     ResetModel,
     SwitchScreen(Screen),
     SwitchPlayerLocation(PortLocation),

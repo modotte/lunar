@@ -10,7 +10,7 @@ use model::{Cargo, Enemy, Model, Msg, Nationality, Player, ShipClass, MINIMUM_SH
 use rand::seq::SliceRandom;
 
 fn is_cargo_space_available(p: &Player) -> bool {
-    p.ship.cargo.total_unit() < p.ship.cargo_capacity
+    p.ship.cargos.total_unit() < p.ship.cargo_capacity
 }
 
 fn is_valid_buy(p: &Player, port_cargo: &Cargo) -> bool {
@@ -82,35 +82,35 @@ impl Reducer<Model> for Msg {
             // We don't need to pattern match the get_mut(l)
             // because of enum as hashmap key usage
             Msg::BuyWood(l) => {
-                let mut port_cgi = &mut state.ports.get_mut(l).unwrap().cargo;
-                if is_valid_buy(&state.player, &port_cgi.wood) {
-                    state.player.coins -= &port_cgi.wood.price;
-                    port_cgi.wood.unit -= 1;
-                    state.player.ship.cargo.wood.unit += 1;
+                let mut port_cgs = &mut state.ports.get_mut(l).unwrap().cargo;
+                if is_valid_buy(&state.player, &port_cgs.wood) {
+                    state.player.coins -= &port_cgs.wood.price;
+                    port_cgs.wood.unit -= 1;
+                    state.player.ship.cargos.wood.unit += 1;
                 }
             }
             Msg::BuySugar(l) => {
-                let mut port_cgi = &mut state.ports.get_mut(l).unwrap().cargo;
-                if is_valid_buy(&state.player, &port_cgi.sugar) {
-                    state.player.coins -= port_cgi.sugar.price;
-                    port_cgi.sugar.unit -= 1;
-                    state.player.ship.cargo.sugar.unit += 1;
+                let mut port_cgs = &mut state.ports.get_mut(l).unwrap().cargo;
+                if is_valid_buy(&state.player, &port_cgs.sugar) {
+                    state.player.coins -= port_cgs.sugar.price;
+                    port_cgs.sugar.unit -= 1;
+                    state.player.ship.cargos.sugar.unit += 1;
                 }
             }
             Msg::SellWood(l) => {
                 let mut port_wood = &mut state.ports.get_mut(l).unwrap().cargo.wood;
-                if state.player.ship.cargo.wood.unit != 0 {
+                if state.player.ship.cargos.wood.unit != 0 {
                     state.player.coins += port_wood.price;
                     port_wood.unit += 1;
-                    state.player.ship.cargo.wood.unit -= 1;
+                    state.player.ship.cargos.wood.unit -= 1;
                 }
             }
             Msg::SellSugar(l) => {
                 let mut port_sugar = &mut state.ports.get_mut(l).unwrap().cargo.sugar;
-                if state.player.ship.cargo.sugar.unit != 0 {
+                if state.player.ship.cargos.sugar.unit != 0 {
                     state.player.coins += port_sugar.price;
                     port_sugar.unit += 1;
-                    state.player.ship.cargo.sugar.unit -= 1;
+                    state.player.ship.cargos.sugar.unit -= 1;
                 }
             }
             Msg::SkirmishChaseClose => {
