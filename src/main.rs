@@ -44,6 +44,7 @@ impl Reducer<model::Model> for model::Msg {
                         "Morning Star",
                         "Blue Ocean",
                     ];
+
                     let new_enemy = model::Enemy {
                         ship: model::Ship {
                             name: names

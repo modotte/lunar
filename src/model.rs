@@ -177,19 +177,19 @@ impl Default for Model {
                     PortLocation::Barbados,
                     Port {
                         name: String::from("Barbados"),
-                        description: String::from(""),
+                        description: String::default(),
                         population: PortPopulation::Large,
                         nationality: Nationality::British,
                         cargos: Cargos {
                             wood: Cargo {
                                 name: String::from("Wood"),
-                                description: String::from(""),
+                                description: String::default(),
                                 price: 22,
                                 unit: 250,
                             },
                             sugar: Cargo {
                                 name: String::from("Sugar"),
-                                description: String::from(""),
+                                description: String::default(),
                                 price: 30,
                                 unit: 250,
                             },
@@ -200,19 +200,19 @@ impl Default for Model {
                     PortLocation::PortRoyal,
                     Port {
                         name: String::from("Port Royal"),
-                        description: String::from(""),
+                        description: String::default(),
                         population: PortPopulation::Huge,
                         nationality: Nationality::British,
                         cargos: Cargos {
                             wood: Cargo {
                                 name: String::from("Wood"),
-                                description: String::from(""),
+                                description: String::default(),
                                 price: 18,
                                 unit: 500,
                             },
                             sugar: Cargo {
                                 name: String::from("Sugar"),
-                                description: String::from(""),
+                                description: String::default(),
                                 price: 50,
                                 unit: 120,
                             },
@@ -223,19 +223,19 @@ impl Default for Model {
                     PortLocation::Nassau,
                     Port {
                         name: String::from("Nassau"),
-                        description: String::from(""),
+                        description: String::default(),
                         population: PortPopulation::Medium,
                         nationality: Nationality::British,
                         cargos: Cargos {
                             wood: Cargo {
                                 name: String::from("Wood"),
-                                description: String::from(""),
+                                description: String::default(),
                                 price: 32,
                                 unit: 150,
                             },
                             sugar: Cargo {
                                 name: String::from("Sugar"),
-                                description: String::from(""),
+                                description: String::default(),
                                 price: 20,
                                 unit: 180,
                             },
