@@ -149,6 +149,7 @@ fn show_dock(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
 
         { onclick_switch_screen(dispatch, Screen::Tavern, "Tavern") }
         { onclick_switch_screen(dispatch, Screen::DockMarket, "Market") }
+        { onclick_switch_screen(dispatch, Screen::DockShipyard, "Shipyard") }
         { onclick_switch_screen(dispatch, Screen::MainNavigation, "Back") }
         </>
     }
@@ -190,6 +191,17 @@ fn show_dock_market(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         <h2>{"Market screen"}</h2>
 
         { cargo_market(model, dispatch) }
+
+        { onclick_switch_screen(dispatch, Screen::Dock, "Back") }
+        </>
+    }
+}
+
+fn show_dock_shipyard(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
+    html! {
+        <>
+        { debug_header(dispatch) }
+        <hr/>
 
         { onclick_switch_screen(dispatch, Screen::Dock, "Back") }
         </>
@@ -288,6 +300,7 @@ pub fn View() -> Html {
         Screen::Tavern => show_tavern(model, &dispatch),
         Screen::Dock => show_dock(model, &dispatch),
         Screen::DockMarket => show_dock_market(model, &dispatch),
+        Screen::DockShipyard => show_dock_shipyard(model, &dispatch),
         Screen::Skirmish => show_skirmish(model, &dispatch),
         Screen::SkirmishChase => show_skirmish_chase(model, &dispatch),
         Screen::SkirmishBattle => show_skirmish_battle(model, &dispatch),

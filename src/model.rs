@@ -20,6 +20,7 @@ pub enum Screen {
     Tavern,
     Dock,
     DockMarket,
+    DockShipyard,
     Skirmish,
     SkirmishChase,
     SkirmishBattle,
