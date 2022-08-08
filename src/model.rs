@@ -130,8 +130,8 @@ pub struct Player {
     pub ship: Ship,
 }
 
-#[derive(Default, Copy, Display, Hash, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
-pub enum Location {
+#[derive(Default, Display, Copy, Hash, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
+pub enum PortLocation {
     Barbados,
     #[default]
     PortRoyal,
@@ -144,8 +144,8 @@ pub struct Model {
     pub date: NaiveDate,
     pub current_screen: Screen,
     pub player: Player,
-    pub locations: HashMap<Location, Port>,
-    pub current_location: Location,
+    pub ports: HashMap<PortLocation, Port>,
+    pub current_port_location: PortLocation,
     pub enemy: Option<Enemy>,
 }
 
@@ -169,9 +169,9 @@ impl Default for Model {
                     ..Default::default()
                 },
             },
-            locations: HashMap::from([
+            ports: HashMap::from([
                 (
-                    Location::Barbados,
+                    PortLocation::Barbados,
                     Port {
                         name: String::from("Barbados"),
                         description: String::from(""),
@@ -194,7 +194,7 @@ impl Default for Model {
                     },
                 ),
                 (
-                    Location::PortRoyal,
+                    PortLocation::PortRoyal,
                     Port {
                         name: String::from("Port Royal"),
                         description: String::from(""),
@@ -217,7 +217,7 @@ impl Default for Model {
                     },
                 ),
                 (
-                    Location::Nassau,
+                    PortLocation::Nassau,
                     Port {
                         name: String::from("Nassau"),
                         description: String::from(""),
@@ -241,7 +241,7 @@ impl Default for Model {
                 ),
             ]),
             current_screen: Screen::default(),
-            current_location: Location::default(),
+            current_port_location: PortLocation::default(),
             enemy: None,
         }
     }
@@ -251,11 +251,11 @@ pub enum Msg {
     // TODO: Remove ResetData when debug isn't needed anymore!!!
     ResetModel,
     SwitchScreen(Screen),
-    SwitchPlayerLocation(Location),
-    BuyWood(Location),
-    BuySugar(Location),
-    SellWood(Location),
-    SellSugar(Location),
+    SwitchPlayerLocation(PortLocation),
+    BuyWood(PortLocation),
+    BuySugar(PortLocation),
+    SellWood(PortLocation),
+    SellSugar(PortLocation),
     SkirmishChaseClose,
     SkirmishChaseDistant,
     SkirmishChaseBroadside,

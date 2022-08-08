@@ -27,9 +27,9 @@ impl Reducer<Model> for Msg {
                 let defmodel = Model::default();
                 state.date = defmodel.date;
                 state.current_screen = defmodel.current_screen;
-                state.current_location = defmodel.current_location;
+                state.current_port_location = defmodel.current_port_location;
                 state.player = defmodel.player;
-                state.locations = defmodel.locations;
+                state.ports = defmodel.ports;
                 state.enemy = defmodel.enemy;
             }
             Msg::SwitchScreen(s) => match s {
@@ -70,19 +70,19 @@ impl Reducer<Model> for Msg {
             },
 
             Msg::SwitchPlayerLocation(l) => {
-                if state.current_location != *l {
+                if state.current_port_location != *l {
                     let days: Vec<i64> = (1..9).collect();
                     state.date.add_assign(Duration::days(
                         *days.choose(&mut rand::thread_rng()).unwrap_or(&1),
                     ));
-                    state.current_location = *l
+                    state.current_port_location = *l
                 }
             }
 
             // We don't need to pattern match the get_mut(l)
             // because of enum as hashmap key usage
             Msg::BuyWood(l) => {
-                let mut port_cgi = &mut state.locations.get_mut(l).unwrap().cargo;
+                let mut port_cgi = &mut state.ports.get_mut(l).unwrap().cargo;
                 if is_valid_buy(&state.player, &port_cgi.wood) {
                     state.player.coins -= &port_cgi.wood.price;
                     port_cgi.wood.unit -= 1;
@@ -90,7 +90,7 @@ impl Reducer<Model> for Msg {
                 }
             }
             Msg::BuySugar(l) => {
-                let mut port_cgi = &mut state.locations.get_mut(l).unwrap().cargo;
+                let mut port_cgi = &mut state.ports.get_mut(l).unwrap().cargo;
                 if is_valid_buy(&state.player, &port_cgi.sugar) {
                     state.player.coins -= port_cgi.sugar.price;
                     port_cgi.sugar.unit -= 1;
@@ -98,7 +98,7 @@ impl Reducer<Model> for Msg {
                 }
             }
             Msg::SellWood(l) => {
-                let mut port_wood = &mut state.locations.get_mut(l).unwrap().cargo.wood;
+                let mut port_wood = &mut state.ports.get_mut(l).unwrap().cargo.wood;
                 if state.player.ship.cargo.wood.unit != 0 {
                     state.player.coins += port_wood.price;
                     port_wood.unit += 1;
@@ -106,7 +106,7 @@ impl Reducer<Model> for Msg {
                 }
             }
             Msg::SellSugar(l) => {
-                let mut port_sugar = &mut state.locations.get_mut(l).unwrap().cargo.sugar;
+                let mut port_sugar = &mut state.ports.get_mut(l).unwrap().cargo.sugar;
                 if state.player.ship.cargo.sugar.unit != 0 {
                     state.player.coins += port_sugar.price;
                     port_sugar.unit += 1;

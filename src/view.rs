@@ -23,7 +23,7 @@ fn onclick_switch_screen(dispatch: &Dispatch<Model>, screen: Screen, name: &str)
     }
 }
 
-fn onclick_switch_location(dispatch: &Dispatch<Model>, location: Location, name: &str) -> Html {
+fn onclick_switch_location(dispatch: &Dispatch<Model>, location: PortLocation, name: &str) -> Html {
     html! {
         { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SwitchPlayerLocation(location)), name) }
     }
@@ -88,7 +88,7 @@ fn player_info(model: &Rc<Model>) -> Html {
     html! {
         <>
         <p>{"Date: "} {model.date}</p>
-        <p>{"Current location: "} {model.current_location}</p>
+        <p>{"Current location: "} {model.current_port_location}</p>
         <p>{"Coins: "} {model.player.coins}</p>
         <p>{"Owned Wood: "} {model.player.ship.cargo.wood.unit}</p>
         <p>{"Owned Sugar: "} {model.player.ship.cargo.sugar.unit}</p>
@@ -112,9 +112,9 @@ fn show_main_navigation(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
 
         <hr/>
 
-        { onclick_switch_location(dispatch, Location::Barbados, "Barbados") }
-        { onclick_switch_location(dispatch, Location::PortRoyal, "Port Royal") }
-        { onclick_switch_location(dispatch, Location::Nassau, "Nassau") }
+        { onclick_switch_location(dispatch, PortLocation::Barbados, "Barbados") }
+        { onclick_switch_location(dispatch, PortLocation::PortRoyal, "Port Royal") }
+        { onclick_switch_location(dispatch, PortLocation::Nassau, "Nassau") }
         </>
     }
 }
@@ -169,7 +169,7 @@ fn cargo_item(
 }
 
 fn cargo_market(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
-    let current_location = model.current_location.clone();
+    let current_location = model.current_port_location.clone();
 
     html! {
         <div>
