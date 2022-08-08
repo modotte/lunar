@@ -1,4 +1,5 @@
 use std::{collections::HashMap, ops::AddAssign, rc::Rc};
+use strum::IntoEnumIterator;
 use view::View;
 use yewdux::prelude::*;
 
@@ -119,9 +120,15 @@ impl Reducer<model::Model> for model::Msg {
                         .unwrap_or(&ships[0])
                         .to_owned();
 
+                    let nationalities: Vec<model::Nationality> =
+                        model::Nationality::iter().collect();
+
                     let new_enemy = model::Enemy {
                         ship: enemy_ship,
-                        nationality: model::Nationality::British,
+                        nationality: nationalities
+                            .choose(&mut rand::thread_rng())
+                            .unwrap_or(&nationalities[0])
+                            .to_owned(),
                         ..Default::default()
                     };
                     state.enemy = Some(new_enemy);

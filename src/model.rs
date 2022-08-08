@@ -6,6 +6,9 @@ use chrono::NaiveDate;
 use enum_display_derive::Display;
 use serde::{Deserialize, Serialize};
 
+use strum::IntoEnumIterator;
+use strum_macros::EnumIter;
+
 pub const MINIMUM_SHIP_HULL: u8 = 2;
 pub const MINIMUM_SHIP_CREW: u8 = 2;
 
@@ -27,7 +30,7 @@ pub enum Screen {
     SkirmishLoot,
 }
 
-#[derive(Default, Display, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
+#[derive(Default, EnumIter, Display, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 pub enum Nationality {
     #[default]
     British,
