@@ -13,8 +13,8 @@ fn is_cargo_space_available(p: &Player) -> bool {
     p.ship.cargo.total_unit() < p.ship.cargo_capacity
 }
 
-fn is_valid_buy(player: &Player, port_cargo: &Cargo) -> bool {
-    player.coins > port_cargo.price && is_cargo_space_available(player)
+fn is_valid_buy(p: &Player, port_cargo: &Cargo) -> bool {
+    p.coins > port_cargo.price && is_cargo_space_available(p)
 }
 
 impl Reducer<Model> for Msg {
