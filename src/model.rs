@@ -37,10 +37,8 @@ pub enum Nationality {
     French,
 }
 
-#[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
+#[derive(Default, Copy, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 pub struct Cargo {
-    pub name: String,
-    pub description: String,
     pub price: u32,
     pub unit: u32,
 }
@@ -186,14 +184,10 @@ impl Default for Model {
                         nationality: Nationality::British,
                         cargos: Cargos {
                             wood: Cargo {
-                                name: String::from("Wood"),
-                                description: String::default(),
                                 price: 22,
                                 unit: 250,
                             },
                             sugar: Cargo {
-                                name: String::from("Sugar"),
-                                description: String::default(),
                                 price: 30,
                                 unit: 250,
                             },
@@ -209,14 +203,10 @@ impl Default for Model {
                         nationality: Nationality::British,
                         cargos: Cargos {
                             wood: Cargo {
-                                name: String::from("Wood"),
-                                description: String::default(),
                                 price: 18,
                                 unit: 500,
                             },
                             sugar: Cargo {
-                                name: String::from("Sugar"),
-                                description: String::default(),
                                 price: 50,
                                 unit: 120,
                             },
@@ -232,14 +222,10 @@ impl Default for Model {
                         nationality: Nationality::British,
                         cargos: Cargos {
                             wood: Cargo {
-                                name: String::from("Wood"),
-                                description: String::default(),
                                 price: 32,
                                 unit: 150,
                             },
                             sugar: Cargo {
-                                name: String::from("Sugar"),
-                                description: String::default(),
                                 price: 20,
                                 unit: 180,
                             },
@@ -259,10 +245,8 @@ pub enum Msg {
     ResetModel,
     SwitchScreen(Screen),
     SwitchPlayerLocation(PortLocation),
-    BuyWood(PortLocation),
-    BuySugar(PortLocation),
-    SellWood(PortLocation),
-    SellSugar(PortLocation),
+    BuyCargo(PortLocation, Cargo),
+    SellCargo(PortLocation, Cargo),
     SkirmishChaseClose,
     SkirmishChaseDistant,
     SkirmishChaseBroadside,

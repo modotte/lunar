@@ -1,4 +1,4 @@
-use std::{collections::HashMap, ops::AddAssign, rc::Rc};
+use std::{ops::AddAssign, rc::Rc};
 use strum::IntoEnumIterator;
 use view::View;
 use yewdux::prelude::*;
@@ -149,7 +149,7 @@ impl Reducer<model::Model> for model::Msg {
 
             // We don't need to pattern match the get_mut(l)
             // because of enum as hashmap key usage
-            model::Msg::BuyWood(l) => {
+            model::Msg::BuyCargo(l, c) => {
                 let mut port_cgs = &mut state.ports.get_mut(l).unwrap().cargos;
                 if is_valid_buy(&state.player, &port_cgs.wood) {
                     state.player.coins -= &port_cgs.wood.price;
@@ -157,28 +157,12 @@ impl Reducer<model::Model> for model::Msg {
                     state.player.ship.cargos.wood.unit += 1;
                 }
             }
-            model::Msg::BuySugar(l) => {
-                let mut port_cgs = &mut state.ports.get_mut(l).unwrap().cargos;
-                if is_valid_buy(&state.player, &port_cgs.sugar) {
-                    state.player.coins -= port_cgs.sugar.price;
-                    port_cgs.sugar.unit -= 1;
-                    state.player.ship.cargos.sugar.unit += 1;
-                }
-            }
-            model::Msg::SellWood(l) => {
+            model::Msg::SellCargo(l, c) => {
                 let mut port_wood = &mut state.ports.get_mut(l).unwrap().cargos.wood;
                 if state.player.ship.cargos.wood.unit != 0 {
                     state.player.coins += port_wood.price;
                     port_wood.unit += 1;
                     state.player.ship.cargos.wood.unit -= 1;
-                }
-            }
-            model::Msg::SellSugar(l) => {
-                let mut port_sugar = &mut state.ports.get_mut(l).unwrap().cargos.sugar;
-                if state.player.ship.cargos.sugar.unit != 0 {
-                    state.player.coins += port_sugar.price;
-                    port_sugar.unit += 1;
-                    state.player.ship.cargos.sugar.unit -= 1;
                 }
             }
             model::Msg::SkirmishChaseClose => {

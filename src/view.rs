@@ -177,13 +177,16 @@ fn cargo_item(
 }
 
 fn cargo_market(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
-    let current_location = model.current_port_location.clone();
+    let inner = model.to_owned();
+    let current_location = inner.current_port_location.to_owned();
+    let wood = inner.ports.get(&current_location).unwrap().cargos.wood;
+    let sugar = inner.ports.get(&current_location).unwrap().cargos.sugar;
 
     html! {
         <div>
             <ul>
-                { cargo_item(dispatch.apply_callback(move |_| Msg::BuyWood(current_location)), dispatch.apply_callback(move |_| Msg::SellWood(current_location)), "Wood") }
-                { cargo_item(dispatch.apply_callback(move |_| Msg::BuySugar(current_location)), dispatch.apply_callback(move |_| Msg::SellSugar(current_location)), "Sugar") }
+                { cargo_item(dispatch.apply_callback(move |_| Msg::BuyCargo(current_location, wood)), dispatch.apply_callback(move |_| Msg::SellCargo(current_location, wood)), "Wood") }
+                { cargo_item(dispatch.apply_callback(move |_| Msg::BuyCargo(current_location, sugar)), dispatch.apply_callback(move |_| Msg::SellCargo(current_location, sugar)), "Sugar") }
             </ul>
         </div>
     }
