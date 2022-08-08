@@ -45,107 +45,82 @@ impl Reducer<model::Model> for model::Msg {
                         "Blue Ocean",
                     ];
 
-                    let ships: HashMap<model::ShipClass, model::Ship> = HashMap::from([
-                        (
-                            model::ShipClass::Cutter,
-                            model::Ship {
-                                class: model::ShipClass::Cutter,
-                                crew: 8,
-                                crew_capacity: 8,
-                                hull: 8,
-                                hull_capacity: 8,
-                                cannons: 4,
-                                cannons_capacity: 8,
-                                cargos_capacity: 32,
-                                ..Default::default()
-                            },
-                        ),
-                        (
-                            model::ShipClass::Sloop,
-                            model::Ship {
-                                class: model::ShipClass::Sloop,
-                                crew: 14,
-                                crew_capacity: 14,
-                                hull: 14,
-                                hull_capacity: 14,
-                                cannons: 8,
-                                cannons_capacity: 8,
-                                cargos_capacity: 46,
-                                ..Default::default()
-                            },
-                        ),
-                        (
-                            model::ShipClass::Brig,
-                            model::Ship {
-                                class: model::ShipClass::Brig,
-                                crew: 18,
-                                crew_capacity: 18,
-                                hull: 18,
-                                hull_capacity: 18,
-                                cannons: 10,
-                                cannons_capacity: 10,
-                                cargos_capacity: 70,
-                                ..Default::default()
-                            },
-                        ),
-                        (
-                            model::ShipClass::Junk,
-                            model::Ship {
-                                class: model::ShipClass::Junk,
-                                crew: 24,
-                                crew_capacity: 18,
-                                hull: 18,
-                                hull_capacity: 18,
-                                cannons: 6,
-                                cannons_capacity: 6,
-                                cargos_capacity: 80,
-                                ..Default::default()
-                            },
-                        ),
-                        (
-                            model::ShipClass::Galleon,
-                            model::Ship {
-                                crew: 32,
-                                crew_capacity: 32,
-                                hull: 27,
-                                hull_capacity: 27,
-                                cannons: 10,
-                                cannons_capacity: 10,
-                                cargos_capacity: 210,
-                                class: model::ShipClass::Galleon,
-                                ..Default::default()
-                            },
-                        ),
-                        (
-                            model::ShipClass::Frigate,
-                            model::Ship {
-                                crew_capacity: 40,
-                                hull: 35,
-                                hull_capacity: 35,
-                                cannons: 14,
-                                cannons_capacity: 14,
-                                cargos_capacity: 150,
-                                class: model::ShipClass::Frigate,
-                                ..Default::default()
-                            },
-                        ),
-                    ]);
-
-                    let new_enemy = model::Enemy {
-                        ship: model::Ship {
-                            name: names
-                                .choose(&mut rand::thread_rng())
-                                .unwrap_or(&names[0])
-                                .to_string(),
-                            class: model::ShipClass::Sloop,
-                            crew: 7,
+                    let ships: Vec<model::Ship> = vec![
+                        model::Ship {
+                            class: model::ShipClass::Cutter,
+                            crew: 8,
                             crew_capacity: 8,
                             hull: 8,
                             hull_capacity: 8,
                             cannons: 4,
-                            cannons_capacity: 4,
+                            cannons_capacity: 8,
+                            cargos_capacity: 32,
                             ..Default::default()
                         },
+                        model::Ship {
+                            class: model::ShipClass::Sloop,
+                            crew: 14,
+                            crew_capacity: 14,
+                            hull: 14,
+                            hull_capacity: 14,
+                            cannons: 8,
+                            cannons_capacity: 8,
+                            cargos_capacity: 46,
+                            ..Default::default()
+                        },
+                        model::Ship {
+                            class: model::ShipClass::Brig,
+                            crew: 18,
+                            crew_capacity: 18,
+                            hull: 18,
+                            hull_capacity: 18,
+                            cannons: 10,
+                            cannons_capacity: 10,
+                            cargos_capacity: 70,
+                            ..Default::default()
+                        },
+                        model::Ship {
+                            class: model::ShipClass::Junk,
+                            crew: 24,
+                            crew_capacity: 18,
+                            hull: 18,
+                            hull_capacity: 18,
+                            cannons: 6,
+                            cannons_capacity: 6,
+                            cargos_capacity: 80,
+                            ..Default::default()
+                        },
+                        model::Ship {
+                            crew: 32,
+                            crew_capacity: 32,
+                            hull: 27,
+                            hull_capacity: 27,
+                            cannons: 10,
+                            cannons_capacity: 10,
+                            cargos_capacity: 210,
+                            class: model::ShipClass::Galleon,
+                            ..Default::default()
+                        },
+                        model::Ship {
+                            crew: 40,
+                            crew_capacity: 40,
+                            hull: 35,
+                            hull_capacity: 35,
+                            cannons: 14,
+                            cannons_capacity: 14,
+                            cargos_capacity: 150,
+                            class: model::ShipClass::Frigate,
+                            ..Default::default()
+                        },
+                    ];
+
+                    let enemy_ship: model::Ship = ships
+                        .choose(&mut rand::thread_rng())
+                        .unwrap_or(&ships[0])
+                        .to_owned();
+
+                    let new_enemy = model::Enemy {
+                        ship: enemy_ship,
                         nationality: model::Nationality::British,
                         ..Default::default()
                     };
