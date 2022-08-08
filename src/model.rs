@@ -119,7 +119,7 @@ pub struct Port {
     pub description: String,
     pub population: PortPopulation,
     pub nationality: Nationality,
-    pub cargo: Cargos,
+    pub cargos: Cargos,
 }
 
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
@@ -177,7 +177,7 @@ impl Default for Model {
                         description: String::from(""),
                         population: PortPopulation::Large,
                         nationality: Nationality::British,
-                        cargo: Cargos {
+                        cargos: Cargos {
                             wood: Cargo {
                                 name: String::from("Wood"),
                                 description: String::from(""),
@@ -200,7 +200,7 @@ impl Default for Model {
                         description: String::from(""),
                         population: PortPopulation::Huge,
                         nationality: Nationality::British,
-                        cargo: Cargos {
+                        cargos: Cargos {
                             wood: Cargo {
                                 name: String::from("Wood"),
                                 description: String::from(""),
@@ -223,7 +223,7 @@ impl Default for Model {
                         description: String::from(""),
                         population: PortPopulation::Medium,
                         nationality: Nationality::British,
-                        cargo: Cargos {
+                        cargos: Cargos {
                             wood: Cargo {
                                 name: String::from("Wood"),
                                 description: String::from(""),

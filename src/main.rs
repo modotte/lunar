@@ -82,7 +82,7 @@ impl Reducer<Model> for Msg {
             // We don't need to pattern match the get_mut(l)
             // because of enum as hashmap key usage
             Msg::BuyWood(l) => {
-                let mut port_cgs = &mut state.ports.get_mut(l).unwrap().cargo;
+                let mut port_cgs = &mut state.ports.get_mut(l).unwrap().cargos;
                 if is_valid_buy(&state.player, &port_cgs.wood) {
                     state.player.coins -= &port_cgs.wood.price;
                     port_cgs.wood.unit -= 1;
@@ -90,7 +90,7 @@ impl Reducer<Model> for Msg {
                 }
             }
             Msg::BuySugar(l) => {
-                let mut port_cgs = &mut state.ports.get_mut(l).unwrap().cargo;
+                let mut port_cgs = &mut state.ports.get_mut(l).unwrap().cargos;
                 if is_valid_buy(&state.player, &port_cgs.sugar) {
                     state.player.coins -= port_cgs.sugar.price;
                     port_cgs.sugar.unit -= 1;
@@ -98,7 +98,7 @@ impl Reducer<Model> for Msg {
                 }
             }
             Msg::SellWood(l) => {
-                let mut port_wood = &mut state.ports.get_mut(l).unwrap().cargo.wood;
+                let mut port_wood = &mut state.ports.get_mut(l).unwrap().cargos.wood;
                 if state.player.ship.cargos.wood.unit != 0 {
                     state.player.coins += port_wood.price;
                     port_wood.unit += 1;
@@ -106,7 +106,7 @@ impl Reducer<Model> for Msg {
                 }
             }
             Msg::SellSugar(l) => {
-                let mut port_sugar = &mut state.ports.get_mut(l).unwrap().cargo.sugar;
+                let mut port_sugar = &mut state.ports.get_mut(l).unwrap().cargos.sugar;
                 if state.player.ship.cargos.sugar.unit != 0 {
                     state.player.coins += port_sugar.price;
                     port_sugar.unit += 1;
