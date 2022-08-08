@@ -164,6 +164,8 @@ impl Reducer<Model> for Msg {
                     enemy.ship.crew -= 2;
                 }
             }
+
+            // TODO: Subtract with hull and other items cost
             Msg::RepairShip(c) => {
                 let defship = model::Model::default().player.ship;
                 state.player.ship.hull = defship.hull;
