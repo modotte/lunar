@@ -231,8 +231,11 @@ fn show_skirmish(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
 fn enemy_info(model: &Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
         <>
-            <p>{"Enemy hull: "} {model.enemy.as_ref().unwrap().ship.hull}</p>
-            <p>{"Enemy crew: "} {model.enemy.as_ref().unwrap().ship.crew}</p>
+            <p>{"Enemy ship name: "} {&model.enemy.as_ref().unwrap().ship.name}</p>
+            <p>{"Enemy ship class: "} {&model.enemy.as_ref().unwrap().ship.class}</p>
+            <p>{"Enemy ship hull: "} {&model.enemy.as_ref().unwrap().ship.hull}</p>
+            <p>{"Enemy ship crew: "} {&model.enemy.as_ref().unwrap().ship.crew}</p>
+            <p>{"Enemy nationality: "} {&model.enemy.as_ref().unwrap().nationality}</p>
         </>
     }
 }

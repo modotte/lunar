@@ -6,7 +6,6 @@ use chrono::NaiveDate;
 use enum_display_derive::Display;
 use serde::{Deserialize, Serialize};
 
-use strum::IntoEnumIterator;
 use strum_macros::EnumIter;
 
 pub const MINIMUM_SHIP_HULL: u8 = 2;
@@ -58,7 +57,7 @@ impl Cargos {
     }
 }
 
-#[derive(Default, Hash, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
+#[derive(Default, Display, Hash, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 pub enum ShipClass {
     Cutter,
     #[default]
