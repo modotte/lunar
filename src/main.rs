@@ -9,14 +9,17 @@ use chrono::Duration;
 use model::{Cargo, Enemy, Model, Msg, Nationality, Player, ShipClass, MINIMUM_SHIP_HULL};
 use rand::seq::SliceRandom;
 
+fn is_cargo_space_available(p: &Player) -> bool {
+    p.ship.cargo.total_unit() < p.ship.cargo_capacity
+}
+
+fn is_valid_buy(player: &Player, port_cargo: &Cargo) -> bool {
+    player.coins > port_cargo.price && is_cargo_space_available(player)
+}
+
 impl Reducer<Model> for Msg {
     fn apply(&self, mut model: Rc<Model>) -> Rc<Model> {
         let state = Rc::make_mut(&mut model);
-        let is_cargo_space_available =
-            |p: &Player| p.ship.cargo.total_unit() < p.ship.cargo_capacity;
-        let is_valid_buy = |player: &Player, port_cargo: &Cargo| {
-            player.coins > port_cargo.price && is_cargo_space_available(player)
-        };
 
         // TODO: Send alert on insufficient fund or empty cargo unit
         match self {
