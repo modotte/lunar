@@ -124,6 +124,13 @@ fn show_profile(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         <>
         { debug_header(dispatch) }
         <h2>{"Profile"}</h2>
+        <hr/>
+
+        <ul>
+            <li>{"Name: "} {&model.player.name}</li>
+            <li>{"Age: "} {&model.player.age}</li>
+            <li>{"Nationality: "} {&model.player.nationality}</li>
+        </ul>
 
         { onclick_switch_screen(dispatch, Screen::MainNavigation, "Back") }
         </>

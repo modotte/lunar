@@ -51,7 +51,6 @@ impl Reducer<model::Model> for model::Msg {
                                 .unwrap_or(&names[0])
                                 .to_string(),
                             class: model::ShipClass::Sloop,
-                            nationality: model::Nationality::British,
                             crew: 7,
                             crew_capacity: 8,
                             hull: 8,
@@ -60,6 +59,7 @@ impl Reducer<model::Model> for model::Msg {
                             cannons_capacity: 4,
                             ..Default::default()
                         },
+                        nationality: model::Nationality::British,
                         ..Default::default()
                     };
                     state.enemy = Some(new_enemy);

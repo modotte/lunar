@@ -70,7 +70,6 @@ pub enum ShipClass {
 pub struct Ship {
     pub name: String,
     pub class: ShipClass,
-    pub nationality: Nationality,
     pub cargos: Cargos,
     pub cargos_capacity: u32,
     pub crew: u32,
@@ -101,6 +100,7 @@ pub enum EnemyDistance {
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 pub struct Enemy {
     pub ship: Ship,
+    pub nationality: Nationality,
     pub movement: EnemyMovement,
     pub distance: EnemyDistance,
 }
@@ -127,6 +127,7 @@ pub struct Port {
 pub struct Player {
     pub name: String,
     pub age: u8,
+    pub nationality: Nationality,
     pub coins: u32,
     pub ship: Ship,
 }
@@ -158,6 +159,7 @@ impl Default for Model {
             player: Player {
                 name: String::from("Player"),
                 age: 18,
+                nationality: Nationality::British,
                 coins: 1000,
                 ship: Ship {
                     name: String::from("Luna"),
