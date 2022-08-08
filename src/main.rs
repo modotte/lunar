@@ -10,7 +10,7 @@ use model::{Cargo, Enemy, Model, Msg, Nationality, Player, ShipClass, MINIMUM_SH
 use rand::seq::SliceRandom;
 
 fn is_cargo_space_available(p: &Player) -> bool {
-    p.ship.cargos.total_unit() < p.ship.cargo_capacity
+    p.ship.cargos.total_unit() < p.ship.cargos_capacity
 }
 
 fn is_valid_buy(p: &Player, port_cargo: &Cargo) -> bool {
@@ -57,8 +57,8 @@ impl Reducer<Model> for Msg {
                             crew_capacity: 8,
                             hull: 8,
                             hull_capacity: 8,
-                            cannon: 4,
-                            cannon_capacity: 4,
+                            cannons: 4,
+                            cannons_capacity: 4,
                             ..Default::default()
                         },
                         ..Default::default()

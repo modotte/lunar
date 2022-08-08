@@ -93,7 +93,7 @@ fn player_info(model: &Rc<Model>) -> Html {
         <p>{"Owned Wood: "} {model.player.ship.cargos.wood.unit}</p>
         <p>{"Owned Sugar: "} {model.player.ship.cargos.sugar.unit}</p>
         <p>{"Total cargo: "} {model.player.ship.cargos.total_unit()}</p>
-        <p>{"Cargo capacity: "} {model.player.ship.cargo_capacity}</p>
+        <p>{"Cargo capacity: "} {model.player.ship.cargos_capacity}</p>
         </>
     }
 }

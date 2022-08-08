@@ -71,13 +71,13 @@ pub struct Ship {
     pub class: ShipClass,
     pub nationality: Nationality,
     pub cargos: Cargos,
-    pub cargo_capacity: u32,
+    pub cargos_capacity: u32,
     pub crew: u32,
     pub crew_capacity: u32,
     pub hull: u16,
     pub hull_capacity: u16,
-    pub cannon: u16,
-    pub cannon_capacity: u16,
+    pub cannons: u16,
+    pub cannons_capacity: u16,
 }
 
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
@@ -161,11 +161,11 @@ impl Default for Model {
                 ship: Ship {
                     name: String::from("Luna"),
                     crew: 12,
-                    cargo_capacity: 32,
+                    cargos_capacity: 32,
                     hull: 10,
                     hull_capacity: 10,
-                    cannon: 4,
-                    cannon_capacity: 4,
+                    cannons: 4,
+                    cannons_capacity: 4,
                     ..Default::default()
                 },
             },
