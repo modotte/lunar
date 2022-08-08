@@ -262,4 +262,5 @@ pub enum Msg {
     SkirmishChaseBroadside,
     SkirmishBattleSwingSword,
     SkirmishBattleShootFalconet,
+    RepairShip(u32),
 }

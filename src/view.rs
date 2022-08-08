@@ -203,6 +203,7 @@ fn show_dock_shipyard(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         { debug_header(dispatch) }
         <hr/>
 
+        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::RepairShip(model.player.coins)), "Repair all") }
         { onclick_switch_screen(dispatch, Screen::Dock, "Back") }
         </>
     }
