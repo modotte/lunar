@@ -55,7 +55,7 @@ impl Cargos {
     }
 }
 
-#[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
+#[derive(Default, Hash, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 pub enum ShipClass {
     Cutter,
     #[default]
@@ -140,13 +140,15 @@ pub enum PortLocation {
     Nassau,
 }
 
+pub type Ports = HashMap<PortLocation, Port>;
+
 #[derive(Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 #[store(storage = "local")]
 pub struct Model {
     pub date: NaiveDate,
     pub current_screen: Screen,
     pub player: Player,
-    pub ports: HashMap<PortLocation, Port>,
+    pub ports: Ports,
     pub current_port_location: PortLocation,
     pub enemy: Option<Enemy>,
 }

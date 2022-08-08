@@ -1,4 +1,4 @@
-use std::{ops::AddAssign, rc::Rc};
+use std::{collections::HashMap, ops::AddAssign, rc::Rc};
 use view::View;
 use yewdux::prelude::*;
 
@@ -44,6 +44,45 @@ impl Reducer<model::Model> for model::Msg {
                         "Morning Star",
                         "Blue Ocean",
                     ];
+
+                    let ships: HashMap<model::ShipClass, model::Ship> = HashMap::from([
+                        (
+                            model::ShipClass::Cutter,
+                            model::Ship {
+                                ..Default::default()
+                            },
+                        ),
+                        (
+                            model::ShipClass::Sloop,
+                            model::Ship {
+                                ..Default::default()
+                            },
+                        ),
+                        (
+                            model::ShipClass::Brig,
+                            model::Ship {
+                                ..Default::default()
+                            },
+                        ),
+                        (
+                            model::ShipClass::Junk,
+                            model::Ship {
+                                ..Default::default()
+                            },
+                        ),
+                        (
+                            model::ShipClass::Galleon,
+                            model::Ship {
+                                ..Default::default()
+                            },
+                        ),
+                        (
+                            model::ShipClass::Frigate,
+                            model::Ship {
+                                ..Default::default()
+                            },
+                        ),
+                    ]);
 
                     let new_enemy = model::Enemy {
                         ship: model::Ship {
