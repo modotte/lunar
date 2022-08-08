@@ -55,7 +55,6 @@ fn show_about(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
 fn show_main_menu(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
         <>
-        <p>{"Hello world!"}</p>
         { onclick_switch_screen(dispatch, Screen::NewCharacter, "Start") }
         <br/>
         { onclick_switch_screen(dispatch, Screen::About, "About") }
@@ -67,8 +66,6 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
         <>
         { debug_header(dispatch) }
-        <h2>{"New character"}</h2>
-        <br/>
         <label>{"Name"}</label>
         <br/>
         <input placeholder="Player" required=true type="text" value={model.player.name.to_owned()}
