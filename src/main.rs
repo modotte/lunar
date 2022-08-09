@@ -1,4 +1,4 @@
-use std::{ops::AddAssign, rc::Rc};
+use std::{collections::HashMap, ops::AddAssign, rc::Rc};
 use strum::IntoEnumIterator;
 use view::View;
 use yewdux::prelude::*;
@@ -145,18 +145,26 @@ impl Reducer<model::Model> for model::Msg {
                     state.date.add_assign(Duration::days(choice_of(&days, &1)));
                     state.current_port_location = *l;
 
-                    let f = |mut cgs: model::Cargos| -> model::Cargos {
+                    let f = |mut p: model::Port| -> model::Port {
+                        let cargos = &mut p.cargos;
                         let unit_range: Vec<u32> = (200..250).collect();
                         let price_range: Vec<u32> = (18..60).collect();
 
-                        cgs.wood.unit = choice_of(&unit_range, &200);
-                        cgs.sugar.unit = choice_of(&unit_range, &200);
+                        cargos.wood.unit = choice_of(&unit_range, &200);
+                        cargos.sugar.unit = choice_of(&unit_range, &200);
 
-                        cgs.wood.price = choice_of(&price_range, &18);
-                        cgs.sugar.price = choice_of(&price_range, &18);
+                        cargos.wood.price = choice_of(&price_range, &18);
+                        cargos.sugar.price = choice_of(&price_range, &18);
 
-                        cgs
+                        p
                     };
+
+                    state.ports = state
+                        .ports
+                        .clone()
+                        .into_iter()
+                        .map(|(k, v)| (k, f(v)))
+                        .collect::<HashMap<model::PortLocation, model::Port>>();
                 }
             }
 

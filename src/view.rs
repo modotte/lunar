@@ -165,11 +165,13 @@ fn show_dock(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
 fn cargo_item(
     buy_callback: Callback<MouseEvent>,
     sell_callback: Callback<MouseEvent>,
+    price: u32,
     name: &str,
 ) -> Html {
     html! {
         <li>
             <p>{name}</p>
+            <p>{price}</p>
             { onclick_styled_btn(buy_callback, "Buy 1") }
             { onclick_styled_btn(sell_callback, "Sell 1")}
         </li>
@@ -178,15 +180,15 @@ fn cargo_item(
 
 fn cargo_market(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     let inner = model.to_owned();
-    let current_location = inner.current_port_location.to_owned();
+    let current_location = inner.current_port_location;
     let wood = inner.ports.get(&current_location).unwrap().cargos.wood;
     let sugar = inner.ports.get(&current_location).unwrap().cargos.sugar;
 
     html! {
         <div>
             <ul>
-                { cargo_item(dispatch.apply_callback(move |_| Msg::BuyCargo(current_location, wood)), dispatch.apply_callback(move |_| Msg::SellCargo(current_location, wood)), "Wood") }
-                { cargo_item(dispatch.apply_callback(move |_| Msg::BuyCargo(current_location, sugar)), dispatch.apply_callback(move |_| Msg::SellCargo(current_location, sugar)), "Sugar") }
+                { cargo_item(dispatch.apply_callback(move |_| Msg::BuyCargo(current_location, wood)), dispatch.apply_callback(move |_| Msg::SellCargo(current_location, wood)), wood.price, "Wood") }
+                { cargo_item(dispatch.apply_callback(move |_| Msg::BuyCargo(current_location, sugar)), dispatch.apply_callback(move |_| Msg::SellCargo(current_location, sugar)), sugar.price, "Sugar") }
             </ul>
         </div>
     }
