@@ -143,7 +143,20 @@ impl Reducer<model::Model> for model::Msg {
                 if state.current_port_location != *l {
                     let days: Vec<i64> = (1..9).collect();
                     state.date.add_assign(Duration::days(choice_of(&days, &1)));
-                    state.current_port_location = *l
+                    state.current_port_location = *l;
+
+                    let f = |mut cgs: model::Cargos| -> model::Cargos {
+                        let unit_range: Vec<u32> = (200..250).collect();
+                        let price_range: Vec<u32> = (18..60).collect();
+
+                        cgs.wood.unit = choice_of(&unit_range, &200);
+                        cgs.sugar.unit = choice_of(&unit_range, &200);
+
+                        cgs.wood.price = choice_of(&price_range, &18);
+                        cgs.sugar.price = choice_of(&price_range, &18);
+
+                        cgs
+                    };
                 }
             }
 
