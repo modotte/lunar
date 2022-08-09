@@ -237,6 +237,7 @@ impl Reducer<model::Model> for model::Msg {
                     if enemy.ship.hull < model::MINIMUM_SHIP_HULL.into() {
                         state.current_screen = model::Screen::MainNavigation;
                     } else {
+                        // FIXME: Doesn't work?
                         let mut rng = rand::thread_rng();
                         match enemy.distance {
                             model::EnemyDistance::Escape => enemy.ship.hull -= rng.gen_range(1..=3),
