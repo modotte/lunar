@@ -141,8 +141,8 @@ impl Reducer<model::Model> for model::Msg {
 
             model::Msg::SwitchPlayerLocation(l) => {
                 if state.current_port_location != *l {
-                    let days: Vec<i64> = (1..9).collect();
-                    state.date.add_assign(Duration::days(choice_of(&days, &1)));
+                    let days: i64 = rand::thread_rng().gen_range(1..=9);
+                    state.date.add_assign(Duration::days(days));
                     state.current_port_location = *l;
 
                     let f = |mut p: model::Port| -> model::Port {
