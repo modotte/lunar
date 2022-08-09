@@ -17,6 +17,13 @@ fn is_valid_buy(p: &model::Player, port_cargo: &model::Cargo) -> bool {
     p.coins > port_cargo.price && is_cargo_space_available(p)
 }
 
+fn choice_of<T: Clone>(sequence: &[T], default: &T) -> T {
+    sequence
+        .choose(&mut rand::thread_rng())
+        .unwrap_or(default)
+        .to_owned()
+}
+
 impl Reducer<model::Model> for model::Msg {
     fn apply(&self, mut model: Rc<model::Model>) -> Rc<model::Model> {
         let state = Rc::make_mut(&mut model);
@@ -115,26 +122,17 @@ impl Reducer<model::Model> for model::Msg {
                         },
                     ];
 
-                    let enemy_ship: model::Ship = ships
-                        .choose(&mut rand::thread_rng())
-                        .unwrap_or(&ships[0])
-                        .to_owned();
+                    let enemy_ship: model::Ship = choice_of(&ships, &ships[0]);
 
                     let nationalities: Vec<model::Nationality> =
                         model::Nationality::iter().collect();
 
                     let mut new_enemy = model::Enemy {
                         ship: enemy_ship,
-                        nationality: nationalities
-                            .choose(&mut rand::thread_rng())
-                            .unwrap_or(&nationalities[0])
-                            .to_owned(),
+                        nationality: choice_of(&nationalities, &nationalities[0]),
                         ..Default::default()
                     };
-                    new_enemy.ship.name = names
-                        .choose(&mut rand::thread_rng())
-                        .unwrap_or(&names[0])
-                        .to_string();
+                    new_enemy.ship.name = choice_of(&names, &names[0]).to_string();
                     state.enemy = Some(new_enemy);
                     state.current_screen = s.to_owned();
                 }
@@ -144,9 +142,7 @@ impl Reducer<model::Model> for model::Msg {
             model::Msg::SwitchPlayerLocation(l) => {
                 if state.current_port_location != *l {
                     let days: Vec<i64> = (1..9).collect();
-                    state.date.add_assign(Duration::days(
-                        *days.choose(&mut rand::thread_rng()).unwrap_or(&1),
-                    ));
+                    state.date.add_assign(Duration::days(choice_of(&days, &1)));
                     state.current_port_location = *l
                 }
             }
