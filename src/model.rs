@@ -214,7 +214,7 @@ impl Default for Model {
                         cargos: Cargos {
                             wood: Cargo {
                                 price: 18,
-                                unit: 500,
+                                unit: 210,
                                 kind: CargoKind::Wood,
                             },
                             sugar: Cargo {
