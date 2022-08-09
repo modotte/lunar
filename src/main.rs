@@ -237,10 +237,11 @@ impl Reducer<model::Model> for model::Msg {
                     if enemy.ship.hull < model::MINIMUM_SHIP_HULL.into() {
                         state.current_screen = model::Screen::MainNavigation;
                     } else {
+                        let mut rng = rand::thread_rng();
                         match enemy.distance {
-                            model::EnemyDistance::Escape => enemy.ship.hull -= 1,
-                            model::EnemyDistance::Far => enemy.ship.hull -= 2,
-                            model::EnemyDistance::Close => enemy.ship.hull -= 3,
+                            model::EnemyDistance::Escape => enemy.ship.hull -= rng.gen_range(1..=3),
+                            model::EnemyDistance::Far => enemy.ship.hull -= rng.gen_range(1..=4),
+                            model::EnemyDistance::Close => enemy.ship.hull -= rng.gen_range(2..=5),
                             model::EnemyDistance::Board => (),
                         }
                     }
@@ -248,12 +249,12 @@ impl Reducer<model::Model> for model::Msg {
             }
             model::Msg::SkirmishBattleSwingSword => {
                 if let Some(enemy) = &mut state.enemy {
-                    enemy.ship.crew -= 1;
+                    enemy.ship.crew -= rand::thread_rng().gen_range(1..=2);
                 }
             }
             model::Msg::SkirmishBattleShootFalconet => {
                 if let Some(enemy) = &mut state.enemy {
-                    enemy.ship.crew -= 2;
+                    enemy.ship.crew -= rand::thread_rng().gen_range(1..=5);
                 }
             }
 
