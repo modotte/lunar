@@ -165,13 +165,14 @@ fn show_dock(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
 fn cargo_item(
     buy_callback: Callback<MouseEvent>,
     sell_callback: Callback<MouseEvent>,
-    price: u32,
+    cargo: &Cargo,
     name: &str,
 ) -> Html {
     html! {
         <li>
             <p>{name}</p>
-            <p>{price}</p>
+            <p>{"Price: "} {cargo.price}</p>
+            <p>{"Available unit: "} {cargo.unit}</p>
             { onclick_styled_btn(buy_callback, "Buy 1") }
             { onclick_styled_btn(sell_callback, "Sell 1")}
         </li>
@@ -187,8 +188,8 @@ fn cargo_market(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
         <div>
             <ul>
-                { cargo_item(dispatch.apply_callback(move |_| Msg::BuyCargo(current_location, wood)), dispatch.apply_callback(move |_| Msg::SellCargo(current_location, wood)), wood.price, "Wood") }
-                { cargo_item(dispatch.apply_callback(move |_| Msg::BuyCargo(current_location, sugar)), dispatch.apply_callback(move |_| Msg::SellCargo(current_location, sugar)), sugar.price, "Sugar") }
+                { cargo_item(dispatch.apply_callback(move |_| Msg::BuyCargo(current_location, wood)), dispatch.apply_callback(move |_| Msg::SellCargo(current_location, wood)), &wood, "Wood") }
+                { cargo_item(dispatch.apply_callback(move |_| Msg::BuyCargo(current_location, sugar)), dispatch.apply_callback(move |_| Msg::SellCargo(current_location, sugar)), &sugar, "Sugar") }
             </ul>
         </div>
     }
