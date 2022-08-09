@@ -153,7 +153,7 @@ impl Reducer<model::Model> for model::Msg {
                         cargos.sugar.unit = rng.gen_range(120..=200);
 
                         cargos.wood.price = rng.gen_range(18..=60);
-                        cargos.sugar.price = rng.gen_range(18..90);
+                        cargos.sugar.price = rng.gen_range(18..=90);
 
                         p
                     };
