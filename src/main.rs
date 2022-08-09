@@ -7,7 +7,7 @@ mod model;
 mod view;
 
 use chrono::Duration;
-use rand::seq::SliceRandom;
+use rand::{seq::SliceRandom, Rng};
 
 fn is_cargo_space_available(p: &model::Player) -> bool {
     p.ship.cargos.total_unit() < p.ship.cargos_capacity
@@ -147,14 +147,13 @@ impl Reducer<model::Model> for model::Msg {
 
                     let f = |mut p: model::Port| -> model::Port {
                         let cargos = &mut p.cargos;
-                        let unit_range: Vec<u32> = (200..250).collect();
-                        let price_range: Vec<u32> = (18..60).collect();
+                        let mut rng = rand::thread_rng();
 
-                        cargos.wood.unit = choice_of(&unit_range, &200);
-                        cargos.sugar.unit = choice_of(&unit_range, &200);
+                        cargos.wood.unit = rng.gen_range(200..=250);
+                        cargos.sugar.unit = rng.gen_range(120..=200);
 
-                        cargos.wood.price = choice_of(&price_range, &18);
-                        cargos.sugar.price = choice_of(&price_range, &18);
+                        cargos.wood.price = rng.gen_range(18..=60);
+                        cargos.sugar.price = rng.gen_range(18..90);
 
                         p
                     };
