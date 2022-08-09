@@ -123,7 +123,7 @@ impl Reducer<model::Model> for model::Msg {
                     let nationalities: Vec<model::Nationality> =
                         model::Nationality::iter().collect();
 
-                    let new_enemy = model::Enemy {
+                    let mut new_enemy = model::Enemy {
                         ship: enemy_ship,
                         nationality: nationalities
                             .choose(&mut rand::thread_rng())
@@ -131,6 +131,10 @@ impl Reducer<model::Model> for model::Msg {
                             .to_owned(),
                         ..Default::default()
                     };
+                    new_enemy.ship.name = names
+                        .choose(&mut rand::thread_rng())
+                        .unwrap_or(&names[0])
+                        .to_string();
                     state.enemy = Some(new_enemy);
                     state.current_screen = s.to_owned();
                 }
