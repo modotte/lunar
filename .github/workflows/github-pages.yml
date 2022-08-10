@@ -13,10 +13,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Setup Rust & Cargo dependencies environment
-        run: |
-          rustup target add wasm32-unknown-unknown
-          cargo install trunk
       - name: Cache
         uses: actions/cache@v3
         with:
@@ -27,11 +23,12 @@ jobs:
             ~/.cargo/git/db/
             target/
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: Setup Rust & Cargo dependencies environment
+        run: |
+          rustup target add wasm32-unknown-unknown
+          cargo install trunk
       - name: Build project
         run: trunk build --release
-      # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore)
-      - name: Add .nojekyll file
-        run: touch .nojekyll
       - name: Deploy to Github pages
         if: success()
         uses: crazy-max/ghaction-github-pages@v2
