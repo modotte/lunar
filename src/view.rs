@@ -94,6 +94,9 @@ fn player_info(model: &Rc<Model>) -> Html {
         <p>{"Owned Sugar: "} {model.player.ship.cargos.sugar.unit}</p>
         <p>{"Total cargo: "} {model.player.ship.cargos.total_unit()}</p>
         <p>{"Cargo capacity: "} {model.player.ship.cargos_capacity}</p>
+        <p>{"Player hull: "} {model.player.ship.hull}</p>
+        <p>{"Player crew: "} {model.player.ship.crew}</p>
+        <p>{"Player cannons: "} {model.player.ship.cannons}</p>
         </>
     }
 }
