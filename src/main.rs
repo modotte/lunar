@@ -211,14 +211,17 @@ impl Reducer<model::Model> for model::Msg {
                     match enemy.distance {
                         model::EnemyDistance::Escape => {
                             enemy.ship.hull -= rng.gen_range(0..=2);
+                            enemy.ship.cannons -= rng.gen_range(0..=1);
                             enemy.distance = model::EnemyDistance::Far
                         }
                         model::EnemyDistance::Far => {
                             enemy.ship.hull -= rng.gen_range(0..=2);
+                            enemy.ship.cannons -= rng.gen_range(0..=2);
                             enemy.distance = model::EnemyDistance::Close
                         }
                         model::EnemyDistance::Close => {
                             enemy.ship.hull -= rng.gen_range(1..=3);
+                            enemy.ship.cannons -= rng.gen_range(0..=2);
                             enemy.distance = model::EnemyDistance::Board
                         }
                         model::EnemyDistance::Board => {
@@ -237,10 +240,12 @@ impl Reducer<model::Model> for model::Msg {
                         }
                         model::EnemyDistance::Far => {
                             enemy.ship.hull -= rng.gen_range(0..=2);
+                            enemy.ship.cannons -= rng.gen_range(0..=1);
                             enemy.distance = model::EnemyDistance::Escape
                         }
                         model::EnemyDistance::Close => {
                             enemy.ship.hull -= rng.gen_range(0..=3);
+                            enemy.ship.cannons -= rng.gen_range(0..=2);
                             enemy.distance = model::EnemyDistance::Far
                         }
                         model::EnemyDistance::Board => {
@@ -256,9 +261,18 @@ impl Reducer<model::Model> for model::Msg {
                     } else {
                         let mut rng = rand::thread_rng();
                         match enemy.distance {
-                            model::EnemyDistance::Escape => enemy.ship.hull -= rng.gen_range(0..=3),
-                            model::EnemyDistance::Far => enemy.ship.hull -= rng.gen_range(0..=4),
-                            model::EnemyDistance::Close => enemy.ship.hull -= rng.gen_range(1..=5),
+                            model::EnemyDistance::Escape => {
+                                enemy.ship.hull -= rng.gen_range(0..=3);
+                                enemy.ship.cannons -= rng.gen_range(0..=1);
+                            }
+                            model::EnemyDistance::Far => {
+                                enemy.ship.hull -= rng.gen_range(0..=4);
+                                enemy.ship.cannons -= rng.gen_range(0..=2);
+                            }
+                            model::EnemyDistance::Close => {
+                                enemy.ship.hull -= rng.gen_range(1..=5);
+                                enemy.ship.cannons -= rng.gen_range(1..=2);
+                            }
                             model::EnemyDistance::Board => (),
                         }
                     }
