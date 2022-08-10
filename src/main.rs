@@ -122,7 +122,7 @@ impl Reducer<model::Model> for model::Msg {
                         },
                     ];
 
-                    let enemy_ship: model::Ship = choice_of(&ships, &ships[0]);
+                    let enemy_ship = choice_of(&ships, &ships[0]);
 
                     let nationalities: Vec<model::Nationality> =
                         model::Nationality::iter().collect();
