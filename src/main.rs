@@ -218,7 +218,7 @@ impl Reducer<model::Model> for model::Msg {
                             enemy.distance = model::EnemyDistance::Close
                         }
                         model::EnemyDistance::Close => {
-                            enemy.ship.hull -= rng.gen_range(0..=3);
+                            enemy.ship.hull -= rng.gen_range(1..=3);
                             enemy.distance = model::EnemyDistance::Board
                         }
                         model::EnemyDistance::Board => {
@@ -232,7 +232,6 @@ impl Reducer<model::Model> for model::Msg {
                     let mut rng = rand::thread_rng();
                     match enemy.distance {
                         model::EnemyDistance::Escape => {
-                            enemy.ship.hull -= rng.gen_range(0..=2);
                             state.enemy = None;
                             state.current_screen = model::Screen::MainNavigation
                         }
