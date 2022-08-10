@@ -28,7 +28,7 @@ jobs:
           rustup target add wasm32-unknown-unknown
           cargo install trunk --force
       - name: Build project
-        run: trunk build --release
+        run: trunk build --public-url "https://modotte.github.io/lunar/" --release
         # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore)
       - name: Add .nojekyll file
         run: touch dist/.nojekyll
