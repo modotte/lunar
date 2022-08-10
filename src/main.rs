@@ -304,11 +304,15 @@ impl Reducer<model::Model> for model::Msg {
             }
             model::Msg::SkirmishBattleSwingSword => {
                 if let Some(enemy) = &mut state.enemy {
+                    state.player.ship.crew -= rand::thread_rng().gen_range(1..=2);
+
                     enemy.ship.crew -= rand::thread_rng().gen_range(1..=2);
                 }
             }
             model::Msg::SkirmishBattleShootFalconet => {
                 if let Some(enemy) = &mut state.enemy {
+                    state.player.ship.crew -= rand::thread_rng().gen_range(1..=4);
+
                     enemy.ship.crew -= rand::thread_rng().gen_range(1..=5);
                 }
             }

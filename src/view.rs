@@ -87,6 +87,7 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
 fn player_info(model: &Rc<Model>) -> Html {
     html! {
         <>
+        <h2>{"Player"}</h2>
         <p>{"Date: "} {model.date}</p>
         <p>{"Current location: "} {model.current_port_location}</p>
         <p>{"Coins: "} {model.player.coins}</p>
@@ -241,6 +242,7 @@ fn enemy_info(model: &Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     let enemy = model.enemy.as_ref().unwrap();
     html! {
         <>
+            <h2>{"Enemy"}</h2>
             <p>{"Enemy ship name: "} {&enemy.ship.name}</p>
             <p>{"Enemy ship class: "} {&enemy.ship.class}</p>
             <p>{"Enemy ship hull: "} {&enemy.ship.hull}</p>
@@ -257,6 +259,7 @@ fn show_skirmish_chase(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         <>
         { debug_header(dispatch) }
         <h2>{"Skirmish Chase"}</h2>
+        { player_info(&model) }
         { enemy_info(&model, dispatch) }
         <hr/>
 
@@ -282,6 +285,7 @@ fn show_skirmish_battle(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         <>
         { debug_header(dispatch) }
         <h2>{"Battle!"}</h2>
+        { player_info(&model) }
         { enemy_info(&model, dispatch) }
         <hr/>
 
