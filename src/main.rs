@@ -207,10 +207,20 @@ impl Reducer<model::Model> for model::Msg {
             }
             model::Msg::SkirmishChaseClose => {
                 if let Some(enemy) = &mut state.enemy {
+                    let mut rng = rand::thread_rng();
                     match enemy.distance {
-                        model::EnemyDistance::Escape => enemy.distance = model::EnemyDistance::Far,
-                        model::EnemyDistance::Far => enemy.distance = model::EnemyDistance::Close,
-                        model::EnemyDistance::Close => enemy.distance = model::EnemyDistance::Board,
+                        model::EnemyDistance::Escape => {
+                            enemy.ship.hull -= rng.gen_range(0..=2);
+                            enemy.distance = model::EnemyDistance::Far
+                        }
+                        model::EnemyDistance::Far => {
+                            enemy.ship.hull -= rng.gen_range(0..=2);
+                            enemy.distance = model::EnemyDistance::Close
+                        }
+                        model::EnemyDistance::Close => {
+                            enemy.ship.hull -= rng.gen_range(0..=3);
+                            enemy.distance = model::EnemyDistance::Board
+                        }
                         model::EnemyDistance::Board => {
                             state.current_screen = model::Screen::SkirmishBattle
                         }
@@ -219,13 +229,21 @@ impl Reducer<model::Model> for model::Msg {
             }
             model::Msg::SkirmishChaseDistant => {
                 if let Some(enemy) = &mut state.enemy {
+                    let mut rng = rand::thread_rng();
                     match enemy.distance {
                         model::EnemyDistance::Escape => {
+                            enemy.ship.hull -= rng.gen_range(0..=2);
                             state.enemy = None;
                             state.current_screen = model::Screen::MainNavigation
                         }
-                        model::EnemyDistance::Far => enemy.distance = model::EnemyDistance::Escape,
-                        model::EnemyDistance::Close => enemy.distance = model::EnemyDistance::Far,
+                        model::EnemyDistance::Far => {
+                            enemy.ship.hull -= rng.gen_range(0..=2);
+                            enemy.distance = model::EnemyDistance::Escape
+                        }
+                        model::EnemyDistance::Close => {
+                            enemy.ship.hull -= rng.gen_range(0..=3);
+                            enemy.distance = model::EnemyDistance::Far
+                        }
                         model::EnemyDistance::Board => {
                             state.current_screen = model::Screen::SkirmishBattle
                         }
@@ -239,9 +257,9 @@ impl Reducer<model::Model> for model::Msg {
                     } else {
                         let mut rng = rand::thread_rng();
                         match enemy.distance {
-                            model::EnemyDistance::Escape => enemy.ship.hull -= rng.gen_range(1..=3),
-                            model::EnemyDistance::Far => enemy.ship.hull -= rng.gen_range(1..=4),
-                            model::EnemyDistance::Close => enemy.ship.hull -= rng.gen_range(2..=5),
+                            model::EnemyDistance::Escape => enemy.ship.hull -= rng.gen_range(0..=3),
+                            model::EnemyDistance::Far => enemy.ship.hull -= rng.gen_range(0..=4),
+                            model::EnemyDistance::Close => enemy.ship.hull -= rng.gen_range(1..=5),
                             model::EnemyDistance::Board => (),
                         }
                     }

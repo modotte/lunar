@@ -96,7 +96,7 @@ pub enum EnemyMovement {
     Evade,
 }
 
-#[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
+#[derive(Default, Display, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 pub enum EnemyDistance {
     Escape,
     #[default]
