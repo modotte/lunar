@@ -241,6 +241,7 @@ fn enemy_info(model: &Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
             <p>{"Enemy ship name: "} {&enemy.ship.name}</p>
             <p>{"Enemy ship class: "} {&enemy.ship.class}</p>
             <p>{"Enemy ship hull: "} {&enemy.ship.hull}</p>
+            <p>{"Enemy cannons: "} {&enemy.ship.cannons}</p>
             <p>{"Enemy ship crew: "} {&enemy.ship.crew}</p>
             <p>{"Enemy distance: "} {&enemy.distance}</p>
             <p>{"Enemy nationality: "} {&enemy.nationality}</p>
