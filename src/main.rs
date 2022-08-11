@@ -24,16 +24,6 @@ fn choice_of<T: Clone>(sequence: &[T], default: &T) -> T {
         .to_owned()
 }
 
-fn reset_model(state: &mut model::Model) {
-    let m = model::Model::default();
-    state.date = m.date;
-    state.current_screen = m.current_screen;
-    state.current_port_location = m.current_port_location;
-    state.player = m.player;
-    state.ports = m.ports;
-    state.enemy = m.enemy;
-}
-
 impl Reducer<model::Model> for model::Msg {
     fn apply(&self, mut model: Rc<model::Model>) -> Rc<model::Model> {
         let state = Rc::make_mut(&mut model);
