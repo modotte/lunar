@@ -8,6 +8,7 @@ use serde::{Deserialize, Serialize};
 
 use strum_macros::EnumIter;
 
+pub const MINIMUM_PLAYER_FOOD: i8 = 4;
 pub const MINIMUM_SHIP_HULL: i8 = 2;
 pub const MINIMUM_SHIP_CREW: i8 = 2;
 
@@ -177,6 +178,15 @@ impl Default for Model {
                     name: String::from("Luna"),
                     crew: 12,
                     cargos_capacity: 32,
+                    cargos: Cargos {
+                        food: Cargo {
+                            price: i32::default(),
+                            unit: 10,
+                            kind: CargoKind::Food,
+                        },
+                        wood: Cargo::default(),
+                        sugar: Cargo::default(),
+                    },
                     hull: 40,
                     hull_capacity: 40,
                     cannons: 10,

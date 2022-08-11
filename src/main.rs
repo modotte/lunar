@@ -146,8 +146,8 @@ impl Reducer<model::Model> for model::Msg {
                     state.current_port_location = *l;
 
                     let f = |mut p: model::Port| -> model::Port {
-                        let cargos = &mut p.cargos;
                         let mut rng = rand::thread_rng();
+                        let cargos = &mut p.cargos;
 
                         cargos.wood.unit = rng.gen_range(200..=250);
                         cargos.sugar.unit = rng.gen_range(120..=200);
@@ -164,6 +164,19 @@ impl Reducer<model::Model> for model::Msg {
                         .into_iter()
                         .map(|(k, v)| (k, f(v)))
                         .collect::<HashMap<model::PortLocation, model::Port>>();
+
+                    let player_food = &mut state.player.ship.cargos.food.unit;
+
+                    if *player_food < model::MINIMUM_PLAYER_FOOD.into() {
+                        state.current_screen = model::Screen::MainMenu;
+                        let m = model::Model::default();
+                        state.date = m.date;
+                        state.current_port_location = m.current_port_location;
+                        state.player = m.player;
+                        state.ports = m.ports;
+                    } else {
+                        *player_food -= rand::thread_rng().gen_range(0..=2);
+                    }
                 }
             }
 
