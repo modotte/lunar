@@ -24,6 +24,16 @@ fn choice_of<T: Clone>(sequence: &[T], default: &T) -> T {
         .to_owned()
 }
 
+fn reset_model(state: &mut model::Model) {
+    let m = model::Model::default();
+    state.date = m.date;
+    state.current_screen = m.current_screen;
+    state.current_port_location = m.current_port_location;
+    state.player = m.player;
+    state.ports = m.ports;
+    state.enemy = m.enemy;
+}
+
 impl Reducer<model::Model> for model::Msg {
     fn apply(&self, mut model: Rc<model::Model>) -> Rc<model::Model> {
         let state = Rc::make_mut(&mut model);
@@ -209,6 +219,11 @@ impl Reducer<model::Model> for model::Msg {
                 if let Some(enemy) = &mut state.enemy {
                     if state.player.ship.hull < model::MINIMUM_SHIP_HULL.into() {
                         state.current_screen = model::Screen::MainMenu;
+                        let m = model::Model::default();
+                        state.date = m.date;
+                        state.current_port_location = m.current_port_location;
+                        state.player = m.player;
+                        state.ports = m.ports;
                     }
 
                     if enemy.ship.hull < model::MINIMUM_SHIP_HULL.into() {
@@ -245,6 +260,12 @@ impl Reducer<model::Model> for model::Msg {
                 if let Some(enemy) = &mut state.enemy {
                     if state.player.ship.hull < model::MINIMUM_SHIP_HULL.into() {
                         state.current_screen = model::Screen::MainMenu;
+
+                        let m = model::Model::default();
+                        state.date = m.date;
+                        state.current_port_location = m.current_port_location;
+                        state.player = m.player;
+                        state.ports = m.ports;
                     }
 
                     if enemy.ship.hull < model::MINIMUM_SHIP_HULL.into() {
@@ -279,6 +300,12 @@ impl Reducer<model::Model> for model::Msg {
                 if let Some(enemy) = &mut state.enemy {
                     if state.player.ship.hull < model::MINIMUM_SHIP_HULL.into() {
                         state.current_screen = model::Screen::MainMenu;
+
+                        let m = model::Model::default();
+                        state.date = m.date;
+                        state.current_port_location = m.current_port_location;
+                        state.player = m.player;
+                        state.ports = m.ports;
                     }
 
                     if enemy.ship.hull < model::MINIMUM_SHIP_HULL.into() {
@@ -309,6 +336,12 @@ impl Reducer<model::Model> for model::Msg {
                 if let Some(enemy) = &mut state.enemy {
                     if state.player.ship.crew < model::MINIMUM_SHIP_CREW.into() {
                         state.current_screen = model::Screen::MainMenu;
+
+                        let m = model::Model::default();
+                        state.date = m.date;
+                        state.current_port_location = m.current_port_location;
+                        state.player = m.player;
+                        state.ports = m.ports;
                     }
                     state.player.ship.crew -= rand::thread_rng().gen_range(1..=2);
 
@@ -319,6 +352,11 @@ impl Reducer<model::Model> for model::Msg {
                 if let Some(enemy) = &mut state.enemy {
                     if state.player.ship.crew < model::MINIMUM_SHIP_CREW.into() {
                         state.current_screen = model::Screen::MainMenu;
+                        let m = model::Model::default();
+                        state.date = m.date;
+                        state.current_port_location = m.current_port_location;
+                        state.player = m.player;
+                        state.ports = m.ports;
                     }
                     state.player.ship.crew -= rand::thread_rng().gen_range(1..=4);
 
