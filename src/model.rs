@@ -28,6 +28,7 @@ pub enum Screen {
     SkirmishChase,
     SkirmishBattle,
     SkirmishLoot,
+    GameLost,
 }
 
 #[derive(Default, EnumIter, Display, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]

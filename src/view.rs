@@ -317,6 +317,16 @@ fn show_skirmish_battle(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     }
 }
 
+fn show_game_lost(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
+    html! {
+        <>
+        <p>{"You've lost your ship and your crew members! How unfortunate.."}</p>
+
+        { onclick_switch_screen(dispatch, Screen::MainMenu, "Go back to main menu")}
+        </>
+    }
+}
+
 #[function_component]
 pub fn View() -> Html {
     let (model, dispatch) = use_store::<Model>();
@@ -335,5 +345,6 @@ pub fn View() -> Html {
         Screen::SkirmishChase => show_skirmish_chase(model, &dispatch),
         Screen::SkirmishBattle => show_skirmish_battle(model, &dispatch),
         Screen::SkirmishLoot => show_skirmish_loot(model, &dispatch),
+        Screen::GameLost => show_game_lost(model, &dispatch),
     })
 }
