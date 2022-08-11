@@ -8,8 +8,8 @@ use serde::{Deserialize, Serialize};
 
 use strum_macros::EnumIter;
 
-pub const MINIMUM_SHIP_HULL: u8 = 2;
-pub const MINIMUM_SHIP_CREW: u8 = 2;
+pub const MINIMUM_SHIP_HULL: i8 = 2;
+pub const MINIMUM_SHIP_CREW: i8 = 2;
 
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 pub enum Screen {
@@ -46,8 +46,8 @@ pub enum CargoKind {
 
 #[derive(Default, Copy, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 pub struct Cargo {
-    pub price: u32,
-    pub unit: u32,
+    pub price: i32,
+    pub unit: i32,
     pub kind: CargoKind,
 }
 
@@ -58,7 +58,7 @@ pub struct Cargos {
 }
 
 impl Cargos {
-    pub fn total_unit(&self) -> u32 {
+    pub fn total_unit(&self) -> i32 {
         self.wood.unit + self.sugar.unit
     }
 }
@@ -79,13 +79,13 @@ pub struct Ship {
     pub name: String,
     pub class: ShipClass,
     pub cargos: Cargos,
-    pub cargos_capacity: u32,
-    pub crew: u32,
-    pub crew_capacity: u32,
-    pub hull: u16,
-    pub hull_capacity: u16,
-    pub cannons: u16,
-    pub cannons_capacity: u16,
+    pub cargos_capacity: i32,
+    pub crew: i32,
+    pub crew_capacity: i32,
+    pub hull: i16,
+    pub hull_capacity: i16,
+    pub cannons: i16,
+    pub cannons_capacity: i16,
 }
 
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
@@ -134,9 +134,9 @@ pub struct Port {
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 pub struct Player {
     pub name: String,
-    pub age: u8,
+    pub age: i8,
     pub nationality: Nationality,
-    pub coins: u32,
+    pub coins: i32,
     pub ship: Ship,
 }
 
@@ -266,5 +266,5 @@ pub enum Msg {
     SkirmishChaseBroadside,
     SkirmishBattleSwingSword,
     SkirmishBattleShootFalconet,
-    RepairShip(u32),
+    RepairShip(i32),
 }

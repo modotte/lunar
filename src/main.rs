@@ -287,7 +287,7 @@ impl Reducer<model::Model> for model::Msg {
             }
             model::Msg::SkirmishChaseBroadside => {
                 if let Some(enemy) = &mut state.enemy {
-                    if state.player.ship.crew < model::MINIMUM_SHIP_CREW.into() {
+                    if state.player.ship.hull < model::MINIMUM_SHIP_HULL.into() {
                         state.current_screen = model::Screen::MainMenu;
                     }
 
