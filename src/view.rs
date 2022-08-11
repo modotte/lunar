@@ -317,12 +317,19 @@ fn show_skirmish_battle(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     }
 }
 
-fn show_game_lost(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
+fn show_game_lost(model: Rc<Model>, dispatch: &Dispatch<Model>, reason: &GameLostReason) -> Html {
     html! {
         <>
-        <p>{"You've lost your ship and your crew members! How unfortunate.."}</p>
+        {
+            match reason {
+                GameLostReason::PlayerShipSunk => html!("Your ship and your crew sunk into the deep abyss of the ocean. RIP"),
+                GameLostReason::PlayerAllCrewDied => html!("All your crew died and your fate is left to your enemy. RIP"),
+                GameLostReason::PlayerFoodMutiny => html!("You ran out of food to feed your crew! One of your crew members took the matter into their own hand and managed to cause a mutiny! Where do you wanna go now? RIP "),
+            }
+        }
 
-        { onclick_switch_screen(dispatch, Screen::MainMenu, "Go back to main menu")}
+        <br/>
+        { onclick_switch_screen(dispatch, Screen::MainMenu, "Back to main menu") }
         </>
     }
 }
@@ -345,6 +352,6 @@ pub fn View() -> Html {
         Screen::SkirmishChase => show_skirmish_chase(model, &dispatch),
         Screen::SkirmishBattle => show_skirmish_battle(model, &dispatch),
         Screen::SkirmishLoot => show_skirmish_loot(model, &dispatch),
-        Screen::GameLost => show_game_lost(model, &dispatch),
+        Screen::GameLost(reason) => show_game_lost(model, &dispatch, &reason),
     })
 }

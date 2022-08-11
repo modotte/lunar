@@ -168,7 +168,8 @@ impl Reducer<model::Model> for model::Msg {
                     let player_food = &mut state.player.ship.cargos.food.unit;
 
                     if *player_food < model::MINIMUM_PLAYER_FOOD.into() {
-                        state.current_screen = model::Screen::GameLost;
+                        state.current_screen =
+                            model::Screen::GameLost(model::GameLostReason::PlayerFoodMutiny);
                         let m = model::Model::default();
                         state.date = m.date;
                         state.current_port_location = m.current_port_location;
@@ -232,7 +233,8 @@ impl Reducer<model::Model> for model::Msg {
             model::Msg::SkirmishChaseClose => {
                 if let Some(enemy) = &mut state.enemy {
                     if state.player.ship.hull < model::MINIMUM_SHIP_HULL.into() {
-                        state.current_screen = model::Screen::GameLost;
+                        state.current_screen =
+                            model::Screen::GameLost(model::GameLostReason::PlayerShipSunk);
                         let m = model::Model::default();
                         state.date = m.date;
                         state.current_port_location = m.current_port_location;
@@ -275,7 +277,8 @@ impl Reducer<model::Model> for model::Msg {
             model::Msg::SkirmishChaseDistant => {
                 if let Some(enemy) = &mut state.enemy {
                     if state.player.ship.hull < model::MINIMUM_SHIP_HULL.into() {
-                        state.current_screen = model::Screen::GameLost;
+                        state.current_screen =
+                            model::Screen::GameLost(model::GameLostReason::PlayerShipSunk);
 
                         let m = model::Model::default();
                         state.date = m.date;
@@ -317,7 +320,8 @@ impl Reducer<model::Model> for model::Msg {
             model::Msg::SkirmishChaseBroadside => {
                 if let Some(enemy) = &mut state.enemy {
                     if state.player.ship.hull < model::MINIMUM_SHIP_HULL.into() {
-                        state.current_screen = model::Screen::GameLost;
+                        state.current_screen =
+                            model::Screen::GameLost(model::GameLostReason::PlayerShipSunk);
 
                         let m = model::Model::default();
                         state.date = m.date;
@@ -355,7 +359,8 @@ impl Reducer<model::Model> for model::Msg {
             model::Msg::SkirmishBattleSwingSword => {
                 if let Some(enemy) = &mut state.enemy {
                     if state.player.ship.crew < model::MINIMUM_SHIP_CREW.into() {
-                        state.current_screen = model::Screen::GameLost;
+                        state.current_screen =
+                            model::Screen::GameLost(model::GameLostReason::PlayerAllCrewDied);
 
                         let m = model::Model::default();
                         state.date = m.date;
@@ -371,7 +376,8 @@ impl Reducer<model::Model> for model::Msg {
             model::Msg::SkirmishBattleShootFalconet => {
                 if let Some(enemy) = &mut state.enemy {
                     if state.player.ship.crew < model::MINIMUM_SHIP_CREW.into() {
-                        state.current_screen = model::Screen::GameLost;
+                        state.current_screen =
+                            model::Screen::GameLost(model::GameLostReason::PlayerAllCrewDied);
                         let m = model::Model::default();
                         state.date = m.date;
                         state.current_port_location = m.current_port_location;

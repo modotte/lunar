@@ -28,7 +28,15 @@ pub enum Screen {
     SkirmishChase,
     SkirmishBattle,
     SkirmishLoot,
-    GameLost,
+    GameLost(GameLostReason),
+}
+
+#[derive(Default, Copy, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
+pub enum GameLostReason {
+    #[default]
+    PlayerShipSunk,
+    PlayerAllCrewDied,
+    PlayerFoodMutiny,
 }
 
 #[derive(Default, EnumIter, Display, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
