@@ -174,6 +174,10 @@ impl Reducer<model::Model> for model::Msg {
                 if is_valid_buy(&state.player, port_cargo) {
                     state.player.coins -= port_cargo.price;
                     match port_cargo.kind {
+                        model::CargoKind::Food => {
+                            port_cgs.food.unit -= 1;
+                            state.player.ship.cargos.food.unit += 1;
+                        }
                         model::CargoKind::Wood => {
                             port_cgs.wood.unit -= 1;
                             state.player.ship.cargos.wood.unit += 1;
@@ -189,6 +193,13 @@ impl Reducer<model::Model> for model::Msg {
                 let mut ports_cgs = &mut state.ports.get_mut(l).unwrap().cargos;
 
                 match port_cargo.kind {
+                    model::CargoKind::Food => {
+                        if state.player.ship.cargos.food.unit != 0 {
+                            state.player.coins += port_cargo.price;
+                            ports_cgs.food.unit += 1;
+                            state.player.ship.cargos.food.unit -= 1;
+                        }
+                    }
                     model::CargoKind::Wood => {
                         if state.player.ship.cargos.wood.unit != 0 {
                             state.player.coins += port_cargo.price;

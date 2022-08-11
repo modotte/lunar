@@ -91,6 +91,7 @@ fn player_info(model: &Rc<Model>) -> Html {
         <p>{"Date: "} {model.date}</p>
         <p>{"Current location: "} {model.current_port_location}</p>
         <p>{"Coins: "} {model.player.coins}</p>
+        <p>{"Owned Food: "} {model.player.ship.cargos.food.unit}</p>
         <p>{"Owned Wood: "} {model.player.ship.cargos.wood.unit}</p>
         <p>{"Owned Sugar: "} {model.player.ship.cargos.sugar.unit}</p>
         <p>{"Total cargo: "} {model.player.ship.cargos.total_unit()}</p>
@@ -186,12 +187,14 @@ fn cargo_item(
 fn cargo_market(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     let inner = model.to_owned();
     let current_location = inner.current_port_location;
+    let food = inner.ports.get(&current_location).unwrap().cargos.food;
     let wood = inner.ports.get(&current_location).unwrap().cargos.wood;
     let sugar = inner.ports.get(&current_location).unwrap().cargos.sugar;
 
     html! {
         <div>
             <ul>
+                { cargo_item(dispatch.apply_callback(move |_| Msg::BuyCargo(current_location, food)), dispatch.apply_callback(move |_| Msg::SellCargo(current_location, food)), &food, "Food") }
                 { cargo_item(dispatch.apply_callback(move |_| Msg::BuyCargo(current_location, wood)), dispatch.apply_callback(move |_| Msg::SellCargo(current_location, wood)), &wood, "Wood") }
                 { cargo_item(dispatch.apply_callback(move |_| Msg::BuyCargo(current_location, sugar)), dispatch.apply_callback(move |_| Msg::SellCargo(current_location, sugar)), &sugar, "Sugar") }
             </ul>

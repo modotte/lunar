@@ -40,6 +40,7 @@ pub enum Nationality {
 #[derive(Default, EnumIter, Display, Copy, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 pub enum CargoKind {
     #[default]
+    Food,
     Wood,
     Sugar,
 }
@@ -53,13 +54,14 @@ pub struct Cargo {
 
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 pub struct Cargos {
+    pub food: Cargo,
     pub wood: Cargo,
     pub sugar: Cargo,
 }
 
 impl Cargos {
     pub fn total_unit(&self) -> i32 {
-        self.wood.unit + self.sugar.unit
+        self.food.unit + self.wood.unit + self.sugar.unit
     }
 }
 
@@ -191,6 +193,11 @@ impl Default for Model {
                         population: PortPopulation::Large,
                         nationality: Nationality::British,
                         cargos: Cargos {
+                            food: Cargo {
+                                price: 8,
+                                unit: 250,
+                                kind: CargoKind::Food,
+                            },
                             wood: Cargo {
                                 price: 22,
                                 unit: 250,
@@ -212,6 +219,11 @@ impl Default for Model {
                         population: PortPopulation::Huge,
                         nationality: Nationality::British,
                         cargos: Cargos {
+                            food: Cargo {
+                                price: 5,
+                                unit: 250,
+                                kind: CargoKind::Food,
+                            },
                             wood: Cargo {
                                 price: 18,
                                 unit: 210,
@@ -233,6 +245,11 @@ impl Default for Model {
                         population: PortPopulation::Medium,
                         nationality: Nationality::British,
                         cargos: Cargos {
+                            food: Cargo {
+                                price: 10,
+                                unit: 250,
+                                kind: CargoKind::Food,
+                            },
                             wood: Cargo {
                                 price: 32,
                                 unit: 150,
