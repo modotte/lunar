@@ -207,70 +207,90 @@ impl Reducer<model::Model> for model::Msg {
             }
             model::Msg::SkirmishChaseClose => {
                 if let Some(enemy) = &mut state.enemy {
-                    let mut rng = rand::thread_rng();
-                    match enemy.distance {
-                        model::EnemyDistance::Escape => {
-                            state.player.ship.hull -= rng.gen_range(0..=2);
-                            state.player.ship.cannons -= rng.gen_range(0..=1);
+                    if state.player.ship.hull < model::MINIMUM_SHIP_HULL.into() {
+                        state.current_screen = model::Screen::MainMenu;
+                    }
 
-                            enemy.ship.hull -= rng.gen_range(0..=2);
-                            enemy.ship.cannons -= rng.gen_range(0..=1);
-                            enemy.distance = model::EnemyDistance::Far
-                        }
-                        model::EnemyDistance::Far => {
-                            state.player.ship.hull -= rng.gen_range(0..=2);
-                            state.player.ship.cannons -= rng.gen_range(0..=2);
+                    if enemy.ship.hull < model::MINIMUM_SHIP_HULL.into() {
+                        state.current_screen = model::Screen::MainNavigation;
+                    } else {
+                        let mut rng = rand::thread_rng();
+                        match enemy.distance {
+                            model::EnemyDistance::Escape => {
+                                state.player.ship.hull -= rng.gen_range(0..=2);
+                                state.player.ship.cannons -= rng.gen_range(0..=1);
 
-                            enemy.ship.hull -= rng.gen_range(0..=2);
-                            enemy.ship.cannons -= rng.gen_range(0..=2);
-                            enemy.distance = model::EnemyDistance::Close
-                        }
-                        model::EnemyDistance::Close => {
-                            state.player.ship.hull -= rng.gen_range(1..=3);
-                            state.player.ship.cannons -= rng.gen_range(0..=2);
+                                enemy.ship.hull -= rng.gen_range(0..=2);
+                                enemy.ship.cannons -= rng.gen_range(0..=1);
+                                enemy.distance = model::EnemyDistance::Far
+                            }
+                            model::EnemyDistance::Far => {
+                                state.player.ship.hull -= rng.gen_range(0..=2);
+                                state.player.ship.cannons -= rng.gen_range(0..=2);
 
-                            enemy.ship.hull -= rng.gen_range(1..=3);
-                            enemy.ship.cannons -= rng.gen_range(0..=2);
-                            enemy.distance = model::EnemyDistance::Board
-                        }
-                        model::EnemyDistance::Board => {
-                            state.current_screen = model::Screen::SkirmishBattle
+                                enemy.ship.hull -= rng.gen_range(0..=2);
+                                enemy.ship.cannons -= rng.gen_range(0..=2);
+                                enemy.distance = model::EnemyDistance::Close
+                            }
+                            model::EnemyDistance::Close => {
+                                state.player.ship.hull -= rng.gen_range(1..=3);
+                                state.player.ship.cannons -= rng.gen_range(0..=2);
+
+                                enemy.ship.hull -= rng.gen_range(1..=3);
+                                enemy.ship.cannons -= rng.gen_range(0..=2);
+                                enemy.distance = model::EnemyDistance::Board
+                            }
+                            model::EnemyDistance::Board => {
+                                state.current_screen = model::Screen::SkirmishBattle
+                            }
                         }
                     }
                 }
             }
             model::Msg::SkirmishChaseDistant => {
                 if let Some(enemy) = &mut state.enemy {
-                    let mut rng = rand::thread_rng();
-                    match enemy.distance {
-                        model::EnemyDistance::Escape => {
-                            state.enemy = None;
-                            state.current_screen = model::Screen::MainNavigation
-                        }
-                        model::EnemyDistance::Far => {
-                            state.player.ship.hull -= rng.gen_range(0..=2);
-                            state.player.ship.cannons -= rng.gen_range(0..=1);
+                    if state.player.ship.hull < model::MINIMUM_SHIP_HULL.into() {
+                        state.current_screen = model::Screen::MainMenu;
+                    }
 
-                            enemy.ship.hull -= rng.gen_range(0..=2);
-                            enemy.ship.cannons -= rng.gen_range(0..=1);
-                            enemy.distance = model::EnemyDistance::Escape
-                        }
-                        model::EnemyDistance::Close => {
-                            state.player.ship.hull -= rng.gen_range(0..=3);
-                            state.player.ship.cannons -= rng.gen_range(0..=2);
+                    if enemy.ship.hull < model::MINIMUM_SHIP_HULL.into() {
+                        state.current_screen = model::Screen::MainNavigation;
+                    } else {
+                        let mut rng = rand::thread_rng();
+                        match enemy.distance {
+                            model::EnemyDistance::Escape => {
+                                state.enemy = None;
+                                state.current_screen = model::Screen::MainNavigation
+                            }
+                            model::EnemyDistance::Far => {
+                                state.player.ship.hull -= rng.gen_range(0..=2);
+                                state.player.ship.cannons -= rng.gen_range(0..=1);
 
-                            enemy.ship.hull -= rng.gen_range(0..=3);
-                            enemy.ship.cannons -= rng.gen_range(0..=2);
-                            enemy.distance = model::EnemyDistance::Far
-                        }
-                        model::EnemyDistance::Board => {
-                            state.current_screen = model::Screen::SkirmishBattle
+                                enemy.ship.hull -= rng.gen_range(0..=2);
+                                enemy.ship.cannons -= rng.gen_range(0..=1);
+                                enemy.distance = model::EnemyDistance::Escape
+                            }
+                            model::EnemyDistance::Close => {
+                                state.player.ship.hull -= rng.gen_range(0..=3);
+                                state.player.ship.cannons -= rng.gen_range(0..=2);
+
+                                enemy.ship.hull -= rng.gen_range(0..=3);
+                                enemy.ship.cannons -= rng.gen_range(0..=2);
+                                enemy.distance = model::EnemyDistance::Far
+                            }
+                            model::EnemyDistance::Board => {
+                                state.current_screen = model::Screen::SkirmishBattle
+                            }
                         }
                     }
                 }
             }
             model::Msg::SkirmishChaseBroadside => {
                 if let Some(enemy) = &mut state.enemy {
+                    if state.player.ship.crew < model::MINIMUM_SHIP_CREW.into() {
+                        state.current_screen = model::Screen::MainMenu;
+                    }
+
                     if enemy.ship.hull < model::MINIMUM_SHIP_HULL.into() {
                         state.current_screen = model::Screen::MainNavigation;
                     } else {
@@ -304,6 +324,9 @@ impl Reducer<model::Model> for model::Msg {
             }
             model::Msg::SkirmishBattleSwingSword => {
                 if let Some(enemy) = &mut state.enemy {
+                    if state.player.ship.crew < model::MINIMUM_SHIP_CREW.into() {
+                        state.current_screen = model::Screen::MainMenu;
+                    }
                     state.player.ship.crew -= rand::thread_rng().gen_range(1..=2);
 
                     enemy.ship.crew -= rand::thread_rng().gen_range(1..=2);
@@ -311,6 +334,9 @@ impl Reducer<model::Model> for model::Msg {
             }
             model::Msg::SkirmishBattleShootFalconet => {
                 if let Some(enemy) = &mut state.enemy {
+                    if state.player.ship.crew < model::MINIMUM_SHIP_CREW.into() {
+                        state.current_screen = model::Screen::MainMenu;
+                    }
                     state.player.ship.crew -= rand::thread_rng().gen_range(1..=4);
 
                     enemy.ship.crew -= rand::thread_rng().gen_range(1..=5);

@@ -148,14 +148,6 @@ pub enum PortLocation {
     Nassau,
 }
 
-#[derive(Default, Hash, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
-
-pub enum GameState {
-    #[default]
-    InProgress,
-    Lost,
-}
-
 pub type Ports = HashMap<PortLocation, Port>;
 
 #[derive(Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
