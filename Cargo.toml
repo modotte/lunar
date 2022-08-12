@@ -20,3 +20,4 @@ chrono = { version = "0.4.20", features = ["serde"] }
 strum = { version = "0.24", features = ["derive"] }
 strum_macros = "0.24"
 ternop = "*"
+lazy_static = "*"
