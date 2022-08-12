@@ -336,7 +336,9 @@ impl Reducer<model::Model> for model::Msg {
 
             model::Msg::TakeEnemyCargo(c) => {
                 if let Some(enemy) = &mut state.enemy {
-                    if enemy.ship.cargos.total_unit() > 0 {
+                    if enemy.ship.cargos.total_unit() > 0
+                        && state.player.ship.cargos.total_unit() < state.player.ship.cargos_capacity
+                    {
                         let enemy_cargos = &mut enemy.ship.cargos;
                         match c {
                             model::CargoKind::Food => {

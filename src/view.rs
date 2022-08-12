@@ -312,7 +312,7 @@ fn show_skirmish_loot(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         { enemy_info(&model, dispatch) }
 
         <p>
-            { if enemy_cargos.total_unit() > 0 && player_ship.cargos.total_unit() <= player_ship.cargos_capacity {
+            { if enemy_cargos.total_unit() > 0 && player_ship.cargos.total_unit() < player_ship.cargos_capacity {
             html! {
                 <>
                 { ternary!(enemy_cargos.food.unit > 0, onclick_styled_btn(dispatch.apply_callback(move |_| Msg::TakeEnemyCargo(CargoKind::Food)), "Take 1"), html!()) }
