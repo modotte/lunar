@@ -98,8 +98,9 @@ pub enum Screen {
     MainMenu,
     NewCharacter,
     Profile,
-    Tavern,
     Dock,
+    DockTavern,
+    TavernHireCrew,
     DockMarket,
     DockShipyard,
     Skirmish,
@@ -183,6 +184,11 @@ impl Ship {
     pub fn cost_to_repair(&self) -> i32 {
         let each_hull_cost = 25;
         (each_hull_cost * (self.hull_capacity - self.hull)).into()
+    }
+
+    pub fn cost_to_hire(&self) -> i32 {
+        let each_crew_member_cost = 8;
+        (each_crew_member_cost * (self.crew_capacity - self.crew)).into()
     }
 }
 
@@ -378,6 +384,7 @@ pub enum Msg {
     SkirmishBattleSwingSword,
     SkirmishBattleShootFalconet,
     RepairShip(i32),
+    HireCrew(i32),
     TakeEnemyCargo(CargoKind),
     BuyAndReplaceShip(ShipClass),
 }

@@ -143,12 +143,24 @@ fn show_profile(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     }
 }
 
-fn show_tavern(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
+fn show_dock_tavern_hire_crew(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
+    html! {
+        <>
+        { player_info(&model) }
+
+        <p>{"Cost to hire all: "} {&model.player.ship.cost_to_hire() }</p>
+        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::HireCrew(model.player.coins)), "Hire until full") }
+        { onclick_switch_screen(dispatch, Screen::DockTavern, "Back") }
+        </>
+    }
+}
+
+fn show_dock_tavern(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
         <>
         { debug_header(dispatch) }
         <h2>{"Tavern screen"}</h2>
-
+        { onclick_switch_screen(dispatch, Screen::TavernHireCrew, "Hire crew") }
         { onclick_switch_screen(dispatch, Screen::Dock, "Back") }
         </>
     }
@@ -160,7 +172,7 @@ fn show_dock(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         { debug_header(dispatch) }
         <h2>{"Dock screen"}</h2>
 
-        { onclick_switch_screen(dispatch, Screen::Tavern, "Tavern") }
+        { onclick_switch_screen(dispatch, Screen::DockTavern, "Tavern") }
         { onclick_switch_screen(dispatch, Screen::DockMarket, "Market") }
         { onclick_switch_screen(dispatch, Screen::DockShipyard, "Shipyard") }
         { onclick_switch_screen(dispatch, Screen::MainNavigation, "Back") }
@@ -383,8 +395,9 @@ pub fn View() -> Html {
         Screen::NewCharacter => show_new_character(model, &dispatch),
         Screen::MainNavigation => show_main_navigation(model, &dispatch),
         Screen::Profile => show_profile(model, &dispatch),
-        Screen::Tavern => show_tavern(model, &dispatch),
         Screen::Dock => show_dock(model, &dispatch),
+        Screen::DockTavern => show_dock_tavern(model, &dispatch),
+        Screen::TavernHireCrew => show_dock_tavern_hire_crew(model, &dispatch),
         Screen::DockMarket => show_dock_market(model, &dispatch),
         Screen::DockShipyard => show_dock_shipyard(model, &dispatch),
         Screen::Skirmish => show_skirmish(model, &dispatch),

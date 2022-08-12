@@ -393,6 +393,12 @@ impl Reducer<model::Model> for model::Msg {
                     }
                 }
             },
+            model::Msg::HireCrew(coins) => {
+                if coins >= &state.player.ship.cost_to_hire() {
+                    state.player.coins -= state.player.ship.cost_to_hire();
+                    state.player.ship.crew = model::Model::default().player.ship.crew;
+                }
+            }
         };
 
         model
