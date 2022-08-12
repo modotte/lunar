@@ -36,6 +36,7 @@ lazy_static! {
             cannons: 4,
             cannons_capacity: 8,
             cargos_capacity: 32,
+            price: 2100,
             ..Default::default()
         },
         model::Ship {
@@ -47,6 +48,7 @@ lazy_static! {
             cannons: 8,
             cannons_capacity: 8,
             cargos_capacity: 46,
+            price: 3200,
             ..Default::default()
         },
         model::Ship {
@@ -58,6 +60,7 @@ lazy_static! {
             cannons: 10,
             cannons_capacity: 10,
             cargos_capacity: 70,
+            price: 5000,
             ..Default::default()
         },
         model::Ship {
@@ -69,6 +72,7 @@ lazy_static! {
             cannons: 6,
             cannons_capacity: 6,
             cargos_capacity: 80,
+            price: 5500,
             ..Default::default()
         },
         model::Ship {
@@ -80,6 +84,7 @@ lazy_static! {
             cannons_capacity: 10,
             cargos_capacity: 210,
             class: model::ShipClass::Galleon,
+            price: 10_000,
             ..Default::default()
         },
         model::Ship {
@@ -91,6 +96,7 @@ lazy_static! {
             cannons_capacity: 14,
             cargos_capacity: 150,
             class: model::ShipClass::Frigate,
+            price: 35_000,
             ..Default::default()
         },
     ];
@@ -427,12 +433,42 @@ impl Reducer<model::Model> for model::Msg {
                 }
             }
             model::Msg::BuyAndReplaceShip(sc) => match sc {
-                model::ShipClass::Cutter => state.player.ship = SHIPS[0].clone(),
-                model::ShipClass::Sloop => state.player.ship = SHIPS[1].clone(),
-                model::ShipClass::Brig => state.player.ship = SHIPS[2].clone(),
-                model::ShipClass::Junk => state.player.ship = SHIPS[3].clone(),
-                model::ShipClass::Galleon => state.player.ship = SHIPS[4].clone(),
-                model::ShipClass::Frigate => state.player.ship = SHIPS[5].clone(),
+                model::ShipClass::Cutter => {
+                    let s = SHIPS[0].clone();
+                    if state.player.coins >= s.price {
+                        state.player.ship = s;
+                    }
+                }
+                model::ShipClass::Sloop => {
+                    let s = SHIPS[1].clone();
+                    if state.player.coins >= s.price {
+                        state.player.ship = s;
+                    }
+                }
+                model::ShipClass::Brig => {
+                    let s = SHIPS[2].clone();
+                    if state.player.coins >= s.price {
+                        state.player.ship = s;
+                    }
+                }
+                model::ShipClass::Junk => {
+                    let s = SHIPS[3].clone();
+                    if state.player.coins >= s.price {
+                        state.player.ship = s;
+                    }
+                }
+                model::ShipClass::Galleon => {
+                    let s = SHIPS[4].clone();
+                    if state.player.coins >= s.price {
+                        state.player.ship = s;
+                    }
+                }
+                model::ShipClass::Frigate => {
+                    let s = SHIPS[5].clone();
+                    if state.player.coins >= s.price {
+                        state.player.ship = s;
+                    }
+                }
             },
         };
 

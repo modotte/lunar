@@ -100,6 +100,7 @@ fn player_info(model: &Rc<Model>) -> Html {
         <p>{"Player hull: "} {model.player.ship.hull}</p>
         <p>{"Player crew: "} {model.player.ship.crew}</p>
         <p>{"Player cannons: "} {model.player.ship.cannons}</p>
+        <p>{"Ship class: "} {model.player.ship.class}</p>
         </>
     }
 }
@@ -224,6 +225,7 @@ fn show_dock_shipyard(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         { debug_header(dispatch) }
         <hr/>
 
+        { player_info(&model) }
         { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::BuyAndReplaceShip(ShipClass::Cutter)), "Trade your ship for a Cutter") }
         { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::BuyAndReplaceShip(ShipClass::Sloop)), "Trade your ship for a Sloop") }
         { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::BuyAndReplaceShip(ShipClass::Brig)), "Trade your ship for a Brig") }

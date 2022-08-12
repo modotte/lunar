@@ -75,7 +75,7 @@ impl Cargos {
     }
 }
 
-#[derive(Default, Display, Hash, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
+#[derive(Default, Copy, Display, Hash, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 pub enum ShipClass {
     Cutter,
     #[default]
@@ -98,6 +98,7 @@ pub struct Ship {
     pub hull_capacity: i16,
     pub cannons: i16,
     pub cannons_capacity: i16,
+    pub price: i32,
 }
 
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
@@ -182,7 +183,7 @@ impl Default for Model {
                 name: String::from("Player"),
                 age: 18,
                 nationality: Nationality::British,
-                coins: 1000,
+                coins: 2500,
                 ship: Ship {
                     name: String::from("Luna"),
                     crew: 12,
