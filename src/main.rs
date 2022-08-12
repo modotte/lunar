@@ -7,7 +7,6 @@ mod model;
 mod view;
 
 use chrono::Duration;
-use lazy_static::lazy_static;
 use rand::{seq::SliceRandom, Rng};
 
 fn is_cargo_space_available(p: &model::Player) -> bool {
@@ -23,83 +22,6 @@ fn choice_of<T: Clone>(sequence: &[T], default: &T) -> T {
         .choose(&mut rand::thread_rng())
         .unwrap_or(default)
         .to_owned()
-}
-
-lazy_static! {
-    static ref SHIPS: Vec<model::Ship> = vec![
-        model::Ship {
-            class: model::ShipClass::Cutter,
-            crew: 8,
-            crew_capacity: 8,
-            hull: 40,
-            hull_capacity: 40,
-            cannons: 4,
-            cannons_capacity: 8,
-            cargos_capacity: 32,
-            price: 2100,
-            ..Default::default()
-        },
-        model::Ship {
-            class: model::ShipClass::Sloop,
-            crew: 14,
-            crew_capacity: 14,
-            hull: 62,
-            hull_capacity: 62,
-            cannons: 8,
-            cannons_capacity: 8,
-            cargos_capacity: 46,
-            price: 3200,
-            ..Default::default()
-        },
-        model::Ship {
-            class: model::ShipClass::Brig,
-            crew: 18,
-            crew_capacity: 18,
-            hull: 70,
-            hull_capacity: 70,
-            cannons: 10,
-            cannons_capacity: 10,
-            cargos_capacity: 70,
-            price: 5000,
-            ..Default::default()
-        },
-        model::Ship {
-            class: model::ShipClass::Junk,
-            crew: 24,
-            crew_capacity: 18,
-            hull: 70,
-            hull_capacity: 70,
-            cannons: 6,
-            cannons_capacity: 6,
-            cargos_capacity: 80,
-            price: 5500,
-            ..Default::default()
-        },
-        model::Ship {
-            crew: 32,
-            crew_capacity: 32,
-            hull: 90,
-            hull_capacity: 90,
-            cannons: 10,
-            cannons_capacity: 10,
-            cargos_capacity: 210,
-            class: model::ShipClass::Galleon,
-            price: 10_000,
-            ..Default::default()
-        },
-        model::Ship {
-            crew: 40,
-            crew_capacity: 40,
-            hull: 140,
-            hull_capacity: 140,
-            cannons: 14,
-            cannons_capacity: 14,
-            cargos_capacity: 150,
-            class: model::ShipClass::Frigate,
-            price: 35_000,
-            ..Default::default()
-        },
-    ];
 }
 
 impl Reducer<model::Model> for model::Msg {
@@ -131,7 +53,7 @@ impl Reducer<model::Model> for model::Msg {
                         "Blue Ocean",
                     ];
 
-                    let enemy_ship = choice_of(&SHIPS, &SHIPS[0]);
+                    let enemy_ship = choice_of(&model::SHIPS, &model::SHIPS[0]);
 
                     let nationalities: Vec<model::Nationality> =
                         model::Nationality::iter().collect();
@@ -434,37 +356,37 @@ impl Reducer<model::Model> for model::Msg {
             }
             model::Msg::BuyAndReplaceShip(sc) => match sc {
                 model::ShipClass::Cutter => {
-                    let s = SHIPS[0].clone();
+                    let s = model::SHIPS[0].clone();
                     if state.player.coins >= s.price {
                         state.player.ship = s;
                     }
                 }
                 model::ShipClass::Sloop => {
-                    let s = SHIPS[1].clone();
+                    let s = model::SHIPS[1].clone();
                     if state.player.coins >= s.price {
                         state.player.ship = s;
                     }
                 }
                 model::ShipClass::Brig => {
-                    let s = SHIPS[2].clone();
+                    let s = model::SHIPS[2].clone();
                     if state.player.coins >= s.price {
                         state.player.ship = s;
                     }
                 }
                 model::ShipClass::Junk => {
-                    let s = SHIPS[3].clone();
+                    let s = model::SHIPS[3].clone();
                     if state.player.coins >= s.price {
                         state.player.ship = s;
                     }
                 }
                 model::ShipClass::Galleon => {
-                    let s = SHIPS[4].clone();
+                    let s = model::SHIPS[4].clone();
                     if state.player.coins >= s.price {
                         state.player.ship = s;
                     }
                 }
                 model::ShipClass::Frigate => {
-                    let s = SHIPS[5].clone();
+                    let s = model::SHIPS[5].clone();
                     if state.player.coins >= s.price {
                         state.player.ship = s;
                     }

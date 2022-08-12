@@ -6,11 +6,89 @@ use chrono::NaiveDate;
 use enum_display_derive::Display;
 use serde::{Deserialize, Serialize};
 
+use lazy_static::lazy_static;
 use strum_macros::EnumIter;
 
 pub const MINIMUM_PLAYER_FOOD: i8 = 4;
 pub const MINIMUM_SHIP_HULL: i8 = 2;
 pub const MINIMUM_SHIP_CREW: i8 = 2;
+
+lazy_static! {
+    pub static ref SHIPS: Vec<Ship> = vec![
+        Ship {
+            class: ShipClass::Cutter,
+            crew: 8,
+            crew_capacity: 8,
+            hull: 40,
+            hull_capacity: 40,
+            cannons: 4,
+            cannons_capacity: 8,
+            cargos_capacity: 32,
+            price: 2100,
+            ..Default::default()
+        },
+        Ship {
+            class: ShipClass::Sloop,
+            crew: 14,
+            crew_capacity: 14,
+            hull: 62,
+            hull_capacity: 62,
+            cannons: 8,
+            cannons_capacity: 8,
+            cargos_capacity: 46,
+            price: 3200,
+            ..Default::default()
+        },
+        Ship {
+            class: ShipClass::Brig,
+            crew: 18,
+            crew_capacity: 18,
+            hull: 70,
+            hull_capacity: 70,
+            cannons: 10,
+            cannons_capacity: 10,
+            cargos_capacity: 70,
+            price: 5000,
+            ..Default::default()
+        },
+        Ship {
+            class: ShipClass::Junk,
+            crew: 24,
+            crew_capacity: 18,
+            hull: 70,
+            hull_capacity: 70,
+            cannons: 6,
+            cannons_capacity: 6,
+            cargos_capacity: 80,
+            price: 5500,
+            ..Default::default()
+        },
+        Ship {
+            crew: 32,
+            crew_capacity: 32,
+            hull: 90,
+            hull_capacity: 90,
+            cannons: 10,
+            cannons_capacity: 10,
+            cargos_capacity: 210,
+            class: ShipClass::Galleon,
+            price: 10_000,
+            ..Default::default()
+        },
+        Ship {
+            crew: 40,
+            crew_capacity: 40,
+            hull: 140,
+            hull_capacity: 140,
+            cannons: 14,
+            cannons_capacity: 14,
+            cargos_capacity: 150,
+            class: ShipClass::Frigate,
+            price: 35_000,
+            ..Default::default()
+        },
+    ];
+}
 
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 pub enum Screen {
@@ -177,6 +255,13 @@ pub struct Model {
 // Initializer for our whole model at launch
 impl Default for Model {
     fn default() -> Self {
+        let mut player_ship = SHIPS[1].clone();
+        player_ship.name = String::from("Luna");
+        player_ship.cargos.food = Cargo {
+            unit: 12,
+            kind: CargoKind::Food,
+            price: i32::default(),
+        };
         Self {
             date: NaiveDate::from_ymd(1680, 01, 01),
             player: Player {
@@ -184,25 +269,7 @@ impl Default for Model {
                 age: 18,
                 nationality: Nationality::British,
                 coins: 2500,
-                ship: Ship {
-                    name: String::from("Luna"),
-                    crew: 12,
-                    cargos_capacity: 32,
-                    cargos: Cargos {
-                        food: Cargo {
-                            price: i32::default(),
-                            unit: 10,
-                            kind: CargoKind::Food,
-                        },
-                        wood: Cargo::default(),
-                        sugar: Cargo::default(),
-                    },
-                    hull: 40,
-                    hull_capacity: 40,
-                    cannons: 10,
-                    cannons_capacity: 10,
-                    ..Default::default()
-                },
+                ship: player_ship,
             },
             ports: HashMap::from([
                 (
