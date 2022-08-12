@@ -253,6 +253,7 @@ fn enemy_info(model: &Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
             <p>{"Enemy ship crew: "} {&enemy.ship.crew}</p>
             <p>{"Enemy distance: "} {&enemy.distance}</p>
             <p>{"Enemy nationality: "} {&enemy.nationality}</p>
+            <p>{"Enemy food: "} {&enemy.ship.cargos.food.unit}</p>
         </>
     }
 }
@@ -277,6 +278,11 @@ fn show_skirmish_loot(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
         <>
         <h2>{"Loot"}</h2>
+
+        { player_info(&model) }
+        { enemy_info(&model, dispatch) }
+
+        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::TakeEnemyCargo(CargoKind::Food)), "Take 1")}
 
         { onclick_switch_screen(dispatch, Screen::MainNavigation, "Continue") }
         </>

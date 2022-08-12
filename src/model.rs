@@ -303,4 +303,5 @@ pub enum Msg {
     SkirmishBattleSwingSword,
     SkirmishBattleShootFalconet,
     RepairShip(i32),
+    TakeEnemyCargo(CargoKind),
 }
