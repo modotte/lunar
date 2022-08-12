@@ -327,10 +327,11 @@ impl Reducer<model::Model> for model::Msg {
                 }
             }
 
-            // TODO: Subtract with hull and other items cost
-            model::Msg::RepairShip(c) => {
-                let s = model::Model::default().player.ship;
-                state.player.ship.hull = s.hull;
+            model::Msg::RepairShip(coins) => {
+                if coins >= &state.player.ship.cost_to_repair() {
+                    state.player.coins -= state.player.ship.cost_to_repair();
+                    state.player.ship.hull = model::Model::default().player.ship.hull;
+                }
             }
 
             model::Msg::TakeEnemyCargo(c) => {

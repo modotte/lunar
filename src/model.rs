@@ -179,6 +179,13 @@ pub struct Ship {
     pub price: i32,
 }
 
+impl Ship {
+    pub fn cost_to_repair(&self) -> i32 {
+        let each_hull_cost = 25;
+        (each_hull_cost * (self.hull_capacity - self.hull)).into()
+    }
+}
+
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 pub enum EnemyMovement {
     Chase,

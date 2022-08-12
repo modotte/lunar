@@ -95,11 +95,10 @@ fn player_info(model: &Rc<Model>) -> Html {
         <p>{"Owned Food: "} {model.player.ship.cargos.food.unit}</p>
         <p>{"Owned Wood: "} {model.player.ship.cargos.wood.unit}</p>
         <p>{"Owned Sugar: "} {model.player.ship.cargos.sugar.unit}</p>
-        <p>{"Total cargo: "} {model.player.ship.cargos.total_unit()}</p>
-        <p>{"Cargo capacity: "} {model.player.ship.cargos_capacity}</p>
-        <p>{"Player hull: "} {model.player.ship.hull}</p>
-        <p>{"Player crew: "} {model.player.ship.crew}</p>
-        <p>{"Player cannons: "} {model.player.ship.cannons}</p>
+        <p>{"Cargos: "} {model.player.ship.cargos.total_unit()} {"/"} {model.player.ship.cargos_capacity}</p>
+        <p>{"Hull: "} {model.player.ship.hull} {"/"} {model.player.ship.hull_capacity}</p>
+        <p>{"Crew: "} {model.player.ship.crew} {"/"} {model.player.ship.crew_capacity}</p>
+        <p>{"Cannons: "} {model.player.ship.cannons} {"/"} {model.player.ship.cannons_capacity}</p>
         <p>{"Ship class: "} {model.player.ship.class}</p>
         </>
     }
@@ -225,7 +224,10 @@ fn show_dock_shipyard(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         { debug_header(dispatch) }
         <hr/>
 
+
         { player_info(&model) }
+
+        <p>{"Cost to repair: "} { &model.player.ship.cost_to_repair() }</p>
         { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::BuyAndReplaceShip(ShipClass::Cutter)), "Trade your ship for a Cutter") }
         { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::BuyAndReplaceShip(ShipClass::Sloop)), "Trade your ship for a Sloop") }
         { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::BuyAndReplaceShip(ShipClass::Brig)), "Trade your ship for a Brig") }
