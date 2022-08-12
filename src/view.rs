@@ -225,6 +225,11 @@ fn show_dock_shipyard(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         <hr/>
 
         { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::BuyAndReplaceShip(ShipClass::Cutter)), "Trade your ship for a Cutter") }
+        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::BuyAndReplaceShip(ShipClass::Sloop)), "Trade your ship for a Sloop") }
+        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::BuyAndReplaceShip(ShipClass::Brig)), "Trade your ship for a Brig") }
+        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::BuyAndReplaceShip(ShipClass::Junk)), "Trade your ship for a Junk") }
+        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::BuyAndReplaceShip(ShipClass::Galleon)), "Trade your ship for a Galleon") }
+        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::BuyAndReplaceShip(ShipClass::Frigate)), "Trade your ship for a Frigate") }
 
         { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::RepairShip(model.player.coins)), "Repair all") }
         { onclick_switch_screen(dispatch, Screen::Dock, "Back") }

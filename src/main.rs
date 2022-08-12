@@ -427,12 +427,12 @@ impl Reducer<model::Model> for model::Msg {
                 }
             }
             model::Msg::BuyAndReplaceShip(sc) => match sc {
-                model::ShipClass::Cutter => todo!(),
-                model::ShipClass::Sloop => todo!(),
-                model::ShipClass::Brig => todo!(),
-                model::ShipClass::Junk => todo!(),
-                model::ShipClass::Galleon => todo!(),
-                model::ShipClass::Frigate => todo!(),
+                model::ShipClass::Cutter => state.player.ship = SHIPS[0].clone(),
+                model::ShipClass::Sloop => state.player.ship = SHIPS[1].clone(),
+                model::ShipClass::Brig => state.player.ship = SHIPS[2].clone(),
+                model::ShipClass::Junk => state.player.ship = SHIPS[3].clone(),
+                model::ShipClass::Galleon => state.player.ship = SHIPS[4].clone(),
+                model::ShipClass::Frigate => state.player.ship = SHIPS[5].clone(),
             },
         };
 
