@@ -466,6 +466,7 @@ dependencies = [
  "serde",
  "strum",
  "strum_macros",
+ "ternop",
  "wasm-bindgen",
  "web-sys",
  "yew",
@@ -749,6 +750,12 @@ dependencies = [
  "quote",
  "unicode-ident",
 ]
+
+[[package]]
+name = "ternop"
+version = "1.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9d4ae32d0a4605a89c28534371b056919c12e7a070ee07505af75130ff030111"
 
 [[package]]
 name = "thiserror"

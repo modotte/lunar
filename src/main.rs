@@ -1,5 +1,6 @@
 use std::{collections::HashMap, ops::AddAssign, rc::Rc};
 use strum::IntoEnumIterator;
+use ternop::ternary;
 use view::View;
 use yewdux::prelude::*;
 
@@ -398,19 +399,21 @@ impl Reducer<model::Model> for model::Msg {
 
             model::Msg::TakeEnemyCargo(c) => {
                 if let Some(enemy) = &mut state.enemy {
-                    let enemy_cargos = &mut enemy.ship.cargos;
-                    match c {
-                        model::CargoKind::Food => {
-                            enemy_cargos.food.unit -= 1;
-                            state.player.ship.cargos.food.unit += 1;
-                        }
-                        model::CargoKind::Wood => {
-                            enemy_cargos.wood.unit -= 1;
-                            state.player.ship.cargos.wood.unit += 1;
-                        }
-                        model::CargoKind::Sugar => {
-                            enemy_cargos.sugar.unit -= 1;
-                            state.player.ship.cargos.sugar.unit += 1;
+                    if enemy.ship.cargos.total_unit() > 0 {
+                        let enemy_cargos = &mut enemy.ship.cargos;
+                        match c {
+                            model::CargoKind::Food => {
+                                enemy_cargos.food.unit -= 1;
+                                state.player.ship.cargos.food.unit += 1;
+                            }
+                            model::CargoKind::Wood => {
+                                enemy_cargos.wood.unit -= 1;
+                                state.player.ship.cargos.wood.unit += 1;
+                            }
+                            model::CargoKind::Sugar => {
+                                enemy_cargos.sugar.unit -= 1;
+                                state.player.ship.cargos.sugar.unit += 1;
+                            }
                         }
                     }
                 }

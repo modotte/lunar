@@ -282,7 +282,21 @@ fn show_skirmish_loot(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         { player_info(&model) }
         { enemy_info(&model, dispatch) }
 
-        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::TakeEnemyCargo(CargoKind::Food)), "Take 1")}
+        <p>
+        { if &model.enemy.as_ref().unwrap().ship.cargos.total_unit() > &1 {
+            html! {
+                <>
+                { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::TakeEnemyCargo(CargoKind::Food)), "Take 1") }
+                { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::TakeEnemyCargo(CargoKind::Wood)), "Take 1") }
+                { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::TakeEnemyCargo(CargoKind::Sugar)), "Take 1") }
+                </>
+            }
+            }
+            else {
+                html!{ "Enemy have no loot." }
+            }
+        }
+        </p>
 
         { onclick_switch_screen(dispatch, Screen::MainNavigation, "Continue") }
         </>
@@ -326,6 +340,7 @@ fn show_skirmish_battle(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
 fn show_game_lost(model: Rc<Model>, dispatch: &Dispatch<Model>, reason: &GameLostReason) -> Html {
     html! {
         <>
+        <p>
         {
             match reason {
                 GameLostReason::PlayerShipSunk => html!("Your ship and your crew sunk into the deep abyss of the ocean. RIP"),
@@ -333,6 +348,7 @@ fn show_game_lost(model: Rc<Model>, dispatch: &Dispatch<Model>, reason: &GameLos
                 GameLostReason::PlayerFoodMutiny => html!("You ran out of food to feed your crew! One of your crew members took the matter into their own hand and managed to cause a mutiny! Where do you wanna go now? RIP "),
             }
         }
+        </p>
 
         <br/>
         { onclick_switch_screen(dispatch, Screen::MainMenu, "Back to main menu") }
