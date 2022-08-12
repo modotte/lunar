@@ -278,6 +278,8 @@ fn show_skirmish_chase(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
 }
 
 fn show_skirmish_loot(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
+    let cargos = &model.enemy.as_ref().unwrap().ship.cargos;
+
     html! {
         <>
         <h2>{"Loot"}</h2>
@@ -286,12 +288,12 @@ fn show_skirmish_loot(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         { enemy_info(&model, dispatch) }
 
         <p>
-        { if &model.enemy.as_ref().unwrap().ship.cargos.total_unit() > &0 {
+            {if cargos.total_unit() > 0 {
             html! {
                 <>
-                { ternary!(&model.enemy.as_ref().unwrap().ship.cargos.food.unit > &0, onclick_styled_btn(dispatch.apply_callback(move |_| Msg::TakeEnemyCargo(CargoKind::Food)), "Take 1"), html!()) }
-                { ternary!(&model.enemy.as_ref().unwrap().ship.cargos.wood.unit > &0, onclick_styled_btn(dispatch.apply_callback(move |_| Msg::TakeEnemyCargo(CargoKind::Wood)), "Take 1"), html!()) }
-                { ternary!(&model.enemy.as_ref().unwrap().ship.cargos.sugar.unit > &0, onclick_styled_btn(dispatch.apply_callback(move |_| Msg::TakeEnemyCargo(CargoKind::Sugar)), "Take 1"), html!()) }
+                { ternary!(cargos.food.unit > 0, onclick_styled_btn(dispatch.apply_callback(move |_| Msg::TakeEnemyCargo(CargoKind::Food)), "Take 1"), html!()) }
+                { ternary!(cargos.wood.unit > 0, onclick_styled_btn(dispatch.apply_callback(move |_| Msg::TakeEnemyCargo(CargoKind::Wood)), "Take 1"), html!()) }
+                { ternary!(cargos.sugar.unit > 0, onclick_styled_btn(dispatch.apply_callback(move |_| Msg::TakeEnemyCargo(CargoKind::Sugar)), "Take 1"), html!()) }
                 </>
             }
             }
