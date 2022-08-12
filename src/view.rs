@@ -1,4 +1,5 @@
 use std::rc::Rc;
+use ternop::ternary;
 use web_sys::HtmlInputElement;
 use yew::prelude::*;
 use yewdux::prelude::*;
@@ -254,6 +255,8 @@ fn enemy_info(model: &Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
             <p>{"Enemy distance: "} {&enemy.distance}</p>
             <p>{"Enemy nationality: "} {&enemy.nationality}</p>
             <p>{"Enemy food: "} {&enemy.ship.cargos.food.unit}</p>
+            <p>{"Enemy wood: "} {&enemy.ship.cargos.wood.unit}</p>
+            <p>{"Enemy sugar: "} {&enemy.ship.cargos.sugar.unit}</p>
         </>
     }
 }
@@ -283,12 +286,12 @@ fn show_skirmish_loot(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         { enemy_info(&model, dispatch) }
 
         <p>
-        { if &model.enemy.as_ref().unwrap().ship.cargos.total_unit() > &1 {
+        { if &model.enemy.as_ref().unwrap().ship.cargos.total_unit() > &0 {
             html! {
                 <>
-                { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::TakeEnemyCargo(CargoKind::Food)), "Take 1") }
-                { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::TakeEnemyCargo(CargoKind::Wood)), "Take 1") }
-                { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::TakeEnemyCargo(CargoKind::Sugar)), "Take 1") }
+                { ternary!(&model.enemy.as_ref().unwrap().ship.cargos.food.unit > &0, onclick_styled_btn(dispatch.apply_callback(move |_| Msg::TakeEnemyCargo(CargoKind::Food)), "Take 1"), html!()) }
+                { ternary!(&model.enemy.as_ref().unwrap().ship.cargos.wood.unit > &0, onclick_styled_btn(dispatch.apply_callback(move |_| Msg::TakeEnemyCargo(CargoKind::Wood)), "Take 1"), html!()) }
+                { ternary!(&model.enemy.as_ref().unwrap().ship.cargos.sugar.unit > &0, onclick_styled_btn(dispatch.apply_callback(move |_| Msg::TakeEnemyCargo(CargoKind::Sugar)), "Take 1"), html!()) }
                 </>
             }
             }

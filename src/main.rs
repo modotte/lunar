@@ -1,6 +1,5 @@
 use std::{collections::HashMap, ops::AddAssign, rc::Rc};
 use strum::IntoEnumIterator;
-use ternop::ternary;
 use view::View;
 use yewdux::prelude::*;
 
@@ -133,7 +132,13 @@ impl Reducer<model::Model> for model::Msg {
                         nationality: choice_of(&nationalities, &nationalities[0]),
                         ..Default::default()
                     };
+
                     new_enemy.ship.name = choice_of(&names, &names[0]).to_string();
+                    let mut rng = rand::thread_rng();
+                    new_enemy.ship.cargos.food.unit = rng.gen_range(1..=8);
+                    new_enemy.ship.cargos.wood.unit = rng.gen_range(1..=8);
+                    new_enemy.ship.cargos.sugar.unit = rng.gen_range(1..=10);
+
                     state.enemy = Some(new_enemy);
                     state.current_screen = s.to_owned();
                 }
@@ -177,7 +182,7 @@ impl Reducer<model::Model> for model::Msg {
                         state.player = m.player;
                         state.ports = m.ports;
                     } else {
-                        *player_food -= rand::thread_rng().gen_range(0..=2);
+                        *player_food -= rand::thread_rng().gen_range(0..=1);
                     }
                 }
             }
