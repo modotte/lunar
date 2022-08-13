@@ -1,6 +1,8 @@
 use std::{collections::HashMap, ops::AddAssign, rc::Rc};
 use strum::IntoEnumIterator;
 use view::View;
+use wasm_bindgen::prelude::*;
+use web_sys::{window, HtmlInputElement};
 use yewdux::prelude::*;
 
 mod model;
@@ -27,17 +29,23 @@ fn choice_of<T: Clone>(sequence: &[T], default: &T) -> T {
 impl Reducer<model::Model> for model::Msg {
     fn apply(&self, mut model: Rc<model::Model>) -> Rc<model::Model> {
         let state = Rc::make_mut(&mut model);
+        let window = window().unwrap();
 
         // TODO: Send alert on insufficient fund or empty cargo unit
         match self {
             model::Msg::ResetModel => {
-                let m = model::Model::default();
-                state.date = m.date;
-                state.current_screen = m.current_screen;
-                state.current_port_location = m.current_port_location;
-                state.player = m.player;
-                state.ports = m.ports;
-                state.enemy = m.enemy;
+                if window
+                    .confirm_with_message("Confirm to reset the game? This cannot be reverted.")
+                    .unwrap_or(false)
+                {
+                    let m = model::Model::default();
+                    state.date = m.date;
+                    state.current_screen = m.current_screen;
+                    state.current_port_location = m.current_port_location;
+                    state.player = m.player;
+                    state.ports = m.ports;
+                    state.enemy = m.enemy;
+                }
             }
             model::Msg::SwitchScreen(s) => match s {
                 model::Screen::MainNavigation => {

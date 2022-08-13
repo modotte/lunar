@@ -1,6 +1,7 @@
 use std::rc::Rc;
 use ternop::ternary;
-use web_sys::HtmlInputElement;
+use wasm_bindgen::prelude::*;
+use web_sys::{window, HtmlInputElement};
 use yew::prelude::*;
 use yewdux::prelude::*;
 
