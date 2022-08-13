@@ -409,6 +409,9 @@ impl Reducer<model::Model> for model::Msg {
                     state.player.ship.crew = model::Model::default().player.ship.crew;
                 }
             }
+            model::Msg::ChangePlayerNameEntry(n) => todo!(),
+            model::Msg::ChangePlayerAgeEntry(a) => todo!(),
+            model::Msg::ChangePlayerShipClassEntry(sc) => todo!(),
         };
 
         model

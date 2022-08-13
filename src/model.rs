@@ -387,4 +387,7 @@ pub enum Msg {
     HireCrew(i32),
     TakeEnemyCargo(CargoKind),
     BuyAndReplaceShip(ShipClass),
+    ChangePlayerNameEntry(String),
+    ChangePlayerAgeEntry(u8),
+    ChangePlayerShipClassEntry(ShipClass),
 }
