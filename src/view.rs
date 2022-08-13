@@ -1,6 +1,7 @@
 use std::rc::Rc;
 use ternop::ternary;
 use wasm_bindgen::prelude::*;
+use wasm_bindgen::JsCast;
 use web_sys::{window, HtmlInputElement};
 use yew::prelude::*;
 use yewdux::prelude::*;
@@ -71,12 +72,10 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         <label>{"Name"}</label>
         <br/>
         <input placeholder="Player" required=true type="text" value={model.player.name.to_owned()}
-            onkeypress={dispatch.reduce_mut_callback_with(move |model, e: KeyboardEvent| {
-                if e.key() == "Enter" {
-                    let input: HtmlInputElement = e.target_unchecked_into();
+            onchange={dispatch.reduce_mut_callback_with(move |model, e: Event| {
+                let input: HtmlInputElement = e.target_unchecked_into();
 
-                    model.player.name = input.value()
-                }
+                model.player.name = input.value();
             })}
         />
         <br/>
