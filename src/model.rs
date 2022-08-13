@@ -255,7 +255,7 @@ pub enum PortLocation {
 pub type Ports = HashMap<PortLocation, Port>;
 
 #[derive(Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
-#[store(storage = "local")]
+#[store(storage = "local", storage_tab_sync)]
 pub struct Model {
     pub date: NaiveDate,
     pub current_screen: Screen,
