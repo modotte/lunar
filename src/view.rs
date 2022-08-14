@@ -89,7 +89,7 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
 
             match input.value().parse::<i8>() {
                 Ok(age) => model.player.age = age,
-                Err(_) => web_sys::window().unwrap().alert_with_message("Cannot parse age! Only number accepted").unwrap(),
+                Err(_) => web_sys::window().unwrap().alert_with_message(format!("Cannot parse age! Only number from {} to {} is accepted", MINIMUM_PLAYER_AGE, MAXIMUM_PLAYER_AGE).as_str()).unwrap(),
             }
         })}
         />
