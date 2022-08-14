@@ -105,11 +105,9 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         <label>{"Nationality"}</label>
         <br/>
         <div class="select is-small">
-            <select oninput={dispatch.reduce_mut_callback_with(move |model, e: InputEvent| {
-                let input: HtmlInputElement = e.target_unchecked_into();
-
-                model.player.nationality = Nationality::from_str(&input.value()).unwrap();
-            })}>
+            <select oninput={dispatch.reduce_mut_callback_with(move |model, e: InputEvent|
+                model.player.nationality = Nationality::from_str(&e.target_unchecked_into::<HtmlInputElement>().value()).unwrap()
+            )}>
 
                 <option selected={true}>{Nationality::British}</option>
                 <option>{Nationality::Spanish}</option>
