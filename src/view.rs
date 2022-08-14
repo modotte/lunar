@@ -95,6 +95,17 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         />
 
         <br/>
+        <label>{"Nationality"}</label>
+        <br/>
+        <div class="select is-small">
+            <select>
+                <option selected={true} id="nationality-select">{"British"}</option>
+                <option>{"Spanish"}</option>
+                <option>{"French"}</option>
+            </select>
+        </div>
+
+        <br/>
         <label>{"Your ship name"}</label>
         <br/>
         <input class="input is-small" placeholder="Luna" required=true type="text" value={player.ship.name.to_string()}
@@ -109,7 +120,7 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
 
         <br/>
         <label>{"Ship Class"}</label>
-        <input type="radio" id="ship_class" value="Cutter" onclick={dispatch.reduce_mut_callback_with(move |model, _| {
+        <input type="radio" id="ship_class" value="Cutter" onclick={dispatch.reduce_mut_callback_with(move |model, e: MouseEvent| {
             model.player.ship = SHIPS[0].clone();
         })}/>
         <input type="radio" id="ship_class" value="Sloop" onclick={dispatch.reduce_mut_callback_with(move |model, _| {
