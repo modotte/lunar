@@ -12,6 +12,8 @@ use strum_macros::EnumIter;
 pub const MINIMUM_PLAYER_FOOD: i8 = 4;
 pub const MINIMUM_SHIP_HULL: i8 = 2;
 pub const MINIMUM_SHIP_CREW: i8 = 2;
+pub const MINIMUM_PLAYER_AGE: i8 = 18;
+pub const MAXIMUM_PLAYER_AGE: i8 = 65;
 
 lazy_static! {
     pub static ref SHIPS: Vec<Ship> = vec![
@@ -387,7 +389,4 @@ pub enum Msg {
     HireCrew(i32),
     TakeEnemyCargo(CargoKind),
     BuyAndReplaceShip(ShipClass),
-    ChangePlayerNameEntry(String),
-    ChangePlayerAgeEntry(u8),
-    ChangePlayerShipClassEntry(ShipClass),
 }

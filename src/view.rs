@@ -66,17 +66,31 @@ fn show_main_menu(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
 }
 
 fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
+    let player = &model.player;
     html! {
         <>
         { debug_header(dispatch) }
         <label>{"Name"}</label>
         <br/>
-        <input placeholder="Player" required=true type="text" value={model.player.name.to_owned()}
+        <input placeholder="Player" required=true type="text" value={player.name.to_string()}
             onchange={dispatch.reduce_mut_callback_with(move |model, e: Event| {
                 let input: HtmlInputElement = e.target_unchecked_into();
 
                 model.player.name = input.value();
             })}
+        />
+
+        <label>{"Age"}</label>
+        <br/>
+        <input placeholder={MINIMUM_PLAYER_AGE.to_string()} required=true type="number" min={MINIMUM_PLAYER_AGE.to_string()} max={MAXIMUM_PLAYER_AGE.to_string()} value={player.age.to_string()}
+        onchange={dispatch.reduce_mut_callback_with(move |model, e: Event| {
+            let input: HtmlInputElement = e.target_unchecked_into();
+
+            match input.value().parse::<i8>() {
+                Ok(age) => model.player.age = age,
+                Err(_) => web_sys::window().unwrap().alert_with_message("Cannot parse age! Only number accepted").unwrap(),
+            }
+        })}
         />
         <br/>
         { onclick_switch_screen(dispatch, Screen::MainNavigation, "Continue") }
