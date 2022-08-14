@@ -1,4 +1,5 @@
 use std::rc::Rc;
+use std::str::FromStr;
 use ternop::ternary;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
@@ -107,15 +108,12 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
             <select oninput={dispatch.reduce_mut_callback_with(move |model, e: InputEvent| {
                 let input: HtmlInputElement = e.target_unchecked_into();
 
-                match input.value().as_str() {
-                    "British"  => model.player.nationality = Nationality::British,
-                    "Spanish" => model.player.nationality = Nationality::Spanish,
-                    _rest => model.player.nationality = Nationality::French
-                }
+                model.player.nationality = Nationality::from_str(&input.value()).unwrap();
             })}>
-                <option selected={true} id="nationality-select">{"British"}</option>
-                <option>{"Spanish"}</option>
-                <option>{"French"}</option>
+
+                <option selected={true}>{Nationality::British}</option>
+                <option>{Nationality::Spanish}</option>
+                <option>{Nationality::French}</option>
             </select>
         </div>
 

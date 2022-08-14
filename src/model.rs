@@ -1,5 +1,7 @@
-use std::collections::HashMap;
 use std::fmt::Display;
+use std::string::ParseError;
+use std::{collections::HashMap, str::FromStr};
+use strum::IntoEnumIterator;
 use yewdux::prelude::*;
 
 use chrono::NaiveDate;
@@ -90,6 +92,7 @@ lazy_static! {
             ..Default::default()
         },
     ];
+    pub static ref NATIONALITIES: Vec<Nationality> = Nationality::iter().collect();
 }
 
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
@@ -126,6 +129,17 @@ pub enum Nationality {
     British,
     Spanish,
     French,
+}
+
+impl FromStr for Nationality {
+    type Err = ParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Spanish" => Ok(Nationality::Spanish),
+            "French" => Ok(Nationality::French),
+            _otherwise => Ok(Nationality::British),
+        }
+    }
 }
 
 #[derive(Default, EnumIter, Display, Copy, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]

@@ -63,12 +63,9 @@ impl Reducer<model::Model> for model::Msg {
 
                     let enemy_ship = choice_of(&model::SHIPS, &model::SHIPS[0]);
 
-                    let nationalities: Vec<model::Nationality> =
-                        model::Nationality::iter().collect();
-
                     let mut new_enemy = model::Enemy {
                         ship: enemy_ship,
-                        nationality: choice_of(&nationalities, &nationalities[0]),
+                        nationality: choice_of(&model::NATIONALITIES, &model::NATIONALITIES[0]),
                         ..Default::default()
                     };
 
