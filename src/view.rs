@@ -72,7 +72,7 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         { debug_header(dispatch) }
         <label>{"Name"}</label>
         <br/>
-        <input placeholder="Player" required=true type="text" value={player.name.to_string()}
+        <input class="input is-small" placeholder="Player" required=true type="text" value={player.name.to_string()}
             onchange={dispatch.reduce_mut_callback_with(move |model, e: Event| {
                 let input: HtmlInputElement = e.target_unchecked_into();
 
@@ -83,7 +83,7 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         <br/>
         <label>{"Age"}</label>
         <br/>
-        <input placeholder={MINIMUM_PLAYER_AGE.to_string()} required=true type="number" min={MINIMUM_PLAYER_AGE.to_string()} max={MAXIMUM_PLAYER_AGE.to_string()} value={player.age.to_string()}
+        <input class="input is-small" placeholder={MINIMUM_PLAYER_AGE.to_string()} required=true type="number" min={MINIMUM_PLAYER_AGE.to_string()} max={MAXIMUM_PLAYER_AGE.to_string()} value={player.age.to_string()}
         onchange={dispatch.reduce_mut_callback_with(move |model, e: Event| {
             let input: HtmlInputElement = e.target_unchecked_into();
 
@@ -97,7 +97,7 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         <br/>
         <label>{"Your ship name"}</label>
         <br/>
-        <input placeholder="Luna" required=true type="text" value={player.ship.name.to_string()}
+        <input class="input is-small" placeholder="Luna" required=true type="text" value={player.ship.name.to_string()}
             onchange={dispatch.reduce_mut_callback_with(move |model, e: Event| {
                 let input: HtmlInputElement = e.target_unchecked_into();
 
@@ -105,15 +105,17 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
             })}
         />
 
+
+
         <br/>
         <label>{"Ship Class"}</label>
-        <input type="radio" id="ship_class" value="Cutter" onclick={dispatch.reduce_mut_callback_with(move |model, e: MouseEvent| {
+        <input type="radio" id="ship_class" value="Cutter" onclick={dispatch.reduce_mut_callback_with(move |model, _| {
             model.player.ship = SHIPS[0].clone();
         })}/>
-        <input type="radio" id="ship_class" value="Sloop" onclick={dispatch.reduce_mut_callback_with(move |model, e: MouseEvent| {
+        <input type="radio" id="ship_class" value="Sloop" onclick={dispatch.reduce_mut_callback_with(move |model, _| {
             model.player.ship = SHIPS[1].clone();
         })}/>
-        <input type="radio" id="ship_class" value="Brig" onclick={dispatch.reduce_mut_callback_with(move |model, e: MouseEvent| {
+        <input type="radio" id="ship_class" value="Brig" onclick={dispatch.reduce_mut_callback_with(move |model, _| {
             model.player.ship = SHIPS[2].clone();
         })}/>
         <br/>
