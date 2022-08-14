@@ -62,7 +62,10 @@ impl Reducer<model::Model> for model::Msg {
                     ];
 
                     let mut new_enemy = model::Enemy {
-                        ship: choice_of(&model::SHIPS, &model::SHIPS[0]),
+                        ship: choice_of(
+                            &model::SHIPS.clone(),
+                            &model::SHIPS.get(&model::ShipClass::default()).unwrap(),
+                        ),
                         nationality: choice_of(&model::NATIONALITIES, &model::NATIONALITIES[0]),
                         ..Default::default()
                     };
@@ -362,37 +365,43 @@ impl Reducer<model::Model> for model::Msg {
             }
             model::Msg::BuyAndReplaceShip(sc) => match sc {
                 model::ShipClass::Cutter => {
-                    let s = model::SHIPS[0].clone();
+                    let s = model::SHIPS.get(&model::ShipClass::Cutter).unwrap().clone();
                     if state.player.coins >= s.price {
                         state.player.ship = s;
                     }
                 }
                 model::ShipClass::Sloop => {
-                    let s = model::SHIPS[1].clone();
+                    let s = model::SHIPS.get(&model::ShipClass::Sloop).unwrap().clone();
                     if state.player.coins >= s.price {
                         state.player.ship = s;
                     }
                 }
                 model::ShipClass::Brig => {
-                    let s = model::SHIPS[2].clone();
+                    let s = model::SHIPS.get(&model::ShipClass::Brig).unwrap().clone();
                     if state.player.coins >= s.price {
                         state.player.ship = s;
                     }
                 }
                 model::ShipClass::Junk => {
-                    let s = model::SHIPS[3].clone();
+                    let s = model::SHIPS.get(&model::ShipClass::Junk).unwrap().clone();
                     if state.player.coins >= s.price {
                         state.player.ship = s;
                     }
                 }
                 model::ShipClass::Galleon => {
-                    let s = model::SHIPS[4].clone();
+                    let s = model::SHIPS
+                        .get(&model::ShipClass::Galleon)
+                        .unwrap()
+                        .clone();
                     if state.player.coins >= s.price {
                         state.player.ship = s;
                     }
                 }
                 model::ShipClass::Frigate => {
-                    let s = model::SHIPS[5].clone();
+                    let s = model::SHIPS
+                        .get(&model::ShipClass::Frigate)
+                        .unwrap()
+                        .clone();
                     if state.player.coins >= s.price {
                         state.player.ship = s;
                     }

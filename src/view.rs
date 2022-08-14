@@ -135,9 +135,10 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         <label>{"Ship Class"}</label>
         <br/>
         <div class="select is-small">
-            <select oninput={dispatch.reduce_mut_callback_with(move |model, e: InputEvent|
-                model.player.ship.class = ShipClass::from_str(&e.target_unchecked_into::<HtmlInputElement>().value()).unwrap()
-            )}>
+            <select oninput={dispatch.reduce_mut_callback_with(move |model, e: InputEvent| {
+                model.player.ship = SHIPS
+                model.player.ship.class = ShipClass::from_str(&e.target_unchecked_into::<HtmlInputElement>().value()).unwrap();
+            })}>
                 {
                     SHIP_CLASSES
                     .iter()

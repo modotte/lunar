@@ -18,80 +18,98 @@ pub const MINIMUM_PLAYER_AGE: i8 = 18;
 pub const MAXIMUM_PLAYER_AGE: i8 = 65;
 
 lazy_static! {
-    pub static ref SHIPS: Vec<Ship> = vec![
-        Ship {
-            class: ShipClass::Cutter,
-            crew: 8,
-            crew_capacity: 8,
-            hull: 40,
-            hull_capacity: 40,
-            cannons: 4,
-            cannons_capacity: 8,
-            cargos_capacity: 32,
-            price: 2100,
-            ..Default::default()
-        },
-        Ship {
-            class: ShipClass::Sloop,
-            crew: 14,
-            crew_capacity: 14,
-            hull: 62,
-            hull_capacity: 62,
-            cannons: 8,
-            cannons_capacity: 8,
-            cargos_capacity: 46,
-            price: 3200,
-            ..Default::default()
-        },
-        Ship {
-            class: ShipClass::Brig,
-            crew: 18,
-            crew_capacity: 18,
-            hull: 70,
-            hull_capacity: 70,
-            cannons: 10,
-            cannons_capacity: 10,
-            cargos_capacity: 70,
-            price: 5000,
-            ..Default::default()
-        },
-        Ship {
-            class: ShipClass::Junk,
-            crew: 24,
-            crew_capacity: 18,
-            hull: 70,
-            hull_capacity: 70,
-            cannons: 6,
-            cannons_capacity: 6,
-            cargos_capacity: 80,
-            price: 5500,
-            ..Default::default()
-        },
-        Ship {
-            crew: 32,
-            crew_capacity: 32,
-            hull: 90,
-            hull_capacity: 90,
-            cannons: 10,
-            cannons_capacity: 10,
-            cargos_capacity: 210,
-            class: ShipClass::Galleon,
-            price: 10_000,
-            ..Default::default()
-        },
-        Ship {
-            crew: 40,
-            crew_capacity: 40,
-            hull: 140,
-            hull_capacity: 140,
-            cannons: 14,
-            cannons_capacity: 14,
-            cargos_capacity: 150,
-            class: ShipClass::Frigate,
-            price: 35_000,
-            ..Default::default()
-        },
-    ];
+    pub static ref SHIPS: HashMap<ShipClass, Ship> = HashMap::from([
+        (
+            ShipClass::Cutter,
+            Ship {
+                class: ShipClass::Cutter,
+                crew: 8,
+                crew_capacity: 8,
+                hull: 40,
+                hull_capacity: 40,
+                cannons: 4,
+                cannons_capacity: 8,
+                cargos_capacity: 32,
+                price: 2100,
+                ..Default::default()
+            }
+        ),
+        (
+            ShipClass::Sloop,
+            Ship {
+                class: ShipClass::Sloop,
+                crew: 14,
+                crew_capacity: 14,
+                hull: 62,
+                hull_capacity: 62,
+                cannons: 8,
+                cannons_capacity: 8,
+                cargos_capacity: 46,
+                price: 3200,
+                ..Default::default()
+            }
+        ),
+        (
+            ShipClass::Brig,
+            Ship {
+                class: ShipClass::Brig,
+                crew: 18,
+                crew_capacity: 18,
+                hull: 70,
+                hull_capacity: 70,
+                cannons: 10,
+                cannons_capacity: 10,
+                cargos_capacity: 70,
+                price: 5000,
+                ..Default::default()
+            }
+        ),
+        (
+            ShipClass::Junk,
+            Ship {
+                class: ShipClass::Junk,
+                crew: 24,
+                crew_capacity: 18,
+                hull: 70,
+                hull_capacity: 70,
+                cannons: 6,
+                cannons_capacity: 6,
+                cargos_capacity: 80,
+                price: 5500,
+                ..Default::default()
+            }
+        ),
+        (
+            ShipClass::Galleon,
+            Ship {
+                crew: 32,
+                crew_capacity: 32,
+                hull: 90,
+                hull_capacity: 90,
+                cannons: 10,
+                cannons_capacity: 10,
+                cargos_capacity: 210,
+                class: ShipClass::Galleon,
+                price: 10_000,
+                ..Default::default()
+            }
+        ),
+        (
+            ShipClass::Frigate,
+            Ship {
+                crew: 40,
+                crew_capacity: 40,
+                hull: 140,
+                hull_capacity: 140,
+                cannons: 14,
+                cannons_capacity: 14,
+                cargos_capacity: 150,
+                class: ShipClass::Frigate,
+                price: 35_000,
+                ..Default::default()
+            }
+        ),
+    ]);
     pub static ref NATIONALITIES: Vec<Nationality> = Nationality::iter().collect();
     pub static ref SHIP_CLASSES: Vec<ShipClass> = ShipClass::iter().collect();
 }
@@ -302,7 +320,7 @@ pub struct Model {
 // Initializer for our whole model at launch
 impl Default for Model {
     fn default() -> Self {
-        let mut player_ship = SHIPS[1].clone();
+        let mut player_ship = SHIPS.get(&ShipClass::Sloop).unwrap().clone();
         player_ship.name = String::from("Luna");
         player_ship.cargos.food = Cargo {
             unit: 12,
