@@ -31,6 +31,14 @@ lazy_static! {
                 cannons_capacity: 8,
                 cargos_capacity: 32,
                 price: 2100,
+                cargos: Cargos {
+                    food: Cargo {
+                        unit: 12,
+                        kind: CargoKind::Food,
+                        ..Default::default()
+                    },
+                    ..Default::default()
+                },
                 ..Default::default()
             }
         ),
@@ -46,6 +54,14 @@ lazy_static! {
                 cannons_capacity: 8,
                 cargos_capacity: 46,
                 price: 3200,
+                cargos: Cargos {
+                    food: Cargo {
+                        unit: 19,
+                        kind: CargoKind::Food,
+                        ..Default::default()
+                    },
+                    ..Default::default()
+                },
                 ..Default::default()
             }
         ),
@@ -61,6 +77,14 @@ lazy_static! {
                 cannons_capacity: 10,
                 cargos_capacity: 70,
                 price: 5000,
+                cargos: Cargos {
+                    food: Cargo {
+                        unit: 32,
+                        kind: CargoKind::Food,
+                        ..Default::default()
+                    },
+                    ..Default::default()
+                },
                 ..Default::default()
             }
         ),
@@ -76,6 +100,14 @@ lazy_static! {
                 cannons_capacity: 6,
                 cargos_capacity: 80,
                 price: 5500,
+                cargos: Cargos {
+                    food: Cargo {
+                        unit: 36,
+                        kind: CargoKind::Food,
+                        ..Default::default()
+                    },
+                    ..Default::default()
+                },
                 ..Default::default()
             }
         ),
@@ -91,6 +123,14 @@ lazy_static! {
                 cargos_capacity: 210,
                 class: ShipClass::Galleon,
                 price: 10_000,
+                cargos: Cargos {
+                    food: Cargo {
+                        unit: 60,
+                        kind: CargoKind::Food,
+                        ..Default::default()
+                    },
+                    ..Default::default()
+                },
                 ..Default::default()
             }
         ),
@@ -106,6 +146,14 @@ lazy_static! {
                 cargos_capacity: 150,
                 class: ShipClass::Frigate,
                 price: 35_000,
+                cargos: Cargos {
+                    food: Cargo {
+                        unit: 42,
+                        kind: CargoKind::Food,
+                        ..Default::default()
+                    },
+                    ..Default::default()
+                },
                 ..Default::default()
             }
         ),
@@ -322,18 +370,13 @@ impl Default for Model {
     fn default() -> Self {
         let mut player_ship = SHIPS.get(&ShipClass::Sloop).unwrap().clone();
         player_ship.name = String::from("Luna");
-        player_ship.cargos.food = Cargo {
-            unit: 12,
-            kind: CargoKind::Food,
-            price: i32::default(),
-        };
         Self {
             date: NaiveDate::from_ymd(1680, 01, 01),
             player: Player {
                 name: String::from("Player"),
                 age: 18,
                 nationality: Nationality::British,
-                coins: 2500,
+                coins: 25_000,
                 ship: player_ship,
             },
             ports: HashMap::from([
