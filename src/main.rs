@@ -61,10 +61,8 @@ impl Reducer<model::Model> for model::Msg {
                         "Blue Ocean",
                     ];
 
-                    let enemy_ship = choice_of(&model::SHIPS, &model::SHIPS[0]);
-
                     let mut new_enemy = model::Enemy {
-                        ship: enemy_ship,
+                        ship: choice_of(&model::SHIPS, &model::SHIPS[0]),
                         nationality: choice_of(&model::NATIONALITIES, &model::NATIONALITIES[0]),
                         ..Default::default()
                     };
