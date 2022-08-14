@@ -1,0 +1,39 @@
+name: Build project web client output and publish to github pages.
+
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ dev ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: Setup Rust & Cargo dependencies environment
+        run: |
+          rustup target add wasm32-unknown-unknown
+
+          if ! command -v trunk &> /dev/null
+          then
+              echo "trunk is not installed yet. Proceed to install.."
+              echo
+              cargo install trunk
+          fi
+      - name: Build project
+        run: trunk build  --release
