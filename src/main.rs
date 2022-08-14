@@ -63,7 +63,7 @@ impl Reducer<model::Model> for model::Msg {
 
                     let mut new_enemy = model::Enemy {
                         ship: choice_of(
-                            &model::SHIPS.clone(),
+                            &model::SHIPS.values().cloned().collect::<Vec<model::Ship>>(),
                             &model::SHIPS.get(&model::ShipClass::default()).unwrap(),
                         ),
                         nationality: choice_of(&model::NATIONALITIES, &model::NATIONALITIES[0]),
