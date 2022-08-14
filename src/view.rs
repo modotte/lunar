@@ -80,6 +80,18 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
             })}
         />
 
+        <br/>
+        <label>{"Your ship name"}</label>
+        <br/>
+        <input placeholder="Luna" required=true type="text" value={player.ship.name.to_string()}
+            onchange={dispatch.reduce_mut_callback_with(move |model, e: Event| {
+                let input: HtmlInputElement = e.target_unchecked_into();
+
+                model.player.ship.name = input.value();
+            })}
+        />
+
+        <br/>
         <label>{"Age"}</label>
         <br/>
         <input placeholder={MINIMUM_PLAYER_AGE.to_string()} required=true type="number" min={MINIMUM_PLAYER_AGE.to_string()} max={MAXIMUM_PLAYER_AGE.to_string()} value={player.age.to_string()}
@@ -92,6 +104,18 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
             }
         })}
         />
+
+        <br/>
+        <label>{"Ship Class"}</label>
+        <input type="radio" id="ship_class" value="Cutter" onclick={dispatch.reduce_mut_callback_with(move |model, e: MouseEvent| {
+            model.player.ship = SHIPS[0].clone();
+        })}/>
+        <input type="radio" id="ship_class" value="Sloop" onclick={dispatch.reduce_mut_callback_with(move |model, e: MouseEvent| {
+            model.player.ship = SHIPS[1].clone();
+        })}/>
+        <input type="radio" id="ship_class" value="Brig" onclick={dispatch.reduce_mut_callback_with(move |model, e: MouseEvent| {
+            model.player.ship = SHIPS[2].clone();
+        })}/>
         <br/>
         { onclick_switch_screen(dispatch, Screen::MainNavigation, "Continue") }
         { onclick_switch_screen(dispatch, Screen::MainMenu, "Back") }
