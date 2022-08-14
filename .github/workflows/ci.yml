@@ -1,4 +1,4 @@
-name: Build project web client output and publish to github pages.
+name: Routine build CI
 
 on:
   push:
