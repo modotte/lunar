@@ -108,10 +108,15 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
             <select oninput={dispatch.reduce_mut_callback_with(move |model, e: InputEvent|
                 model.player.nationality = Nationality::from_str(&e.target_unchecked_into::<HtmlInputElement>().value()).unwrap()
             )}>
-
-                <option selected={true}>{Nationality::British}</option>
-                <option>{Nationality::Spanish}</option>
-                <option>{Nationality::French}</option>
+                { NATIONALITIES
+                    .iter()
+                    .map(|n| html! {
+                        match n {
+                            Nationality::British => html!(<option selected={true}>{n}</option>),
+                            _otherwise => html!(<option>{n}</option>)
+                        }
+                    })
+                    .collect::<Html>() }
             </select>
         </div>
 
