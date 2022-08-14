@@ -81,17 +81,6 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         />
 
         <br/>
-        <label>{"Your ship name"}</label>
-        <br/>
-        <input placeholder="Luna" required=true type="text" value={player.ship.name.to_string()}
-            onchange={dispatch.reduce_mut_callback_with(move |model, e: Event| {
-                let input: HtmlInputElement = e.target_unchecked_into();
-
-                model.player.ship.name = input.value();
-            })}
-        />
-
-        <br/>
         <label>{"Age"}</label>
         <br/>
         <input placeholder={MINIMUM_PLAYER_AGE.to_string()} required=true type="number" min={MINIMUM_PLAYER_AGE.to_string()} max={MAXIMUM_PLAYER_AGE.to_string()} value={player.age.to_string()}
@@ -103,6 +92,17 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
                 Err(_) => web_sys::window().unwrap().alert_with_message("Cannot parse age! Only number accepted").unwrap(),
             }
         })}
+        />
+
+        <br/>
+        <label>{"Your ship name"}</label>
+        <br/>
+        <input placeholder="Luna" required=true type="text" value={player.ship.name.to_string()}
+            onchange={dispatch.reduce_mut_callback_with(move |model, e: Event| {
+                let input: HtmlInputElement = e.target_unchecked_into();
+
+                model.player.ship.name = input.value();
+            })}
         />
 
         <br/>
