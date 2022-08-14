@@ -2,7 +2,7 @@ use std::rc::Rc;
 use ternop::ternary;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
-use web_sys::{window, HtmlInputElement};
+use web_sys::{window, HtmlElement, HtmlInputElement};
 use yew::prelude::*;
 use yewdux::prelude::*;
 
@@ -98,7 +98,15 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         <label>{"Nationality"}</label>
         <br/>
         <div class="select is-small">
-            <select>
+            <select oninput={dispatch.reduce_mut_callback_with(move |model, e: InputEvent| {
+                let input: HtmlInputElement = e.target_unchecked_into();
+
+                match input.value().as_str() {
+                    "British"  => model.player.nationality = Nationality::British,
+                    "Spanish" => model.player.nationality = Nationality::Spanish,
+                    _rest => model.player.nationality = Nationality::French
+                }
+            })}>
                 <option selected={true} id="nationality-select">{"British"}</option>
                 <option>{"Spanish"}</option>
                 <option>{"French"}</option>
