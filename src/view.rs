@@ -123,6 +123,14 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     }
 }
 
+fn styled_progress(id: &str, label: &str, max: i32, value: i32) -> Html {
+    html! {
+        <>
+            <label for={id.to_string()}>{label.to_string()} {": "} {value.to_string()} {"/"} {max.to_string()}</label>
+            <progress class="progress is-small" id={id.to_string()} max={max.to_string()} value={value.to_string()}></progress>
+        </>
+    }
+}
 fn player_info(model: &Rc<Model>) -> Html {
     html! {
         <>
@@ -133,9 +141,9 @@ fn player_info(model: &Rc<Model>) -> Html {
         <p>{"Owned Food: "} {model.player.ship.cargos.food.unit}</p>
         <p>{"Owned Wood: "} {model.player.ship.cargos.wood.unit}</p>
         <p>{"Owned Sugar: "} {model.player.ship.cargos.sugar.unit}</p>
-        <p>{"Cargos: "} {model.player.ship.cargos.total_unit()} {"/"} {model.player.ship.cargos_capacity}</p>
-        <p>{"Hull: "} {model.player.ship.hull} {"/"} {model.player.ship.hull_capacity}</p>
-        <p>{"Crew: "} {model.player.ship.crew} {"/"} {model.player.ship.crew_capacity}</p>
+        { styled_progress("cargos", "Cargos", model.player.ship.cargos_capacity.into(), model.player.ship.cargos.total_unit()) }
+        { styled_progress("hull", "Hull", model.player.ship.hull_capacity.into(), model.player.ship.hull.into()) }
+        { styled_progress("crew", "Crew", model.player.ship.crew_capacity, model.player.ship.crew) }
         <p>{"Cannons: "} {model.player.ship.cannons} {"/"} {model.player.ship.cannons_capacity}</p>
         <p>{"Ship class: "} {model.player.ship.class}</p>
         </>
