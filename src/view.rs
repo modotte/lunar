@@ -88,7 +88,13 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
             let input: HtmlInputElement = e.target_unchecked_into();
 
             match input.value().parse::<i8>() {
-                Ok(age) => model.player.age = age,
+                Ok(age) => if age >= MINIMUM_PLAYER_AGE && age <= MAXIMUM_PLAYER_AGE {
+                    model.player.age = age;
+                } else {
+                    // Set default age
+                    model.player.age = MINIMUM_PLAYER_AGE;
+                    web_sys::window().unwrap().alert_with_message(format!("Cannot parse age! Only number from {} to {} is accepted", MINIMUM_PLAYER_AGE, MAXIMUM_PLAYER_AGE).as_str()).unwrap();
+                }
                 Err(_) => web_sys::window().unwrap().alert_with_message(format!("Cannot parse age! Only number from {} to {} is accepted", MINIMUM_PLAYER_AGE, MAXIMUM_PLAYER_AGE).as_str()).unwrap(),
             }
         })}
