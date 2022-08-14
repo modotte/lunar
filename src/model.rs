@@ -93,6 +93,7 @@ lazy_static! {
         },
     ];
     pub static ref NATIONALITIES: Vec<Nationality> = Nationality::iter().collect();
+    pub static ref SHIP_CLASSES: Vec<ShipClass> = ShipClass::iter().collect();
 }
 
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
@@ -135,9 +136,9 @@ impl FromStr for Nationality {
     type Err = ParseError;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
-            "Spanish" => Ok(Nationality::Spanish),
-            "French" => Ok(Nationality::French),
-            _otherwise => Ok(Nationality::British),
+            "Spanish" => Ok(Self::Spanish),
+            "French" => Ok(Self::French),
+            _otherwise => Ok(Self::British),
         }
     }
 }
@@ -170,7 +171,9 @@ impl Cargos {
     }
 }
 
-#[derive(Default, Copy, Display, Hash, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
+#[derive(
+    Default, Copy, Display, EnumIter, Hash, Clone, PartialEq, Eq, Deserialize, Serialize, Store,
+)]
 pub enum ShipClass {
     Cutter,
     #[default]
@@ -179,6 +182,21 @@ pub enum ShipClass {
     Junk,
     Galleon,
     Frigate,
+}
+
+impl FromStr for ShipClass {
+    type Err = ParseError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Cutter" => Ok(Self::Cutter),
+            "Brig" => Ok(Self::Brig),
+            "Junk" => Ok(Self::Junk),
+            "Galleon" => Ok(Self::Galleon),
+            "Frigate" => Ok(Self::Frigate),
+            _otherwise => Ok(Self::Sloop),
+        }
+    }
 }
 
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]

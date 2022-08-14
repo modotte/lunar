@@ -131,19 +131,27 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
             })}
         />
 
-
-
         <br/>
         <label>{"Ship Class"}</label>
-        <input type="radio" id="ship_class" value="Cutter" onclick={dispatch.reduce_mut_callback_with(move |model, e: MouseEvent| {
-            model.player.ship = SHIPS[0].clone();
-        })}/>
-        <input type="radio" id="ship_class" value="Sloop" onclick={dispatch.reduce_mut_callback_with(move |model, _| {
-            model.player.ship = SHIPS[1].clone();
-        })}/>
-        <input type="radio" id="ship_class" value="Brig" onclick={dispatch.reduce_mut_callback_with(move |model, _| {
-            model.player.ship = SHIPS[2].clone();
-        })}/>
+        <br/>
+        <div class="select is-small">
+            <select oninput={dispatch.reduce_mut_callback_with(move |model, e: InputEvent|
+                model.player.ship.class = ShipClass::from_str(&e.target_unchecked_into::<HtmlInputElement>().value()).unwrap()
+            )}>
+                {
+                    SHIP_CLASSES
+                    .iter()
+                    .map(|n|
+                        match n {
+                            ShipClass::Sloop => html!(<option selected={true}>{n}</option>),
+                            // TODO: Limit to cutter, sloop and only brig when debug completed
+                            _otherwise => html!(<option>{n}</option>)
+                        }
+                    )
+                    .collect::<Html>() }
+            </select>
+        </div>
+        <br/>
         <br/>
         { onclick_switch_screen(dispatch, Screen::MainNavigation, "Continue") }
         { onclick_switch_screen(dispatch, Screen::MainMenu, "Back") }
