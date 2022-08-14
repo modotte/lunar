@@ -136,7 +136,12 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         <br/>
         <div class="select is-small">
             <select oninput={dispatch.reduce_mut_callback_with(move |model, e: InputEvent| {
-                model.player.ship.class = ShipClass::from_str(&e.target_unchecked_into::<HtmlInputElement>().value()).unwrap();
+                let selection = e.target_unchecked_into::<HtmlInputElement>().value();
+                let mut ship_choice = SHIPS.get(&ShipClass::from_str(&selection).unwrap()).unwrap().clone();
+                let old_ship_name = &model.player.ship.name;
+                ship_choice.name = old_ship_name.to_string();
+
+                model.player.ship = ship_choice;
             })}>
                 {
                     SHIP_CLASSES
@@ -182,6 +187,7 @@ fn player_info(model: &Rc<Model>) -> Html {
         { styled_progress("crew", "Crew", model.player.ship.crew_capacity, model.player.ship.crew) }
         <p>{"Cannons: "} {model.player.ship.cannons} {"/"} {model.player.ship.cannons_capacity}</p>
         <p>{"Ship class: "} {model.player.ship.class}</p>
+        <p>{"Ship name: "} {&model.player.ship.name}</p>
         </>
     }
 }
