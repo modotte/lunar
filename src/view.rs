@@ -110,12 +110,12 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
             )}>
                 { NATIONALITIES
                     .iter()
-                    .map(|n| html! {
+                    .map(|n|
                         match n {
                             Nationality::British => html!(<option selected={true}>{n}</option>),
                             _otherwise => html!(<option>{n}</option>)
                         }
-                    })
+                    )
                     .collect::<Html>() }
             </select>
         </div>
