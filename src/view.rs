@@ -89,7 +89,7 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
             let input: HtmlInputElement = e.target_unchecked_into();
 
             match input.value().parse::<i8>() {
-                Ok(age) => if age >= MINIMUM_PLAYER_AGE && age <= MAXIMUM_PLAYER_AGE {
+                Ok(age) => if (MINIMUM_PLAYER_AGE..=MAXIMUM_PLAYER_AGE).contains(&age) {
                     model.player.age = age;
                 } else {
                     // Set default age
@@ -286,7 +286,7 @@ fn cargo_item(
 }
 
 fn cargo_market(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
-    let inner = model.to_owned();
+    let inner = model;
     let current_location = inner.current_port_location;
     let food = inner.ports.get(&current_location).unwrap().cargos.food;
     let wood = inner.ports.get(&current_location).unwrap().cargos.wood;
@@ -460,9 +460,9 @@ fn show_game_lost(model: Rc<Model>, dispatch: &Dispatch<Model>, reason: &GameLos
         <p>
         {
             match reason {
-                GameLostReason::PlayerShipSunk => html!("Your ship and your crew sunk into the deep abyss of the ocean. RIP"),
-                GameLostReason::PlayerAllCrewDied => html!("All your crew died and your fate is left to your enemy. RIP"),
-                GameLostReason::PlayerFoodMutiny => html!("You ran out of food to feed your crew! One of your crew members took the matter into their own hand and managed to cause a mutiny! Where do you wanna go now? RIP "),
+                GameLostReason::ShipSunk => html!("Your ship and your crew sunk into the deep abyss of the ocean. RIP"),
+                GameLostReason::AllCrewDied => html!("All your crew died and your fate is left to your enemy. RIP"),
+                GameLostReason::FoodMutiny => html!("You ran out of food to feed your crew! One of your crew members took the matter into their own hand and managed to cause a mutiny! Where do you wanna go now? RIP "),
             }
         }
         </p>

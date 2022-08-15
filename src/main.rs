@@ -1,8 +1,6 @@
 use std::{collections::HashMap, ops::AddAssign, rc::Rc};
-use strum::IntoEnumIterator;
 use view::View;
-use wasm_bindgen::prelude::*;
-use web_sys::{window, HtmlInputElement};
+use web_sys::window;
 use yewdux::prelude::*;
 
 mod model;
@@ -84,7 +82,7 @@ impl Reducer<model::Model> for model::Msg {
                     let mut new_enemy = model::Enemy {
                         ship: choice_of(
                             &model::SHIPS.values().cloned().collect::<Vec<model::Ship>>(),
-                            &model::SHIPS.get(&model::ShipClass::default()).unwrap(),
+                            model::SHIPS.get(&model::ShipClass::default()).unwrap(),
                         ),
                         nationality: choice_of(&model::NATIONALITIES, &model::NATIONALITIES[0]),
                         ..Default::default()
@@ -132,7 +130,7 @@ impl Reducer<model::Model> for model::Msg {
 
                     if *player_food < model::MINIMUM_PLAYER_FOOD.into() {
                         state.current_screen =
-                            model::Screen::GameLost(model::GameLostReason::PlayerFoodMutiny);
+                            model::Screen::GameLost(model::GameLostReason::FoodMutiny);
                         let m = model::Model::default();
                         state.date = m.date;
                         state.current_port_location = m.current_port_location;
@@ -197,7 +195,7 @@ impl Reducer<model::Model> for model::Msg {
                 if let Some(enemy) = &mut state.enemy {
                     if state.player.ship.hull < model::MINIMUM_SHIP_HULL.into() {
                         state.current_screen =
-                            model::Screen::GameLost(model::GameLostReason::PlayerShipSunk);
+                            model::Screen::GameLost(model::GameLostReason::ShipSunk);
                         let m = model::Model::default();
                         state.date = m.date;
                         state.current_port_location = m.current_port_location;
@@ -241,7 +239,7 @@ impl Reducer<model::Model> for model::Msg {
                 if let Some(enemy) = &mut state.enemy {
                     if state.player.ship.hull < model::MINIMUM_SHIP_HULL.into() {
                         state.current_screen =
-                            model::Screen::GameLost(model::GameLostReason::PlayerShipSunk);
+                            model::Screen::GameLost(model::GameLostReason::ShipSunk);
 
                         let m = model::Model::default();
                         state.date = m.date;
@@ -284,7 +282,7 @@ impl Reducer<model::Model> for model::Msg {
                 if let Some(enemy) = &mut state.enemy {
                     if state.player.ship.hull < model::MINIMUM_SHIP_HULL.into() {
                         state.current_screen =
-                            model::Screen::GameLost(model::GameLostReason::PlayerShipSunk);
+                            model::Screen::GameLost(model::GameLostReason::ShipSunk);
 
                         let m = model::Model::default();
                         state.date = m.date;
@@ -323,7 +321,7 @@ impl Reducer<model::Model> for model::Msg {
                 if let Some(enemy) = &mut state.enemy {
                     if state.player.ship.crew < model::MINIMUM_SHIP_CREW.into() {
                         state.current_screen =
-                            model::Screen::GameLost(model::GameLostReason::PlayerAllCrewDied);
+                            model::Screen::GameLost(model::GameLostReason::AllCrewDied);
 
                         let m = model::Model::default();
                         state.date = m.date;
@@ -340,7 +338,7 @@ impl Reducer<model::Model> for model::Msg {
                 if let Some(enemy) = &mut state.enemy {
                     if state.player.ship.crew < model::MINIMUM_SHIP_CREW.into() {
                         state.current_screen =
-                            model::Screen::GameLost(model::GameLostReason::PlayerAllCrewDied);
+                            model::Screen::GameLost(model::GameLostReason::AllCrewDied);
                         let m = model::Model::default();
                         state.date = m.date;
                         state.current_port_location = m.current_port_location;

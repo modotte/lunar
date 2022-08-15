@@ -185,9 +185,9 @@ pub enum Screen {
 #[derive(Default, Copy, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 pub enum GameLostReason {
     #[default]
-    PlayerShipSunk,
-    PlayerAllCrewDied,
-    PlayerFoodMutiny,
+    ShipSunk,
+    AllCrewDied,
+    FoodMutiny,
 }
 
 #[derive(Default, EnumIter, Display, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
@@ -288,7 +288,7 @@ impl Ship {
 
     pub fn cost_to_hire(&self) -> i32 {
         let each_crew_member_cost = 8;
-        (each_crew_member_cost * (self.crew_capacity - self.crew)).into()
+        each_crew_member_cost * (self.crew_capacity - self.crew)
     }
 }
 
@@ -371,7 +371,7 @@ impl Default for Model {
         let mut player_ship = SHIPS.get(&ShipClass::Sloop).unwrap().clone();
         player_ship.name = String::from("Luna");
         Self {
-            date: NaiveDate::from_ymd(1680, 01, 01),
+            date: NaiveDate::from_ymd(1680, 1, 1),
             player: Player {
                 name: String::from("Player"),
                 age: 18,
