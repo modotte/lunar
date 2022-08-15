@@ -27,12 +27,22 @@ fn choice_of<T: Clone>(sequence: &[T], default: &T) -> T {
 }
 
 fn replace_ship(model: &mut model::Model, sc: &model::ShipClass) {
+    let window = web_sys::window().unwrap();
     let mut s = model::SHIPS.get(sc).unwrap().clone();
     s.name = model.player.ship.name.to_string();
 
     if model.player.coins >= s.price {
-        model.player.coins -= s.price;
-        model.player.ship = s;
+        if window
+            .confirm_with_message(format!("Are you sure you want to buy this {}?", sc).as_str())
+            .unwrap_or(false)
+        {
+            model.player.coins -= s.price;
+            model.player.ship = s;
+        }
+    } else {
+        window
+            .alert_with_message(format!("Insufficient fund to buy a {}!", sc).as_str())
+            .unwrap();
     }
 }
 
