@@ -331,9 +331,9 @@ impl Reducer<model::Model> for model::Msg {
                         state.player = m.player;
                         state.ports = m.ports;
                     }
-                    state.player.ship.crew -= rand::thread_rng().gen_range(1..=2);
-
-                    enemy.ship.crew -= rand::thread_rng().gen_range(1..=2);
+                    let mut rng = rand::thread_rng();
+                    state.player.ship.crew -= rng.gen_range(1..=2);
+                    enemy.ship.crew -= rng.gen_range(1..=2);
                 }
             }
             model::Msg::SkirmishBattleShootFalconet => {
