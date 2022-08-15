@@ -35,5 +35,7 @@ jobs:
               echo
               cargo install trunk
           fi
+      - name: Lint codebase via clippy
+        run: cargo clippy
       - name: Build project
         run: trunk build  --release

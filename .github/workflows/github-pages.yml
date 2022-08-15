@@ -33,6 +33,8 @@ jobs:
               echo
               cargo install trunk
           fi
+      - name: Lint codebase via clippy
+        run: cargo clippy
       - name: Build project
         run: trunk build --public-url "/lunar/" --release
         # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore)
