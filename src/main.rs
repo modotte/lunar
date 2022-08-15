@@ -26,11 +26,14 @@ fn choice_of<T: Clone>(sequence: &[T], default: &T) -> T {
         .to_owned()
 }
 
-fn replaced_ship(sc: &model::ShipClass, old_name: &str) -> model::Ship {
+fn replace_ship(model: &mut model::Model, sc: &model::ShipClass) {
     let mut s = model::SHIPS.get(sc).unwrap().clone();
-    s.name = old_name.to_string();
+    s.name = model.player.ship.name.to_string();
 
-    s
+    if model.player.coins >= s.price {
+        model.player.coins -= s.price;
+        model.player.ship = s;
+    }
 }
 
 impl Reducer<model::Model> for model::Msg {
@@ -371,42 +374,12 @@ impl Reducer<model::Model> for model::Msg {
                 }
             }
             model::Msg::BuyAndReplaceShip(sc) => match sc {
-                model::ShipClass::Cutter => {
-                    let s = replaced_ship(&model::ShipClass::Cutter, &state.player.ship.name);
-                    if state.player.coins >= s.price {
-                        state.player.ship = s;
-                    }
-                }
-                model::ShipClass::Sloop => {
-                    let s = replaced_ship(&model::ShipClass::Sloop, &state.player.ship.name);
-                    if state.player.coins >= s.price {
-                        state.player.ship = s;
-                    }
-                }
-                model::ShipClass::Brig => {
-                    let s = replaced_ship(&model::ShipClass::Brig, &state.player.ship.name);
-                    if state.player.coins >= s.price {
-                        state.player.ship = s;
-                    }
-                }
-                model::ShipClass::Junk => {
-                    let s = replaced_ship(&model::ShipClass::Junk, &state.player.ship.name);
-                    if state.player.coins >= s.price {
-                        state.player.ship = s;
-                    }
-                }
-                model::ShipClass::Galleon => {
-                    let s = replaced_ship(&model::ShipClass::Galleon, &state.player.ship.name);
-                    if state.player.coins >= s.price {
-                        state.player.ship = s;
-                    }
-                }
-                model::ShipClass::Frigate => {
-                    let s = replaced_ship(&model::ShipClass::Frigate, &state.player.ship.name);
-                    if state.player.coins >= s.price {
-                        state.player.ship = s;
-                    }
-                }
+                model::ShipClass::Cutter => replace_ship(&mut *state, &model::ShipClass::Cutter),
+                model::ShipClass::Sloop => replace_ship(&mut *state, &model::ShipClass::Sloop),
+                model::ShipClass::Brig => replace_ship(&mut *state, &model::ShipClass::Brig),
+                model::ShipClass::Junk => replace_ship(&mut *state, &model::ShipClass::Junk),
+                model::ShipClass::Galleon => replace_ship(&mut *state, &model::ShipClass::Galleon),
+                model::ShipClass::Frigate => replace_ship(&mut *state, &model::ShipClass::Frigate),
             },
             model::Msg::HireCrew(coins) => {
                 if coins >= &state.player.ship.cost_to_hire() {
