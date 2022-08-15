@@ -384,12 +384,12 @@ impl Reducer<model::Model> for model::Msg {
                 }
             }
             model::Msg::BuyAndReplaceShip(sc) => match sc {
-                model::ShipClass::Cutter => replace_ship(&mut *state, &model::ShipClass::Cutter),
-                model::ShipClass::Sloop => replace_ship(&mut *state, &model::ShipClass::Sloop),
-                model::ShipClass::Brig => replace_ship(&mut *state, &model::ShipClass::Brig),
-                model::ShipClass::Junk => replace_ship(&mut *state, &model::ShipClass::Junk),
-                model::ShipClass::Galleon => replace_ship(&mut *state, &model::ShipClass::Galleon),
-                model::ShipClass::Frigate => replace_ship(&mut *state, &model::ShipClass::Frigate),
+                model::ShipClass::Cutter => replace_ship(&mut *state, sc),
+                model::ShipClass::Sloop => replace_ship(&mut *state, sc),
+                model::ShipClass::Brig => replace_ship(&mut *state, sc),
+                model::ShipClass::Junk => replace_ship(&mut *state, sc),
+                model::ShipClass::Galleon => replace_ship(&mut *state, sc),
+                model::ShipClass::Frigate => replace_ship(&mut *state, sc),
             },
             model::Msg::HireCrew(coins) => {
                 if coins >= &state.player.ship.cost_to_hire() {
