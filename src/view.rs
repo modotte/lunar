@@ -1,8 +1,9 @@
 use std::rc::Rc;
+use std::str::FromStr;
 use ternop::ternary;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
-use web_sys::{window, HtmlInputElement};
+use web_sys::{window, HtmlElement, HtmlInputElement};
 use yew::prelude::*;
 use yewdux::prelude::*;
 
@@ -72,7 +73,7 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         { debug_header(dispatch) }
         <label>{"Name"}</label>
         <br/>
-        <input placeholder="Player" required=true type="text" value={player.name.to_string()}
+        <input class="input is-small" placeholder="Player" required=true type="text" value={player.name.to_string()}
             onchange={dispatch.reduce_mut_callback_with(move |model, e: Event| {
                 let input: HtmlInputElement = e.target_unchecked_into();
 
@@ -80,18 +81,82 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
             })}
         />
 
+        <br/>
         <label>{"Age"}</label>
         <br/>
-        <input placeholder={MINIMUM_PLAYER_AGE.to_string()} required=true type="number" min={MINIMUM_PLAYER_AGE.to_string()} max={MAXIMUM_PLAYER_AGE.to_string()} value={player.age.to_string()}
+        <input class="input is-small" placeholder={MINIMUM_PLAYER_AGE.to_string()} required=true type="number" min={MINIMUM_PLAYER_AGE.to_string()} max={MAXIMUM_PLAYER_AGE.to_string()} value={player.age.to_string()}
         onchange={dispatch.reduce_mut_callback_with(move |model, e: Event| {
             let input: HtmlInputElement = e.target_unchecked_into();
 
             match input.value().parse::<i8>() {
-                Ok(age) => model.player.age = age,
-                Err(_) => web_sys::window().unwrap().alert_with_message("Cannot parse age! Only number accepted").unwrap(),
+                Ok(age) => if age >= MINIMUM_PLAYER_AGE && age <= MAXIMUM_PLAYER_AGE {
+                    model.player.age = age;
+                } else {
+                    // Set default age
+                    model.player.age = MINIMUM_PLAYER_AGE;
+                    web_sys::window().unwrap().alert_with_message(format!("Cannot parse age! Only number from {} to {} is accepted", MINIMUM_PLAYER_AGE, MAXIMUM_PLAYER_AGE).as_str()).unwrap();
+                }
+                Err(_) => web_sys::window().unwrap().alert_with_message(format!("Cannot parse age! Only number from {} to {} is accepted", MINIMUM_PLAYER_AGE, MAXIMUM_PLAYER_AGE).as_str()).unwrap(),
             }
         })}
         />
+
+        <br/>
+        <label>{"Nationality"}</label>
+        <br/>
+        <div class="select is-small">
+            <select oninput={dispatch.reduce_mut_callback_with(move |model, e: InputEvent|
+                model.player.nationality = Nationality::from_str(&e.target_unchecked_into::<HtmlInputElement>().value()).unwrap()
+            )}>
+                { NATIONALITIES
+                    .iter()
+                    .map(|n|
+                        match n {
+                            Nationality::British => html!(<option selected={true}>{n}</option>),
+                            _otherwise => html!(<option>{n}</option>)
+                        }
+                    )
+                    .collect::<Html>() }
+            </select>
+        </div>
+
+        <br/>
+        <label>{"Your ship name"}</label>
+        <br/>
+        <input class="input is-small" placeholder="Luna" required=true type="text" value={player.ship.name.to_string()}
+            onchange={dispatch.reduce_mut_callback_with(move |model, e: Event| {
+                let input: HtmlInputElement = e.target_unchecked_into();
+
+                model.player.ship.name = input.value();
+            })}
+        />
+
+        <br/>
+        <label>{"Ship Class"}</label>
+        <br/>
+        <div class="select is-small">
+            <select oninput={dispatch.reduce_mut_callback_with(move |model, e: InputEvent| {
+                let selection = e.target_unchecked_into::<HtmlInputElement>().value();
+                let mut ship_choice = SHIPS.get(&ShipClass::from_str(&selection).unwrap()).unwrap().clone();
+                let old_ship_name = &model.player.ship.name;
+                ship_choice.name = old_ship_name.to_string();
+
+                model.player.ship = ship_choice;
+            })}>
+                {
+                    SHIP_CLASSES
+                    .iter()
+                    .map(|n|
+                        match n {
+                            ShipClass::Sloop => html!(<option selected={true}>{n}</option>),
+                            // TODO: Limit to cutter, sloop and only brig when debug completed
+                            _otherwise => html!(<option>{n}</option>)
+                        }
+                    )
+                    .collect::<Html>() }
+            </select>
+        </div>
+        <br/>
         <br/>
         { onclick_switch_screen(dispatch, Screen::MainNavigation, "Continue") }
         { onclick_switch_screen(dispatch, Screen::MainMenu, "Back") }
@@ -99,6 +164,14 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     }
 }
 
+fn styled_progress(id: &str, label: &str, max: i32, value: i32) -> Html {
+    html! {
+        <>
+            <label for={id.to_string()}>{label.to_string()} {": "} {value.to_string()} {"/"} {max.to_string()}</label>
+            <progress class="progress is-small" id={id.to_string()} max={max.to_string()} value={value.to_string()}></progress>
+        </>
+    }
+}
 fn player_info(model: &Rc<Model>) -> Html {
     html! {
         <>
@@ -109,11 +182,12 @@ fn player_info(model: &Rc<Model>) -> Html {
         <p>{"Owned Food: "} {model.player.ship.cargos.food.unit}</p>
         <p>{"Owned Wood: "} {model.player.ship.cargos.wood.unit}</p>
         <p>{"Owned Sugar: "} {model.player.ship.cargos.sugar.unit}</p>
-        <p>{"Cargos: "} {model.player.ship.cargos.total_unit()} {"/"} {model.player.ship.cargos_capacity}</p>
-        <p>{"Hull: "} {model.player.ship.hull} {"/"} {model.player.ship.hull_capacity}</p>
-        <p>{"Crew: "} {model.player.ship.crew} {"/"} {model.player.ship.crew_capacity}</p>
+        { styled_progress("cargos", "Cargos", model.player.ship.cargos_capacity.into(), model.player.ship.cargos.total_unit()) }
+        { styled_progress("hull", "Hull", model.player.ship.hull_capacity.into(), model.player.ship.hull.into()) }
+        { styled_progress("crew", "Crew", model.player.ship.crew_capacity, model.player.ship.crew) }
         <p>{"Cannons: "} {model.player.ship.cannons} {"/"} {model.player.ship.cannons_capacity}</p>
         <p>{"Ship class: "} {model.player.ship.class}</p>
+        <p>{"Ship name: "} {&model.player.ship.name}</p>
         </>
     }
 }

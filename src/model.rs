@@ -1,5 +1,7 @@
-use std::collections::HashMap;
 use std::fmt::Display;
+use std::string::ParseError;
+use std::{collections::HashMap, str::FromStr};
+use strum::IntoEnumIterator;
 use yewdux::prelude::*;
 
 use chrono::NaiveDate;
@@ -16,80 +18,148 @@ pub const MINIMUM_PLAYER_AGE: i8 = 18;
 pub const MAXIMUM_PLAYER_AGE: i8 = 65;
 
 lazy_static! {
-    pub static ref SHIPS: Vec<Ship> = vec![
-        Ship {
-            class: ShipClass::Cutter,
-            crew: 8,
-            crew_capacity: 8,
-            hull: 40,
-            hull_capacity: 40,
-            cannons: 4,
-            cannons_capacity: 8,
-            cargos_capacity: 32,
-            price: 2100,
-            ..Default::default()
-        },
-        Ship {
-            class: ShipClass::Sloop,
-            crew: 14,
-            crew_capacity: 14,
-            hull: 62,
-            hull_capacity: 62,
-            cannons: 8,
-            cannons_capacity: 8,
-            cargos_capacity: 46,
-            price: 3200,
-            ..Default::default()
-        },
-        Ship {
-            class: ShipClass::Brig,
-            crew: 18,
-            crew_capacity: 18,
-            hull: 70,
-            hull_capacity: 70,
-            cannons: 10,
-            cannons_capacity: 10,
-            cargos_capacity: 70,
-            price: 5000,
-            ..Default::default()
-        },
-        Ship {
-            class: ShipClass::Junk,
-            crew: 24,
-            crew_capacity: 18,
-            hull: 70,
-            hull_capacity: 70,
-            cannons: 6,
-            cannons_capacity: 6,
-            cargos_capacity: 80,
-            price: 5500,
-            ..Default::default()
-        },
-        Ship {
-            crew: 32,
-            crew_capacity: 32,
-            hull: 90,
-            hull_capacity: 90,
-            cannons: 10,
-            cannons_capacity: 10,
-            cargos_capacity: 210,
-            class: ShipClass::Galleon,
-            price: 10_000,
-            ..Default::default()
-        },
-        Ship {
-            crew: 40,
-            crew_capacity: 40,
-            hull: 140,
-            hull_capacity: 140,
-            cannons: 14,
-            cannons_capacity: 14,
-            cargos_capacity: 150,
-            class: ShipClass::Frigate,
-            price: 35_000,
-            ..Default::default()
-        },
-    ];
+    pub static ref SHIPS: HashMap<ShipClass, Ship> = HashMap::from([
+        (
+            ShipClass::Cutter,
+            Ship {
+                class: ShipClass::Cutter,
+                crew: 8,
+                crew_capacity: 8,
+                hull: 40,
+                hull_capacity: 40,
+                cannons: 4,
+                cannons_capacity: 8,
+                cargos_capacity: 32,
+                price: 2100,
+                cargos: Cargos {
+                    food: Cargo {
+                        unit: 12,
+                        kind: CargoKind::Food,
+                        ..Default::default()
+                    },
+                    ..Default::default()
+                },
+                ..Default::default()
+            }
+        ),
+        (
+            ShipClass::Sloop,
+            Ship {
+                class: ShipClass::Sloop,
+                crew: 14,
+                crew_capacity: 14,
+                hull: 62,
+                hull_capacity: 62,
+                cannons: 8,
+                cannons_capacity: 8,
+                cargos_capacity: 46,
+                price: 3200,
+                cargos: Cargos {
+                    food: Cargo {
+                        unit: 19,
+                        kind: CargoKind::Food,
+                        ..Default::default()
+                    },
+                    ..Default::default()
+                },
+                ..Default::default()
+            }
+        ),
+        (
+            ShipClass::Brig,
+            Ship {
+                class: ShipClass::Brig,
+                crew: 18,
+                crew_capacity: 18,
+                hull: 70,
+                hull_capacity: 70,
+                cannons: 10,
+                cannons_capacity: 10,
+                cargos_capacity: 70,
+                price: 5000,
+                cargos: Cargos {
+                    food: Cargo {
+                        unit: 32,
+                        kind: CargoKind::Food,
+                        ..Default::default()
+                    },
+                    ..Default::default()
+                },
+                ..Default::default()
+            }
+        ),
+        (
+            ShipClass::Junk,
+            Ship {
+                class: ShipClass::Junk,
+                crew: 24,
+                crew_capacity: 18,
+                hull: 70,
+                hull_capacity: 70,
+                cannons: 6,
+                cannons_capacity: 6,
+                cargos_capacity: 80,
+                price: 5500,
+                cargos: Cargos {
+                    food: Cargo {
+                        unit: 36,
+                        kind: CargoKind::Food,
+                        ..Default::default()
+                    },
+                    ..Default::default()
+                },
+                ..Default::default()
+            }
+        ),
+        (
+            ShipClass::Galleon,
+            Ship {
+                crew: 32,
+                crew_capacity: 32,
+                hull: 90,
+                hull_capacity: 90,
+                cannons: 10,
+                cannons_capacity: 10,
+                cargos_capacity: 210,
+                class: ShipClass::Galleon,
+                price: 10_000,
+                cargos: Cargos {
+                    food: Cargo {
+                        unit: 60,
+                        kind: CargoKind::Food,
+                        ..Default::default()
+                    },
+                    ..Default::default()
+                },
+                ..Default::default()
+            }
+        ),
+        (
+            ShipClass::Frigate,
+            Ship {
+                crew: 40,
+                crew_capacity: 40,
+                hull: 140,
+                hull_capacity: 140,
+                cannons: 14,
+                cannons_capacity: 14,
+                cargos_capacity: 150,
+                class: ShipClass::Frigate,
+                price: 35_000,
+                cargos: Cargos {
+                    food: Cargo {
+                        unit: 42,
+                        kind: CargoKind::Food,
+                        ..Default::default()
+                    },
+                    ..Default::default()
+                },
+                ..Default::default()
+            }
+        ),
+    ]);
+    pub static ref NATIONALITIES: Vec<Nationality> = Nationality::iter().collect();
+    pub static ref SHIP_CLASSES: Vec<ShipClass> = ShipClass::iter().collect();
 }
 
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
@@ -128,6 +198,17 @@ pub enum Nationality {
     French,
 }
 
+impl FromStr for Nationality {
+    type Err = ParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Spanish" => Ok(Self::Spanish),
+            "French" => Ok(Self::French),
+            _otherwise => Ok(Self::British),
+        }
+    }
+}
+
 #[derive(Default, EnumIter, Display, Copy, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 pub enum CargoKind {
     #[default]
@@ -156,7 +237,9 @@ impl Cargos {
     }
 }
 
-#[derive(Default, Copy, Display, Hash, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
+#[derive(
+    Default, Copy, Display, EnumIter, Hash, Clone, PartialEq, Eq, Deserialize, Serialize, Store,
+)]
 pub enum ShipClass {
     Cutter,
     #[default]
@@ -165,6 +248,21 @@ pub enum ShipClass {
     Junk,
     Galleon,
     Frigate,
+}
+
+impl FromStr for ShipClass {
+    type Err = ParseError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Cutter" => Ok(Self::Cutter),
+            "Brig" => Ok(Self::Brig),
+            "Junk" => Ok(Self::Junk),
+            "Galleon" => Ok(Self::Galleon),
+            "Frigate" => Ok(Self::Frigate),
+            _otherwise => Ok(Self::Sloop),
+        }
+    }
 }
 
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
@@ -270,20 +368,15 @@ pub struct Model {
 // Initializer for our whole model at launch
 impl Default for Model {
     fn default() -> Self {
-        let mut player_ship = SHIPS[1].clone();
+        let mut player_ship = SHIPS.get(&ShipClass::Sloop).unwrap().clone();
         player_ship.name = String::from("Luna");
-        player_ship.cargos.food = Cargo {
-            unit: 12,
-            kind: CargoKind::Food,
-            price: i32::default(),
-        };
         Self {
             date: NaiveDate::from_ymd(1680, 01, 01),
             player: Player {
                 name: String::from("Player"),
                 age: 18,
                 nationality: Nationality::British,
-                coins: 2500,
+                coins: 25_000,
                 ship: player_ship,
             },
             ports: HashMap::from([

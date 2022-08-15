@@ -26,6 +26,26 @@ fn choice_of<T: Clone>(sequence: &[T], default: &T) -> T {
         .to_owned()
 }
 
+fn replace_ship(model: &mut model::Model, sc: &model::ShipClass) {
+    let window = web_sys::window().unwrap();
+    let mut s = model::SHIPS.get(sc).unwrap().clone();
+    s.name = model.player.ship.name.to_string();
+
+    if model.player.coins >= s.price {
+        if window
+            .confirm_with_message(format!("Are you sure you want to buy this {}?", sc).as_str())
+            .unwrap_or(false)
+        {
+            model.player.coins -= s.price;
+            model.player.ship = s;
+        }
+    } else {
+        window
+            .alert_with_message(format!("Insufficient fund to buy a {}!", sc).as_str())
+            .unwrap();
+    }
+}
+
 impl Reducer<model::Model> for model::Msg {
     fn apply(&self, mut model: Rc<model::Model>) -> Rc<model::Model> {
         let state = Rc::make_mut(&mut model);
@@ -61,14 +81,12 @@ impl Reducer<model::Model> for model::Msg {
                         "Blue Ocean",
                     ];
 
-                    let enemy_ship = choice_of(&model::SHIPS, &model::SHIPS[0]);
-
-                    let nationalities: Vec<model::Nationality> =
-                        model::Nationality::iter().collect();
-
                     let mut new_enemy = model::Enemy {
-                        ship: enemy_ship,
-                        nationality: choice_of(&nationalities, &nationalities[0]),
+                        ship: choice_of(
+                            &model::SHIPS.values().cloned().collect::<Vec<model::Ship>>(),
+                            &model::SHIPS.get(&model::ShipClass::default()).unwrap(),
+                        ),
+                        nationality: choice_of(&model::NATIONALITIES, &model::NATIONALITIES[0]),
                         ..Default::default()
                     };
 
@@ -338,7 +356,7 @@ impl Reducer<model::Model> for model::Msg {
             model::Msg::RepairShip(coins) => {
                 if coins >= &state.player.ship.cost_to_repair() {
                     state.player.coins -= state.player.ship.cost_to_repair();
-                    state.player.ship.hull = model::Model::default().player.ship.hull;
+                    state.player.ship.hull = state.player.ship.hull_capacity;
                 }
             }
 
@@ -366,42 +384,12 @@ impl Reducer<model::Model> for model::Msg {
                 }
             }
             model::Msg::BuyAndReplaceShip(sc) => match sc {
-                model::ShipClass::Cutter => {
-                    let s = model::SHIPS[0].clone();
-                    if state.player.coins >= s.price {
-                        state.player.ship = s;
-                    }
-                }
-                model::ShipClass::Sloop => {
-                    let s = model::SHIPS[1].clone();
-                    if state.player.coins >= s.price {
-                        state.player.ship = s;
-                    }
-                }
-                model::ShipClass::Brig => {
-                    let s = model::SHIPS[2].clone();
-                    if state.player.coins >= s.price {
-                        state.player.ship = s;
-                    }
-                }
-                model::ShipClass::Junk => {
-                    let s = model::SHIPS[3].clone();
-                    if state.player.coins >= s.price {
-                        state.player.ship = s;
-                    }
-                }
-                model::ShipClass::Galleon => {
-                    let s = model::SHIPS[4].clone();
-                    if state.player.coins >= s.price {
-                        state.player.ship = s;
-                    }
-                }
-                model::ShipClass::Frigate => {
-                    let s = model::SHIPS[5].clone();
-                    if state.player.coins >= s.price {
-                        state.player.ship = s;
-                    }
-                }
+                model::ShipClass::Cutter => replace_ship(&mut *state, &model::ShipClass::Cutter),
+                model::ShipClass::Sloop => replace_ship(&mut *state, &model::ShipClass::Sloop),
+                model::ShipClass::Brig => replace_ship(&mut *state, &model::ShipClass::Brig),
+                model::ShipClass::Junk => replace_ship(&mut *state, &model::ShipClass::Junk),
+                model::ShipClass::Galleon => replace_ship(&mut *state, &model::ShipClass::Galleon),
+                model::ShipClass::Frigate => replace_ship(&mut *state, &model::ShipClass::Frigate),
             },
             model::Msg::HireCrew(coins) => {
                 if coins >= &state.player.ship.cost_to_hire() {
