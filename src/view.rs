@@ -13,7 +13,11 @@ fn root_container(view: Html) -> Html {
     html! {
         <section class="section">
             <div class="container">
-                { view }
+                <div class="columns is-centered">
+                    <div class="column is-half">
+                        { view }
+                    </div>
+                </div>
             </div>
         </section>
     }
@@ -59,10 +63,17 @@ fn show_about(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
 
 fn show_main_menu(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
-        <div>
-                { onclick_switch_screen(dispatch, Screen::NewCharacter, "Start") }
-                <br/>
-                { onclick_switch_screen(dispatch, Screen::About, "About") }
+        <div class="tile is-ancestor">
+            <div class="tile is-vertical is-8">
+                <div class="tile is-parent is-vertical">
+                    <div class="tile">
+                        { onclick_switch_screen(dispatch, Screen::NewCharacter, "Start") }
+                    </div>
+                    <div class="tile">
+                        { onclick_switch_screen(dispatch, Screen::About, "About") }
+                    </div>
+                </div>
+            </div>
         </div>
     }
 }
