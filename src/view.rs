@@ -12,7 +12,11 @@ use crate::model::*;
 fn root_container(view: Html) -> Html {
     html! {
         <div class="container">
-        { view }
+            <div class="columns is-mobile is-centered">
+                <div class="column is-four-fifths">
+                    { view }
+                </div>
+            </div>
         </div>
     }
 }
@@ -189,6 +193,18 @@ fn player_info(model: &Rc<Model>) -> Html {
         <p>{"Ship class: "} {model.player.ship.class}</p>
         <p>{"Ship name: "} {&model.player.ship.name}</p>
         </>
+    }
+}
+
+fn player_info_box(player: &Player) -> Html {
+    html! {
+        <div class="box is-small">
+            <h4 class="title is-4">{&player.ship.name}</h4>
+            <p>{"Class: "} {&player.ship.class}</p>
+            { styled_progress("hull", "Hull", player.ship.hull_capacity.into(), player.ship.hull.into()) }
+            { styled_progress("crew", "Crew", player.ship.crew_capacity, player.ship.crew) }
+            { styled_progress("cannons", "Cannons", player.ship.cannons_capacity.into(), player.ship.cannons.into()) }
+        </div>
     }
 }
 
@@ -374,17 +390,28 @@ fn enemy_info(model: &Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
 
 fn show_skirmish_chase(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
-        <>
-        { debug_header(dispatch) }
-        <h2>{"Skirmish Chase"}</h2>
-        { player_info(&model) }
-        { enemy_info(&model, dispatch) }
-        <hr/>
+        <div class="tile is-ancestor">
+            <div class="tile is-vertical is-8">
+                <div class="tile">
+                    <div class="tile is-parent is-vertical">
+                        { player_info_box(&model.player) }
+                    </div>
 
-        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SkirmishChaseClose), "Close") }
-        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SkirmishChaseDistant), "Distant") }
-        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SkirmishChaseBroadside), "Broadside") }
-        </>
+                    <div class="tile is-parent is-vertical">
+                        { enemy_info(&model, dispatch) }
+                    </div>
+
+                    <div class="tile is-parent is-vertical">
+                    { enemy_info(&model, dispatch) }
+                </div>
+                </div>
+                <hr/>
+
+                { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SkirmishChaseClose), "Close") }
+                { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SkirmishChaseDistant), "Distant") }
+                { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SkirmishChaseBroadside), "Broadside") }
+            </div>
+        </div>
     }
 }
 
