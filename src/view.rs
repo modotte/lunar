@@ -11,13 +11,11 @@ use crate::model::*;
 
 fn root_container(view: Html) -> Html {
     html! {
-        <div class="container">
-            <div class="columns is-mobile is-centered">
-                <div class="column is-four-fifths">
-                    { view }
-                </div>
+        <section class="section">
+            <div class="container">
+                { view }
             </div>
-        </div>
+        </section>
     }
 }
 
@@ -52,21 +50,20 @@ fn debug_header(dispatch: &Dispatch<Model>) -> Html {
 fn show_about(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
         <>
-        { debug_header(dispatch) }
-        <a target="_blank" href="https://github.com/modotte/lunar">{"Source code on Github"}</a>
-        <p>{"Licensed under the GPL-3.0-or-later license"}</p>
-        { onclick_switch_screen(dispatch, Screen::MainMenu, "Back") }
+            <a target="_blank" href="https://github.com/modotte/lunar">{"Source code on Github"}</a>
+            <p>{"Licensed under the GPL-3.0-or-later license"}</p>
+            { onclick_switch_screen(dispatch, Screen::MainMenu, "Back") }
         </>
     }
 }
 
 fn show_main_menu(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
-        <>
-        { onclick_switch_screen(dispatch, Screen::NewCharacter, "Start") }
-        <br/>
-        { onclick_switch_screen(dispatch, Screen::About, "About") }
-        </>
+        <div>
+                { onclick_switch_screen(dispatch, Screen::NewCharacter, "Start") }
+                <br/>
+                { onclick_switch_screen(dispatch, Screen::About, "About") }
+        </div>
     }
 }
 
