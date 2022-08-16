@@ -87,6 +87,13 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
         <div>
         { debug_header(dispatch) }
+
+        <div>
+            <h3 class="title is-3">{"Create a new character!"}</h3>
+        </div>
+
+        <hr/>
+
         <label>{"Name"}</label>
         <br/>
         <input class="input is-small" placeholder="Player" required=true type="text" value={player.name.to_string()}
