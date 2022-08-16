@@ -356,26 +356,35 @@ fn cargo_market(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
 
 fn show_dock_market(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
-        <>
-        { debug_header(dispatch) }
-        { player_info(&model) }
-        <hr/>
-        <h2>{"Market screen"}</h2>
+        <div>
+            <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+                <ul>
+                    <li>{ link_switch_screen(dispatch, Screen::MainNavigation, "Navigation") }</li>
+                    <li>{ link_switch_screen(dispatch, Screen::Dock, "Dock") }</li>
+                    <li class="is-active"><a href="#" aria-current="page">{"Market"}</a></li>
+                </ul>
+            </nav>
+            { player_info(&model) }
+            <hr/>
+            <h2>{"Market screen"}</h2>
 
-        { cargo_market(model, dispatch) }
+            { cargo_market(model, dispatch) }
 
-        { onclick_switch_screen(dispatch, Screen::Dock, "Back") }
-        </>
+            { onclick_switch_screen(dispatch, Screen::Dock, "Back") }
+        </div>
     }
 }
 
 fn show_dock_shipyard(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
-        <>
-        { debug_header(dispatch) }
-        <hr/>
-
-
+        <div>
+            <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+                <ul>
+                    <li>{ link_switch_screen(dispatch, Screen::MainNavigation, "Navigation") }</li>
+                    <li>{ link_switch_screen(dispatch, Screen::Dock, "Dock") }</li>
+                    <li class="is-active"><a href="#" aria-current="page">{"Shipyard"}</a></li>
+                </ul>
+            </nav>
         { player_info(&model) }
 
         <p>{"Cost to repair: "} { &model.player.ship.cost_to_repair() }</p>
@@ -388,7 +397,7 @@ fn show_dock_shipyard(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
 
         { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::RepairShip(model.player.coins)), "Repair all") }
         { onclick_switch_screen(dispatch, Screen::Dock, "Back") }
-        </>
+        </div>
     }
 }
 
