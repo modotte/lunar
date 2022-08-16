@@ -266,38 +266,56 @@ fn show_profile(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
 
 fn show_dock_tavern_hire_crew(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
-        <>
-        { player_info(&model) }
+        <div>
+            <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+                <ul>
+                    <li>{ link_switch_screen(dispatch, Screen::MainNavigation, "Navigation") }</li>
+                    <li>{ link_switch_screen(dispatch, Screen::Dock, "Dock") }</li>
+                    <li>{ link_switch_screen(dispatch, Screen::DockTavern, "Tavern") }</li>
+                    <li class="is-active"><a href="#" aria-current="page">{"Hire Crew"}</a></li>
+                </ul>
+            </nav>
+            { player_info(&model) }
 
-        <p>{"Cost to hire all: "} {&model.player.ship.cost_to_hire() }</p>
-        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::HireCrew(model.player.coins)), "Hire until full") }
-        { onclick_switch_screen(dispatch, Screen::DockTavern, "Back") }
-        </>
+            <p>{"Cost to hire all: "} {&model.player.ship.cost_to_hire() }</p>
+            { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::HireCrew(model.player.coins)), "Hire until full") }
+            { onclick_switch_screen(dispatch, Screen::DockTavern, "Back") }
+        </div>
     }
 }
 
 fn show_dock_tavern(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
-        <>
-        { debug_header(dispatch) }
-        <h2>{"Tavern screen"}</h2>
-        { onclick_switch_screen(dispatch, Screen::TavernHireCrew, "Hire crew") }
-        { onclick_switch_screen(dispatch, Screen::Dock, "Back") }
-        </>
+        <div>
+            <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+                <ul>
+                    <li>{ link_switch_screen(dispatch, Screen::MainNavigation, "Navigation") }</li>
+                    <li>{ link_switch_screen(dispatch, Screen::Dock, "Dock") }</li>
+                    <li class="is-active"><a href="#" aria-current="page">{"Tavern"}</a></li>
+                </ul>
+            </nav>
+            <h2>{"Tavern screen"}</h2>
+            { onclick_switch_screen(dispatch, Screen::TavernHireCrew, "Hire crew") }
+            { onclick_switch_screen(dispatch, Screen::Dock, "Back") }
+        </div>
     }
 }
 
 fn show_dock(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
-        <>
-        { debug_header(dispatch) }
-        <h2>{"Dock screen"}</h2>
-
-        { onclick_switch_screen(dispatch, Screen::DockTavern, "Tavern") }
-        { onclick_switch_screen(dispatch, Screen::DockMarket, "Market") }
-        { onclick_switch_screen(dispatch, Screen::DockShipyard, "Shipyard") }
-        { onclick_switch_screen(dispatch, Screen::MainNavigation, "Back") }
-        </>
+        <div>
+            <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+                <ul>
+                    <li>{ link_switch_screen(dispatch, Screen::MainNavigation, "Navigation") }</li>
+                    <li class="is-active"><a href="#" aria-current="page">{"Dock"}</a></li>
+                </ul>
+            </nav>
+            <h2>{"Dock screen"}</h2>
+            { onclick_switch_screen(dispatch, Screen::DockTavern, "Tavern") }
+            { onclick_switch_screen(dispatch, Screen::DockMarket, "Market") }
+            { onclick_switch_screen(dispatch, Screen::DockShipyard, "Shipyard") }
+            { onclick_switch_screen(dispatch, Screen::MainNavigation, "Back") }
+        </div>
     }
 }
 
