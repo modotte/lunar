@@ -57,11 +57,11 @@ fn debug_header(dispatch: &Dispatch<Model>) -> Html {
 
 fn show_about(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
-        <>
+        <div>
             <a target="_blank" href="https://github.com/modotte/lunar">{"Source code on Github"}</a>
             <p>{"Licensed under the GPL-3.0-or-later license"}</p>
             { onclick_switch_screen(dispatch, Screen::MainMenu, "Back") }
-        </>
+        </div>
     }
 }
 
@@ -85,7 +85,7 @@ fn show_main_menu(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
 fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     let player = &model.player;
     html! {
-        <>
+        <div>
         { debug_header(dispatch) }
         <label>{"Name"}</label>
         <br/>
@@ -176,35 +176,35 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         <br/>
         { onclick_switch_screen(dispatch, Screen::MainNavigation, "Continue") }
         { onclick_switch_screen(dispatch, Screen::MainMenu, "Back") }
-        </>
+        </div>
     }
 }
 
 fn styled_progress(id: &str, label: &str, max: i32, value: i32) -> Html {
     html! {
-        <>
+        <div>
             <label for={id.to_string()}>{label.to_string()} {": "} {value.to_string()} {"/"} {max.to_string()}</label>
             <progress class="progress is-small" id={id.to_string()} max={max.to_string()} value={value.to_string()}></progress>
-        </>
+        </div>
     }
 }
 fn player_info(model: &Rc<Model>) -> Html {
     html! {
-        <>
-        <h2>{"Player"}</h2>
-        <p>{"Date: "} {model.date}</p>
-        <p>{"Current location: "} {model.current_port_location}</p>
-        <p>{"Coins: "} {model.player.coins}</p>
-        <p>{"Owned Food: "} {model.player.ship.cargos.food.unit}</p>
-        <p>{"Owned Wood: "} {model.player.ship.cargos.wood.unit}</p>
-        <p>{"Owned Sugar: "} {model.player.ship.cargos.sugar.unit}</p>
-        { styled_progress("cargos", "Cargos", model.player.ship.cargos_capacity.into(), model.player.ship.cargos.total_unit()) }
-        { styled_progress("hull", "Hull", model.player.ship.hull_capacity.into(), model.player.ship.hull.into()) }
-        { styled_progress("crew", "Crew", model.player.ship.crew_capacity, model.player.ship.crew) }
-        <p>{"Cannons: "} {model.player.ship.cannons} {"/"} {model.player.ship.cannons_capacity}</p>
-        <p>{"Ship class: "} {model.player.ship.class}</p>
-        <p>{"Ship name: "} {&model.player.ship.name}</p>
-        </>
+        <div>
+            <h2>{"Player"}</h2>
+            <p>{"Date: "} {model.date}</p>
+            <p>{"Current location: "} {model.current_port_location}</p>
+            <p>{"Coins: "} {model.player.coins}</p>
+            <p>{"Owned Food: "} {model.player.ship.cargos.food.unit}</p>
+            <p>{"Owned Wood: "} {model.player.ship.cargos.wood.unit}</p>
+            <p>{"Owned Sugar: "} {model.player.ship.cargos.sugar.unit}</p>
+            { styled_progress("cargos", "Cargos", model.player.ship.cargos_capacity.into(), model.player.ship.cargos.total_unit()) }
+            { styled_progress("hull", "Hull", model.player.ship.hull_capacity.into(), model.player.ship.hull.into()) }
+            { styled_progress("crew", "Crew", model.player.ship.crew_capacity, model.player.ship.crew) }
+            <p>{"Cannons: "} {model.player.ship.cannons} {"/"} {model.player.ship.cannons_capacity}</p>
+            <p>{"Ship class: "} {model.player.ship.class}</p>
+            <p>{"Ship name: "} {&model.player.ship.name}</p>
+        </div>
     }
 }
 
@@ -401,20 +401,20 @@ fn show_dock_shipyard(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
 
 fn show_skirmish(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
-        <>
-        { debug_header(dispatch) }
-        <h2>{"Skirmish"}</h2>
+        <div>
+            { debug_header(dispatch) }
+            <h2>{"Skirmish"}</h2>
 
-        { onclick_switch_screen(dispatch, Screen::SkirmishChase, "Chase") }
-        { onclick_switch_screen(dispatch, Screen::MainNavigation, "Abort") }
-        </>
+            { onclick_switch_screen(dispatch, Screen::SkirmishChase, "Chase") }
+            { onclick_switch_screen(dispatch, Screen::MainNavigation, "Abort") }
+        </div>
     }
 }
 
 fn enemy_info(model: &Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     let enemy = model.enemy.as_ref().unwrap();
     html! {
-        <>
+        <div>
             <h2>{"Enemy"}</h2>
             <p>{"Enemy ship name: "} {&enemy.ship.name}</p>
             <p>{"Enemy ship class: "} {&enemy.ship.class}</p>
@@ -426,7 +426,7 @@ fn enemy_info(model: &Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
             <p>{"Enemy food: "} {&enemy.ship.cargos.food.unit}</p>
             <p>{"Enemy wood: "} {&enemy.ship.cargos.wood.unit}</p>
             <p>{"Enemy sugar: "} {&enemy.ship.cargos.sugar.unit}</p>
-        </>
+        </div>
     }
 }
 
@@ -462,83 +462,83 @@ fn show_skirmish_loot(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     let enemy_cargos = &model.enemy.as_ref().unwrap().ship.cargos;
 
     html! {
-        <>
-        <h2>{"Loot"}</h2>
+        <div>
+            <h2>{"Loot"}</h2>
 
-        { player_info(&model) }
-        { enemy_info(&model, dispatch) }
+            { player_info(&model) }
+            { enemy_info(&model, dispatch) }
 
-        <p>
-            { if enemy_cargos.total_unit() > 0 && player_ship.cargos.total_unit() < player_ship.cargos_capacity {
-            html! {
-                <>
-                { ternary!(enemy_cargos.food.unit > 0, onclick_styled_btn(dispatch.apply_callback(move |_| Msg::TakeEnemyCargo(CargoKind::Food)), "Take 1"), html!()) }
-                { ternary!(enemy_cargos.wood.unit > 0, onclick_styled_btn(dispatch.apply_callback(move |_| Msg::TakeEnemyCargo(CargoKind::Wood)), "Take 1"), html!()) }
-                { ternary!(enemy_cargos.sugar.unit > 0, onclick_styled_btn(dispatch.apply_callback(move |_| Msg::TakeEnemyCargo(CargoKind::Sugar)), "Take 1"), html!()) }
-                </>
+            <p>
+                { if enemy_cargos.total_unit() > 0 && player_ship.cargos.total_unit() < player_ship.cargos_capacity {
+                html! {
+                    <>
+                    { ternary!(enemy_cargos.food.unit > 0, onclick_styled_btn(dispatch.apply_callback(move |_| Msg::TakeEnemyCargo(CargoKind::Food)), "Take 1"), html!()) }
+                    { ternary!(enemy_cargos.wood.unit > 0, onclick_styled_btn(dispatch.apply_callback(move |_| Msg::TakeEnemyCargo(CargoKind::Wood)), "Take 1"), html!()) }
+                    { ternary!(enemy_cargos.sugar.unit > 0, onclick_styled_btn(dispatch.apply_callback(move |_| Msg::TakeEnemyCargo(CargoKind::Sugar)), "Take 1"), html!()) }
+                    </>
+                }
+                }
+                else {
+                    html!{ "Enemy have no loot." }
+                }
             }
-            }
-            else {
-                html!{ "Enemy have no loot." }
-            }
-        }
-        </p>
+            </p>
 
-        { onclick_switch_screen(dispatch, Screen::MainNavigation, "Continue") }
-        </>
+            { onclick_switch_screen(dispatch, Screen::MainNavigation, "Continue") }
+        </div>
     }
 }
 
 fn show_skirmish_battle(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
-        <>
-        { debug_header(dispatch) }
-        <h2>{"Battle!"}</h2>
-        { player_info(&model) }
-        { enemy_info(&model, dispatch) }
-        <hr/>
+        <div>
+            { debug_header(dispatch) }
+            <h2>{"Battle!"}</h2>
+            { player_info(&model) }
+            { enemy_info(&model, dispatch) }
+            <hr/>
 
-        { match &model.enemy {
-            Some(enemy) => {
-                if enemy.ship.crew < MINIMUM_SHIP_CREW.into() {
-                    html! {
-                        <>
-                        { onclick_switch_screen(dispatch, Screen::SkirmishLoot, "Loot enemy") }
-                        { onclick_switch_screen(dispatch, Screen::MainNavigation, "Continue") }
-                        </>
+            { match &model.enemy {
+                Some(enemy) => {
+                    if enemy.ship.crew < MINIMUM_SHIP_CREW.into() {
+                        html! {
+                            <>
+                            { onclick_switch_screen(dispatch, Screen::SkirmishLoot, "Loot enemy") }
+                            { onclick_switch_screen(dispatch, Screen::MainNavigation, "Continue") }
+                            </>
+                        }
                     }
-                }
-                else {
-                    html! {
-                        <>
-                        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SkirmishBattleSwingSword), "Sword Attack") }
-                        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SkirmishBattleShootFalconet), "Shoot Falconet volleys") }
-                        </>
+                    else {
+                        html! {
+                            <>
+                            { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SkirmishBattleSwingSword), "Sword Attack") }
+                            { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SkirmishBattleShootFalconet), "Shoot Falconet volleys") }
+                            </>
+                        }
                     }
-                }
-            },
-            None => { onclick_switch_screen(dispatch, Screen::MainNavigation, "Back") },
-        }}
-        </>
+                },
+                None => { onclick_switch_screen(dispatch, Screen::MainNavigation, "Back") },
+            }}
+        </div>
     }
 }
 
 fn show_game_lost(model: Rc<Model>, dispatch: &Dispatch<Model>, reason: &GameLostReason) -> Html {
     html! {
-        <>
-        <p>
-        {
-            match reason {
-                GameLostReason::ShipSunk => html!("Your ship and your crew sunk into the deep abyss of the ocean. RIP"),
-                GameLostReason::AllCrewDied => html!("All your crew died and your fate is left to your enemy. RIP"),
-                GameLostReason::FoodMutiny => html!("You ran out of food to feed your crew! One of your crew members took the matter into their own hand and managed to cause a mutiny! Where do you wanna go now? RIP "),
+        <div>
+            <p>
+            {
+                match reason {
+                    GameLostReason::ShipSunk => html!("Your ship and your crew sunk into the deep abyss of the ocean. RIP"),
+                    GameLostReason::AllCrewDied => html!("All your crew died and your fate is left to your enemy. RIP"),
+                    GameLostReason::FoodMutiny => html!("You ran out of food to feed your crew! One of your crew members took the matter into their own hand and managed to cause a mutiny! Where do you wanna go now? RIP "),
+                }
             }
-        }
-        </p>
+            </p>
 
-        <br/>
-        { onclick_switch_screen(dispatch, Screen::MainMenu, "Back to main menu") }
-        </>
+            <br/>
+            { onclick_switch_screen(dispatch, Screen::MainMenu, "Back to main menu") }
+        </div>
     }
 }
 
