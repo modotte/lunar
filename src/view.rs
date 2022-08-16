@@ -33,6 +33,10 @@ fn onclick_switch_screen(dispatch: &Dispatch<Model>, screen: Screen, name: &str)
     }
 }
 
+fn link_switch_screen(dispatch: &Dispatch<Model>, screen: Screen, name: &str) -> Html {
+    html! { <a href="#" onclick={dispatch.apply_callback(move |_| Msg::SwitchScreen(screen.to_owned()))}>{name}</a>}
+}
+
 fn onclick_switch_location(dispatch: &Dispatch<Model>, location: PortLocation, name: &str) -> Html {
     html! {
         { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SwitchPlayerLocation(location)), name) }
@@ -218,40 +222,45 @@ fn player_info_box(player: &Player) -> Html {
 
 fn show_main_navigation(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
-        <>
-        { debug_header(dispatch) }
-        { player_info(&model) }
-        <hr/>
+        <div>
+            { debug_header(dispatch) }
+            { player_info(&model) }
+            <hr/>
 
-        { onclick_switch_screen(dispatch, Screen::Profile, "Profile") }
-        { onclick_switch_screen(dispatch, Screen::Dock, "Dock") }
-        { onclick_switch_screen(dispatch, Screen::Skirmish, "Skirmish")}
-        { onclick_switch_screen(dispatch, Screen::MainMenu, "Main Menu") }
+            { onclick_switch_screen(dispatch, Screen::Profile, "Profile") }
+            { onclick_switch_screen(dispatch, Screen::Dock, "Dock") }
+            { onclick_switch_screen(dispatch, Screen::Skirmish, "Skirmish")}
+            { onclick_switch_screen(dispatch, Screen::MainMenu, "Main Menu") }
 
-        <hr/>
+            <hr/>
 
-        { onclick_switch_location(dispatch, PortLocation::Barbados, "Barbados") }
-        { onclick_switch_location(dispatch, PortLocation::PortRoyal, "Port Royal") }
-        { onclick_switch_location(dispatch, PortLocation::Nassau, "Nassau") }
-        </>
+            { onclick_switch_location(dispatch, PortLocation::Barbados, "Barbados") }
+            { onclick_switch_location(dispatch, PortLocation::PortRoyal, "Port Royal") }
+            { onclick_switch_location(dispatch, PortLocation::Nassau, "Nassau") }
+        </div>
     }
 }
 
 fn show_profile(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
-        <>
-        { debug_header(dispatch) }
-        <h2>{"Profile"}</h2>
-        <hr/>
+        <div>
+            <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+                <ul>
+                    <li>{ link_switch_screen(dispatch, Screen::MainNavigation, "Navigation") }</li>
+                    <li class="is-active"><a href="#" aria-current="page">{"Profile"}</a></li>
+                </ul>
+            </nav>
+            <h2>{"Profile"}</h2>
+            <hr/>
 
-        <ul>
-            <li>{"Name: "} {&model.player.name}</li>
-            <li>{"Age: "} {&model.player.age}</li>
-            <li>{"Nationality: "} {&model.player.nationality}</li>
-        </ul>
+            <ul>
+                <li>{"Name: "} {&model.player.name}</li>
+                <li>{"Age: "} {&model.player.age}</li>
+                <li>{"Nationality: "} {&model.player.nationality}</li>
+            </ul>
 
-        { onclick_switch_screen(dispatch, Screen::MainNavigation, "Back") }
-        </>
+            { onclick_switch_screen(dispatch, Screen::MainNavigation, "Back") }
+        </div>
     }
 }
 
