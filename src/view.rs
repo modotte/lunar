@@ -223,6 +223,8 @@ fn player_info_box(player: &Player) -> Html {
 fn show_main_navigation(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
         <div>
+            <h2 class="title is-2">{&model.current_port_location}</h2>
+            <br/>
             <nav class="panel">
                 <p class="panel-tabs">
                     <a>{ link_switch_screen(dispatch, Screen::Profile, "Profile") }</a>
@@ -230,7 +232,6 @@ fn show_main_navigation(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
                     <a>{ link_switch_screen(dispatch, Screen::Skirmish, "Skirmish") }</a>
                 </p>
             </nav>
-            { player_info(&model) }
             <hr/>
             { onclick_switch_location(dispatch, PortLocation::Barbados, "Barbados") }
             { onclick_switch_location(dispatch, PortLocation::PortRoyal, "Port Royal") }
