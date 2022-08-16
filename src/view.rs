@@ -223,17 +223,15 @@ fn player_info_box(player: &Player) -> Html {
 fn show_main_navigation(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
         <div>
-            { debug_header(dispatch) }
+            <nav class="panel">
+                <p class="panel-tabs">
+                    <a>{ link_switch_screen(dispatch, Screen::Profile, "Profile") }</a>
+                    <a>{ link_switch_screen(dispatch, Screen::Dock, "Dock") }</a>
+                    <a>{ link_switch_screen(dispatch, Screen::Skirmish, "Skirmish") }</a>
+                </p>
+            </nav>
             { player_info(&model) }
             <hr/>
-
-            { onclick_switch_screen(dispatch, Screen::Profile, "Profile") }
-            { onclick_switch_screen(dispatch, Screen::Dock, "Dock") }
-            { onclick_switch_screen(dispatch, Screen::Skirmish, "Skirmish")}
-            { onclick_switch_screen(dispatch, Screen::MainMenu, "Main Menu") }
-
-            <hr/>
-
             { onclick_switch_location(dispatch, PortLocation::Barbados, "Barbados") }
             { onclick_switch_location(dispatch, PortLocation::PortRoyal, "Port Royal") }
             { onclick_switch_location(dispatch, PortLocation::Nassau, "Nassau") }
