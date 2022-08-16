@@ -10,7 +10,12 @@ anyhow = "1.0"
 serde = { version = "1.0.114" }
 yew = { git = "https://github.com/yewstack/yew.git", features = ["csr"] }
 yewdux = { git = "https://github.com/intendednull/yewdux.git" }
-web-sys = "*"
+web-sys = { version = "0.3", features = [
+    "HtmlInputElement",
+    "Window",
+    "Event",
+    "InputEvent",
+] }
 js-sys = "*"
 wasm-bindgen = "0.2"
 enum-display-derive = "0.1.1"

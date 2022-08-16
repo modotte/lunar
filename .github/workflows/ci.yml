@@ -1,8 +1,10 @@
-name: Build project web client output and publish to github pages.
+name: Routine build CI
 
 on:
-  release:
-    types: [ published ]
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ dev ]
 
 env:
   CARGO_TERM_COLOR: always
@@ -36,16 +38,4 @@ jobs:
       - name: Lint codebase via clippy
         run: cargo clippy
       - name: Build project
-        run: trunk build --public-url "/lunar/" --release
-        # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore)
-      - name: Add .nojekyll file
-        run: touch dist/.nojekyll
-      - name: Deploy to Github pages
-        if: success()
-        uses: crazy-max/ghaction-github-pages@v2
-        with:
-          target_branch: gh_pages
-          build_dir: dist
-          keep_history: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: trunk build  --release
