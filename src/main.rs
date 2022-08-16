@@ -26,14 +26,30 @@ fn choice_of<T: Clone>(sequence: &[T], default: &T) -> T {
 
 fn replace_ship(model: &mut model::Model, sc: &model::ShipClass) {
     let window = web_sys::window().unwrap();
+    let port_cgs = &model
+        .ports
+        .get(&model.current_port_location)
+        .unwrap()
+        .cargos;
+    let (food_price, wood_price, sugar_price) = (
+        port_cgs.food.price,
+        port_cgs.wood.price,
+        port_cgs.sugar.price,
+    );
     let mut s = model::SHIPS.get(sc).unwrap().clone();
     s.name = model.player.ship.name.to_string();
+    // We gift player free food in new ship.
+    s.cargos.wood.unit = 0;
+    s.cargos.sugar.unit = 0;
 
     if model.player.coins >= s.price {
         if window
             .confirm_with_message(format!("Are you sure you want to buy this {}?", sc).as_str())
             .unwrap_or(false)
         {
+            model.player.coins += model.player.ship.cargos.food.unit * food_price;
+            model.player.coins += model.player.ship.cargos.wood.unit * wood_price;
+            model.player.coins += model.player.ship.cargos.sugar.unit * sugar_price;
             model.player.coins -= s.price;
             model.player.ship = s;
         }
