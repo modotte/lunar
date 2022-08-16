@@ -27,7 +27,7 @@ lazy_static! {
                 crew_capacity: 8,
                 hull: 40,
                 hull_capacity: 40,
-                cannons: 4,
+                cannons: 8,
                 cannons_capacity: 8,
                 cargos_capacity: 32,
                 price: 2100,
@@ -93,7 +93,7 @@ lazy_static! {
             Ship {
                 class: ShipClass::Junk,
                 crew: 24,
-                crew_capacity: 18,
+                crew_capacity: 24,
                 hull: 70,
                 hull_capacity: 70,
                 cannons: 6,
