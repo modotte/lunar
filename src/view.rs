@@ -309,11 +309,14 @@ fn show_dock(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
                     <li class="is-active"><a href="#" aria-current="page">{"Dock"}</a></li>
                 </ul>
             </nav>
-            <h2>{"Dock screen"}</h2>
-            { onclick_switch_screen(dispatch, Screen::DockTavern, "Tavern") }
-            { onclick_switch_screen(dispatch, Screen::DockMarket, "Market") }
-            { onclick_switch_screen(dispatch, Screen::DockShipyard, "Shipyard") }
-            { onclick_switch_screen(dispatch, Screen::MainNavigation, "Back") }
+
+            <nav class="panel">
+                <p class="panel-tabs">
+                    <a>{ link_switch_screen(dispatch, Screen::DockTavern, "Tavern") }</a>
+                    <a>{ link_switch_screen(dispatch, Screen::DockMarket, "Market") }</a>
+                    <a>{ link_switch_screen(dispatch, Screen::DockShipyard, "Shipyard") }</a>
+                </p>
+            </nav>
         </div>
     }
 }
