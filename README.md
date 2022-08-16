@@ -14,7 +14,7 @@ Once you have it installed, just run `trunk serve` in the project directory and 
 
 Any help would be great! (at the moment, UI design is especially needed)
 
-Please read [CONTRIBUTING.md](https://github.com/modotte/lunar/CONTRIBUTING.md) first to learn how to contribute.
+Please read [CONTRIBUTING.md](https://github.com/modotte/lunar/blob/main/CONTRIBUTING.md) first to learn how to contribute.
 
 Thank you!
 
