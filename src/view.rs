@@ -441,25 +441,6 @@ fn show_skirmish(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     }
 }
 
-fn enemy_info(model: &Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
-    let enemy = model.enemy.as_ref().unwrap();
-    html! {
-        <div>
-            <h2>{"Enemy"}</h2>
-            <p>{"Enemy ship name: "} {&enemy.ship.name}</p>
-            <p>{"Enemy ship class: "} {&enemy.ship.class}</p>
-            <p>{"Enemy ship hull: "} {&enemy.ship.hull}</p>
-            <p>{"Enemy cannons: "} {&enemy.ship.cannons}</p>
-            <p>{"Enemy ship crew: "} {&enemy.ship.crew}</p>
-            <p>{"Enemy distance: "} {&enemy.distance}</p>
-            <p>{"Enemy nationality: "} {&enemy.nationality}</p>
-            <p>{"Enemy food: "} {&enemy.ship.cargos.food.unit}</p>
-            <p>{"Enemy wood: "} {&enemy.ship.cargos.wood.unit}</p>
-            <p>{"Enemy sugar: "} {&enemy.ship.cargos.sugar.unit}</p>
-        </div>
-    }
-}
-
 fn show_skirmish_chase(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
         <div class="tile is-ancestor">
@@ -491,8 +472,8 @@ fn show_skirmish_loot(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         <div>
             <h2>{"Loot"}</h2>
 
-            { player_info(&model) }
-            { enemy_info(&model, dispatch) }
+            { battle_participant_infobox(&model.player.ship) }
+            { battle_participant_infobox(&model.enemy.as_ref().unwrap().ship) }
 
             <p>
                 { if enemy_cargos.total_unit() > 0 && player_ship.cargos.total_unit() < player_ship.cargos_capacity {
@@ -520,8 +501,8 @@ fn show_skirmish_battle(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         <div>
             { debug_header(dispatch) }
             <h2>{"Battle!"}</h2>
-            { player_info(&model) }
-            { enemy_info(&model, dispatch) }
+            { battle_participant_infobox(&model.player.ship) }
+            { battle_participant_infobox(&model.enemy.as_ref().unwrap().ship) }
             <hr/>
 
             { match &model.enemy {
