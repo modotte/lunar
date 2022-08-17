@@ -219,26 +219,14 @@ fn player_info(model: &Rc<Model>) -> Html {
     }
 }
 
-fn player_info_box(player: &Player) -> Html {
+fn battle_participant_infobox(ship: &Ship) -> Html {
     html! {
         <div class="box is-small">
-            <h4 class="title is-4">{&player.ship.name}</h4>
-            <p>{"Class: "} {&player.ship.class}</p>
-            { styled_progress("hull", "Hull", player.ship.hull_capacity.into(), player.ship.hull.into()) }
-            { styled_progress("crew", "Crew", player.ship.crew_capacity, player.ship.crew) }
-            { styled_progress("cannons", "Cannons", player.ship.cannons_capacity.into(), player.ship.cannons.into()) }
-        </div>
-    }
-}
-
-fn enemy_info_box(enemy: &Enemy) -> Html {
-    html! {
-        <div class="box is-small">
-            <h4 class="title is-4">{&enemy.ship.name}</h4>
-            <p>{"Class: "} {&enemy.ship.class}</p>
-            { styled_progress("hull", "Hull", enemy.ship.hull_capacity.into(), enemy.ship.hull.into()) }
-            { styled_progress("crew", "Crew", enemy.ship.crew_capacity, enemy.ship.crew) }
-            { styled_progress("cannons", "Cannons", enemy.ship.cannons_capacity.into(), enemy.ship.cannons.into()) }
+            <h4 class="title is-4">{&ship.name}</h4>
+            <p>{"Class: "} {&ship.class}</p>
+            { styled_progress("hull", "Hull", ship.hull_capacity.into(), ship.hull.into()) }
+            { styled_progress("crew", "Crew", ship.crew_capacity, ship.crew) }
+            { styled_progress("cannons", "Cannons", ship.cannons_capacity.into(), ship.cannons.into()) }
         </div>
     }
 }
@@ -478,12 +466,12 @@ fn show_skirmish_chase(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
             <div class="tile is-vertical is-8">
                 <div class="tile">
                     <div class="tile is-parent is-vertical">
-                        { player_info_box(&model.player) }
+                        { battle_participant_infobox(&model.player.ship) }
                     </div>
 
                     <div class="tile is-parent is-vertical">
-                    { enemy_info_box(&model.enemy.as_ref().unwrap()) }
-                </div>
+                        { battle_participant_infobox(&model.enemy.as_ref().unwrap().ship) }
+                    </div>
                 </div>
                 <hr/>
 
