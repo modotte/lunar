@@ -368,7 +368,6 @@ impl Reducer<model::Model> for model::Msg {
             }
 
             model::Msg::RepairShip(coins) => {
-                // FIXME: Broken calculation
                 if coins >= &state.player.ship.cost_to_repair() {
                     state.player.coins -= state.player.ship.cost_to_repair();
                     state.player.ship.hull = state.player.ship.hull_capacity;
@@ -402,7 +401,7 @@ impl Reducer<model::Model> for model::Msg {
             model::Msg::HireCrew(coins) => {
                 if coins >= &state.player.ship.cost_to_hire() {
                     state.player.coins -= state.player.ship.cost_to_hire();
-                    state.player.ship.crew = model::Model::default().player.ship.crew;
+                    state.player.ship.crew = state.player.ship.crew_capacity;
                 }
             }
         };
