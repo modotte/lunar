@@ -37,6 +37,12 @@ fn link_switch_screen(dispatch: &Dispatch<Model>, screen: Screen, name: &str) ->
     html! { <a href="#" onclick={dispatch.apply_callback(move |_| Msg::SwitchScreen(screen.to_owned()))}>{name}</a>}
 }
 
+fn link_switch_location(dispatch: &Dispatch<Model>, location: PortLocation, name: &str) -> Html {
+    html! {
+        <a href="#" onclick={dispatch.apply_callback(move |_| Msg::SwitchPlayerLocation(location))}>{name}</a>
+    }
+}
+
 fn onclick_switch_location(dispatch: &Dispatch<Model>, location: PortLocation, name: &str) -> Html {
     html! {
         { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SwitchPlayerLocation(location)), name) }
@@ -67,7 +73,7 @@ fn show_about(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
 
 fn show_main_menu(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
-        <div class="tile is-ancestor">
+        <div class="tile is-ancestor main-menu">
             <div class="tile is-vertical is-8">
                 <div class="tile is-parent is-vertical">
                     <div class="tile">
@@ -248,11 +254,17 @@ fn show_main_navigation(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
                     <a>{ link_switch_screen(dispatch, Screen::Dock, "Dock") }</a>
                     <a>{ link_switch_screen(dispatch, Screen::Skirmish, "Skirmish") }</a>
                 </p>
+
+                <a class="panel-block">
+                    { link_switch_location(dispatch, PortLocation::Barbados, "Barbados") } {" - Wealthy port"}
+                </a>
+                <a class="panel-block">
+                    { link_switch_location(dispatch, PortLocation::PortRoyal, "Port Royal") } {" - Prosperous port"}
+                </a>
+                <a class="panel-block">
+                    { link_switch_location(dispatch, PortLocation::Nassau, "Nassau") } {" - Vibrant port"}
+                </a>
             </nav>
-            <hr/>
-            { onclick_switch_location(dispatch, PortLocation::Barbados, "Barbados") }
-            { onclick_switch_location(dispatch, PortLocation::PortRoyal, "Port Royal") }
-            { onclick_switch_location(dispatch, PortLocation::Nassau, "Nassau") }
         </div>
     }
 }
@@ -342,33 +354,38 @@ fn show_dock(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
 fn cargo_item(
     buy_callback: Callback<MouseEvent>,
     sell_callback: Callback<MouseEvent>,
-    cargo: &Cargo,
+    player_cargo: &Cargo,
+    port_cargo: &Cargo,
     name: &str,
 ) -> Html {
     html! {
         <li>
             <p>{name}</p>
-            <p>{"Price: "} {cargo.price}</p>
-            <p>{"Available unit: "} {cargo.unit}</p>
+            <p>{"Price: "} {port_cargo.price}</p>
+            <p>{"Available unit: "} {port_cargo.unit}</p>
+            <p>{"In your cargo space: "} {player_cargo.unit}</p>
             { onclick_styled_btn(buy_callback, "Buy 1") }
             { onclick_styled_btn(sell_callback, "Sell 1")}
         </li>
     }
 }
 
-fn cargo_market(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
-    let inner = model;
-    let current_location = inner.current_port_location;
-    let food = inner.ports.get(&current_location).unwrap().cargos.food;
-    let wood = inner.ports.get(&current_location).unwrap().cargos.wood;
-    let sugar = inner.ports.get(&current_location).unwrap().cargos.sugar;
+fn cargo_market(model: &Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
+    let current_location = model.current_port_location;
+    let player_food = model.player.ship.cargos.food;
+    let player_wood = model.player.ship.cargos.wood;
+    let player_sugar = model.player.ship.cargos.sugar;
+
+    let port_food = model.ports.get(&current_location).unwrap().cargos.food;
+    let port_wood = model.ports.get(&current_location).unwrap().cargos.wood;
+    let port_sugar = model.ports.get(&current_location).unwrap().cargos.sugar;
 
     html! {
         <div>
             <ul>
-                { cargo_item(dispatch.apply_callback(move |_| Msg::BuyCargo(current_location, food)), dispatch.apply_callback(move |_| Msg::SellCargo(current_location, food)), &food, "Food") }
-                { cargo_item(dispatch.apply_callback(move |_| Msg::BuyCargo(current_location, wood)), dispatch.apply_callback(move |_| Msg::SellCargo(current_location, wood)), &wood, "Wood") }
-                { cargo_item(dispatch.apply_callback(move |_| Msg::BuyCargo(current_location, sugar)), dispatch.apply_callback(move |_| Msg::SellCargo(current_location, sugar)), &sugar, "Sugar") }
+                { cargo_item(dispatch.apply_callback(move |_| Msg::BuyCargo(current_location, port_food)), dispatch.apply_callback(move |_| Msg::SellCargo(current_location, port_food)), &player_food, &port_food, "Food") }
+                { cargo_item(dispatch.apply_callback(move |_| Msg::BuyCargo(current_location, port_wood)), dispatch.apply_callback(move |_| Msg::SellCargo(current_location, port_wood)), &player_wood, &port_wood, "Wood") }
+                { cargo_item(dispatch.apply_callback(move |_| Msg::BuyCargo(current_location, port_sugar)), dispatch.apply_callback(move |_| Msg::SellCargo(current_location, port_sugar)), &player_sugar, &port_sugar, "Sugar") }
             </ul>
         </div>
     }
@@ -384,13 +401,13 @@ fn show_dock_market(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
                     <li class="is-active"><a href="#" aria-current="page">{"Market"}</a></li>
                 </ul>
             </nav>
-            { player_info(&model) }
+
+            <h2>{"Market"}</h2>
             <hr/>
-            <h2>{"Market screen"}</h2>
-
-            { cargo_market(model, dispatch) }
-
-            { onclick_switch_screen(dispatch, Screen::Dock, "Back") }
+            <div class="box">
+                <p>{ styled_progress("cargos", "Player cargos", model.player.ship.cargos_capacity.into(), model.player.ship.cargos.total_unit()) }</p>
+                { cargo_market(&model, dispatch) }
+            </div>
         </div>
     }
 }
