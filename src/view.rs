@@ -208,6 +208,7 @@ fn battle_participant_infobox(ship: &Ship) -> Html {
             { styled_progress("hull", "Hull", ship.hull_capacity.into(), ship.hull.into()) }
             { styled_progress("crew", "Crew", ship.crew_capacity, ship.crew) }
             { styled_progress("cannons", "Cannons", ship.cannons_capacity.into(), ship.cannons.into()) }
+            { styled_progress("cargos", "Total cargos", ship.cargos_capacity, ship.cargos.total_unit()) }
         </div>
     }
 }
