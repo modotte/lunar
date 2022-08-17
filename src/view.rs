@@ -199,25 +199,6 @@ fn styled_progress(id: &str, label: &str, max: i32, value: i32) -> Html {
         </div>
     }
 }
-fn player_info(model: &Rc<Model>) -> Html {
-    html! {
-        <div>
-            <h2>{"Player"}</h2>
-            <p>{"Date: "} {model.date}</p>
-            <p>{"Current location: "} {model.current_port_location}</p>
-            <p>{"Coins: "} {model.player.coins}</p>
-            <p>{"Owned Food: "} {model.player.ship.cargos.food.unit}</p>
-            <p>{"Owned Wood: "} {model.player.ship.cargos.wood.unit}</p>
-            <p>{"Owned Sugar: "} {model.player.ship.cargos.sugar.unit}</p>
-            { styled_progress("cargos", "Cargos", model.player.ship.cargos_capacity.into(), model.player.ship.cargos.total_unit()) }
-            { styled_progress("hull", "Hull", model.player.ship.hull_capacity.into(), model.player.ship.hull.into()) }
-            { styled_progress("crew", "Crew", model.player.ship.crew_capacity, model.player.ship.crew) }
-            <p>{"Cannons: "} {model.player.ship.cannons} {"/"} {model.player.ship.cannons_capacity}</p>
-            <p>{"Ship class: "} {model.player.ship.class}</p>
-            <p>{"Ship name: "} {&model.player.ship.name}</p>
-        </div>
-    }
-}
 
 fn battle_participant_infobox(ship: &Ship) -> Html {
     html! {
@@ -302,7 +283,7 @@ fn show_dock_tavern_hire_crew(model: Rc<Model>, dispatch: &Dispatch<Model>) -> H
                     <li class="is-active"><a href="#" aria-current="page">{"Hire Crew"}</a></li>
                 </ul>
             </nav>
-            { player_info(&model) }
+            { battle_participant_infobox(&model.player.ship) }
 
             <p>{"Cost to hire all: "} {&model.player.ship.cost_to_hire() }</p>
             { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::HireCrew(model.player.coins)), "Hire until full") }
@@ -418,13 +399,14 @@ fn show_dock_shipyard(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
                     <li class="is-active"><a href="#" aria-current="page">{"Shipyard"}</a></li>
                 </ul>
             </nav>
-        { player_info(&model) }
 
-        <p>{"Cost to repair: "} { &model.player.ship.cost_to_repair() }</p>
-        {SHIP_CLASSES.iter().map(|x| onclick_styled_btn(dispatch.apply_callback(move |_| Msg::BuyAndReplaceShip(*x)), "")).collect::<Html>() }
+            { battle_participant_infobox(&model.player.ship) }
 
-        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::RepairShip(model.player.coins)), "Repair all") }
-        { onclick_switch_screen(dispatch, Screen::Dock, "Back") }
+            <p>{"Cost to repair: "} { &model.player.ship.cost_to_repair() }</p>
+            {SHIP_CLASSES.iter().map(|x| onclick_styled_btn(dispatch.apply_callback(move |_| Msg::BuyAndReplaceShip(*x)), "")).collect::<Html>() }
+
+            { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::RepairShip(model.player.coins)), "Repair all") }
+            { onclick_switch_screen(dispatch, Screen::Dock, "Back") }
         </div>
     }
 }
