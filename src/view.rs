@@ -372,20 +372,16 @@ fn cargo_item(
 
 fn cargo_market(model: &Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     let current_location = model.current_port_location;
-    let player_food = model.player.ship.cargos.food;
-    let player_wood = model.player.ship.cargos.wood;
-    let player_sugar = model.player.ship.cargos.sugar;
-
-    let port_food = model.ports.get(&current_location).unwrap().cargos.food;
-    let port_wood = model.ports.get(&current_location).unwrap().cargos.wood;
-    let port_sugar = model.ports.get(&current_location).unwrap().cargos.sugar;
+    let player_cargos = &model.player.ship.cargos;
+    let ports = &model.ports.clone();
+    let port_cargos = ports.get(&current_location).unwrap().cargos.clone();
 
     html! {
         <div>
             <ul>
-                { cargo_item(dispatch.apply_callback(move |_| Msg::BuyCargo(current_location, port_food)), dispatch.apply_callback(move |_| Msg::SellCargo(current_location, port_food)), &player_food, &port_food, "Food") }
-                { cargo_item(dispatch.apply_callback(move |_| Msg::BuyCargo(current_location, port_wood)), dispatch.apply_callback(move |_| Msg::SellCargo(current_location, port_wood)), &player_wood, &port_wood, "Wood") }
-                { cargo_item(dispatch.apply_callback(move |_| Msg::BuyCargo(current_location, port_sugar)), dispatch.apply_callback(move |_| Msg::SellCargo(current_location, port_sugar)), &player_sugar, &port_sugar, "Sugar") }
+                { cargo_item(dispatch.apply_callback(move |_| Msg::BuyCargo(current_location, port_cargos.food)), dispatch.apply_callback(move |_| Msg::SellCargo(current_location, port_cargos.food)), &player_cargos.food, &port_cargos.food, "Food") }
+                { cargo_item(dispatch.apply_callback(move |_| Msg::BuyCargo(current_location, port_cargos.wood)), dispatch.apply_callback(move |_| Msg::SellCargo(current_location, port_cargos.wood)), &player_cargos.wood, &port_cargos.wood, "Wood") }
+                { cargo_item(dispatch.apply_callback(move |_| Msg::BuyCargo(current_location, port_cargos.sugar)), dispatch.apply_callback(move |_| Msg::SellCargo(current_location, port_cargos.sugar)), &player_cargos.sugar, &port_cargos.sugar, "Sugar") }
             </ul>
         </div>
     }
