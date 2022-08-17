@@ -248,11 +248,17 @@ fn show_main_navigation(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
                     <a>{ link_switch_screen(dispatch, Screen::Dock, "Dock") }</a>
                     <a>{ link_switch_screen(dispatch, Screen::Skirmish, "Skirmish") }</a>
                 </p>
+
+                <a class="panel-block">
+                    { onclick_switch_location(dispatch, PortLocation::Barbados, "Barbados") } {" - Wealthy port"}
+                </a>
+                <a class="panel-block">
+                    { onclick_switch_location(dispatch, PortLocation::PortRoyal, "Port Royal") } {" - Prosperous port"}
+                </a>
+                <a class="panel-block">
+                    { onclick_switch_location(dispatch, PortLocation::Nassau, "Nassau") } {" - Vibrant port"}
+                </a>
             </nav>
-            <hr/>
-            { onclick_switch_location(dispatch, PortLocation::Barbados, "Barbados") }
-            { onclick_switch_location(dispatch, PortLocation::PortRoyal, "Port Royal") }
-            { onclick_switch_location(dispatch, PortLocation::Nassau, "Nassau") }
         </div>
     }
 }
