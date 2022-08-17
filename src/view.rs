@@ -405,7 +405,9 @@ fn show_dock_market(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
             <h2>{"Market"}</h2>
             <hr/>
             <div class="box">
+                <p>{"Coins: "} {&model.player.coins}</p>
                 <p>{ styled_progress("cargos", "Player cargos", model.player.ship.cargos_capacity.into(), model.player.ship.cargos.total_unit()) }</p>
+                <br/>
                 { cargo_market(&model, dispatch) }
             </div>
         </div>
