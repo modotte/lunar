@@ -201,11 +201,11 @@ pub enum Nationality {
 impl FromStr for Nationality {
     type Err = ParseError;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
-            "Spanish" => Ok(Self::Spanish),
-            "French" => Ok(Self::French),
-            _otherwise => Ok(Self::British),
-        }
+        Ok(match s {
+            "Spanish" => Self::Spanish,
+            "French" => Self::French,
+            _otherwise => Self::British,
+        })
     }
 }
 
@@ -254,14 +254,14 @@ impl FromStr for ShipClass {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
-            "Cutter" => Ok(Self::Cutter),
-            "Brig" => Ok(Self::Brig),
-            "Junk" => Ok(Self::Junk),
-            "Galleon" => Ok(Self::Galleon),
-            "Frigate" => Ok(Self::Frigate),
-            _otherwise => Ok(Self::Sloop),
-        }
+        Ok(match s {
+            "Cutter" => Self::Cutter,
+            "Brig" => Self::Brig,
+            "Junk" => Self::Junk,
+            "Galleon" => Self::Galleon,
+            "Frigate" => Self::Frigate,
+            _otherwise => Self::Sloop,
+        })
     }
 }
 
