@@ -33,19 +33,17 @@ fn onclick_switch_screen(dispatch: &Dispatch<Model>, screen: Screen, name: &str)
     }
 }
 
+fn link_styled(callback: Callback<MouseEvent>, link_text: &str) -> Html {
+    html! { <a href="#" onclick={callback}>{link_text}</a>}
+}
+
 fn link_switch_screen(dispatch: &Dispatch<Model>, screen: Screen, name: &str) -> Html {
-    html! { <a href="#" onclick={dispatch.apply_callback(move |_| Msg::SwitchScreen(screen.to_owned()))}>{name}</a>}
+    html! { link_styled(dispatch.apply_callback(move |_| Msg::SwitchScreen(screen.to_owned())), name) }
 }
 
 fn link_switch_location(dispatch: &Dispatch<Model>, location: PortLocation, name: &str) -> Html {
     html! {
-        <a href="#" onclick={dispatch.apply_callback(move |_| Msg::SwitchPlayerLocation(location))}>{name}</a>
-    }
-}
-
-fn onclick_switch_location(dispatch: &Dispatch<Model>, location: PortLocation, name: &str) -> Html {
-    html! {
-        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SwitchPlayerLocation(location)), name) }
+        html! { link_styled(dispatch.apply_callback(move |_| Msg::SwitchPlayerLocation(location.to_owned())), name) }
     }
 }
 
@@ -201,34 +199,16 @@ fn styled_progress(id: &str, label: &str, max: i32, value: i32) -> Html {
         </div>
     }
 }
-fn player_info(model: &Rc<Model>) -> Html {
-    html! {
-        <div>
-            <h2>{"Player"}</h2>
-            <p>{"Date: "} {model.date}</p>
-            <p>{"Current location: "} {model.current_port_location}</p>
-            <p>{"Coins: "} {model.player.coins}</p>
-            <p>{"Owned Food: "} {model.player.ship.cargos.food.unit}</p>
-            <p>{"Owned Wood: "} {model.player.ship.cargos.wood.unit}</p>
-            <p>{"Owned Sugar: "} {model.player.ship.cargos.sugar.unit}</p>
-            { styled_progress("cargos", "Cargos", model.player.ship.cargos_capacity.into(), model.player.ship.cargos.total_unit()) }
-            { styled_progress("hull", "Hull", model.player.ship.hull_capacity.into(), model.player.ship.hull.into()) }
-            { styled_progress("crew", "Crew", model.player.ship.crew_capacity, model.player.ship.crew) }
-            <p>{"Cannons: "} {model.player.ship.cannons} {"/"} {model.player.ship.cannons_capacity}</p>
-            <p>{"Ship class: "} {model.player.ship.class}</p>
-            <p>{"Ship name: "} {&model.player.ship.name}</p>
-        </div>
-    }
-}
 
-fn player_info_box(player: &Player) -> Html {
+fn battle_participant_infobox(ship: &Ship) -> Html {
     html! {
         <div class="box is-small">
-            <h4 class="title is-4">{&player.ship.name}</h4>
-            <p>{"Class: "} {&player.ship.class}</p>
-            { styled_progress("hull", "Hull", player.ship.hull_capacity.into(), player.ship.hull.into()) }
-            { styled_progress("crew", "Crew", player.ship.crew_capacity, player.ship.crew) }
-            { styled_progress("cannons", "Cannons", player.ship.cannons_capacity.into(), player.ship.cannons.into()) }
+            <h4 class="title is-4">{&ship.name}</h4>
+            <p>{"Class: "} {&ship.class}</p>
+            { styled_progress("hull", "Hull", ship.hull_capacity.into(), ship.hull.into()) }
+            { styled_progress("crew", "Crew", ship.crew_capacity, ship.crew) }
+            { styled_progress("cannons", "Cannons", ship.cannons_capacity.into(), ship.cannons.into()) }
+            { styled_progress("cargos", "Total cargos", ship.cargos_capacity, ship.cargos.total_unit()) }
         </div>
     }
 }
@@ -304,7 +284,7 @@ fn show_dock_tavern_hire_crew(model: Rc<Model>, dispatch: &Dispatch<Model>) -> H
                     <li class="is-active"><a href="#" aria-current="page">{"Hire Crew"}</a></li>
                 </ul>
             </nav>
-            { player_info(&model) }
+            { battle_participant_infobox(&model.player.ship) }
 
             <p>{"Cost to hire all: "} {&model.player.ship.cost_to_hire() }</p>
             { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::HireCrew(model.player.coins)), "Hire until full") }
@@ -372,20 +352,16 @@ fn cargo_item(
 
 fn cargo_market(model: &Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     let current_location = model.current_port_location;
-    let player_food = model.player.ship.cargos.food;
-    let player_wood = model.player.ship.cargos.wood;
-    let player_sugar = model.player.ship.cargos.sugar;
-
-    let port_food = model.ports.get(&current_location).unwrap().cargos.food;
-    let port_wood = model.ports.get(&current_location).unwrap().cargos.wood;
-    let port_sugar = model.ports.get(&current_location).unwrap().cargos.sugar;
+    let player_cargos = &model.player.ship.cargos;
+    let ports = &model.ports.clone();
+    let port_cargos = ports.get(&current_location).unwrap().cargos.clone();
 
     html! {
         <div>
             <ul>
-                { cargo_item(dispatch.apply_callback(move |_| Msg::BuyCargo(current_location, port_food)), dispatch.apply_callback(move |_| Msg::SellCargo(current_location, port_food)), &player_food, &port_food, "Food") }
-                { cargo_item(dispatch.apply_callback(move |_| Msg::BuyCargo(current_location, port_wood)), dispatch.apply_callback(move |_| Msg::SellCargo(current_location, port_wood)), &player_wood, &port_wood, "Wood") }
-                { cargo_item(dispatch.apply_callback(move |_| Msg::BuyCargo(current_location, port_sugar)), dispatch.apply_callback(move |_| Msg::SellCargo(current_location, port_sugar)), &player_sugar, &port_sugar, "Sugar") }
+                { cargo_item(dispatch.apply_callback(move |_| Msg::BuyCargo(current_location, port_cargos.food)), dispatch.apply_callback(move |_| Msg::SellCargo(current_location, port_cargos.food)), &player_cargos.food, &port_cargos.food, "Food") }
+                { cargo_item(dispatch.apply_callback(move |_| Msg::BuyCargo(current_location, port_cargos.wood)), dispatch.apply_callback(move |_| Msg::SellCargo(current_location, port_cargos.wood)), &player_cargos.wood, &port_cargos.wood, "Wood") }
+                { cargo_item(dispatch.apply_callback(move |_| Msg::BuyCargo(current_location, port_cargos.sugar)), dispatch.apply_callback(move |_| Msg::SellCargo(current_location, port_cargos.sugar)), &player_cargos.sugar, &port_cargos.sugar, "Sugar") }
             </ul>
         </div>
     }
@@ -405,7 +381,9 @@ fn show_dock_market(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
             <h2>{"Market"}</h2>
             <hr/>
             <div class="box">
+                <p>{"Coins: "} {&model.player.coins}</p>
                 <p>{ styled_progress("cargos", "Player cargos", model.player.ship.cargos_capacity.into(), model.player.ship.cargos.total_unit()) }</p>
+                <br/>
                 { cargo_market(&model, dispatch) }
             </div>
         </div>
@@ -422,18 +400,14 @@ fn show_dock_shipyard(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
                     <li class="is-active"><a href="#" aria-current="page">{"Shipyard"}</a></li>
                 </ul>
             </nav>
-        { player_info(&model) }
 
-        <p>{"Cost to repair: "} { &model.player.ship.cost_to_repair() }</p>
-        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::BuyAndReplaceShip(ShipClass::Cutter)), "Trade your ship for a Cutter") }
-        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::BuyAndReplaceShip(ShipClass::Sloop)), "Trade your ship for a Sloop") }
-        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::BuyAndReplaceShip(ShipClass::Brig)), "Trade your ship for a Brig") }
-        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::BuyAndReplaceShip(ShipClass::Junk)), "Trade your ship for a Junk") }
-        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::BuyAndReplaceShip(ShipClass::Galleon)), "Trade your ship for a Galleon") }
-        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::BuyAndReplaceShip(ShipClass::Frigate)), "Trade your ship for a Frigate") }
+            { battle_participant_infobox(&model.player.ship) }
 
-        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::RepairShip(model.player.coins)), "Repair all") }
-        { onclick_switch_screen(dispatch, Screen::Dock, "Back") }
+            <p>{"Cost to repair: "} { &model.player.ship.cost_to_repair() }</p>
+            {SHIP_CLASSES.iter().map(|x| onclick_styled_btn(dispatch.apply_callback(move |_| Msg::BuyAndReplaceShip(*x)), "")).collect::<Html>() }
+
+            { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::RepairShip(model.player.coins)), "Repair all") }
+            { onclick_switch_screen(dispatch, Screen::Dock, "Back") }
         </div>
     }
 }
@@ -450,41 +424,18 @@ fn show_skirmish(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     }
 }
 
-fn enemy_info(model: &Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
-    let enemy = model.enemy.as_ref().unwrap();
-    html! {
-        <div>
-            <h2>{"Enemy"}</h2>
-            <p>{"Enemy ship name: "} {&enemy.ship.name}</p>
-            <p>{"Enemy ship class: "} {&enemy.ship.class}</p>
-            <p>{"Enemy ship hull: "} {&enemy.ship.hull}</p>
-            <p>{"Enemy cannons: "} {&enemy.ship.cannons}</p>
-            <p>{"Enemy ship crew: "} {&enemy.ship.crew}</p>
-            <p>{"Enemy distance: "} {&enemy.distance}</p>
-            <p>{"Enemy nationality: "} {&enemy.nationality}</p>
-            <p>{"Enemy food: "} {&enemy.ship.cargos.food.unit}</p>
-            <p>{"Enemy wood: "} {&enemy.ship.cargos.wood.unit}</p>
-            <p>{"Enemy sugar: "} {&enemy.ship.cargos.sugar.unit}</p>
-        </div>
-    }
-}
-
 fn show_skirmish_chase(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
         <div class="tile is-ancestor">
             <div class="tile is-vertical is-8">
                 <div class="tile">
                     <div class="tile is-parent is-vertical">
-                        { player_info_box(&model.player) }
+                        { battle_participant_infobox(&model.player.ship) }
                     </div>
 
                     <div class="tile is-parent is-vertical">
-                        { enemy_info(&model, dispatch) }
+                        { battle_participant_infobox(&model.enemy.as_ref().unwrap().ship) }
                     </div>
-
-                    <div class="tile is-parent is-vertical">
-                    { enemy_info(&model, dispatch) }
-                </div>
                 </div>
                 <hr/>
 
@@ -504,8 +455,8 @@ fn show_skirmish_loot(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         <div>
             <h2>{"Loot"}</h2>
 
-            { player_info(&model) }
-            { enemy_info(&model, dispatch) }
+            { battle_participant_infobox(&model.player.ship) }
+            { battle_participant_infobox(&model.enemy.as_ref().unwrap().ship) }
 
             <p>
                 { if enemy_cargos.total_unit() > 0 && player_ship.cargos.total_unit() < player_ship.cargos_capacity {
@@ -533,8 +484,8 @@ fn show_skirmish_battle(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
         <div>
             { debug_header(dispatch) }
             <h2>{"Battle!"}</h2>
-            { player_info(&model) }
-            { enemy_info(&model, dispatch) }
+            { battle_participant_infobox(&model.player.ship) }
+            { battle_participant_infobox(&model.enemy.as_ref().unwrap().ship) }
             <hr/>
 
             { match &model.enemy {
