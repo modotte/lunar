@@ -266,16 +266,17 @@ fn show_profile(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
                     <li class="is-active"><a href="#" aria-current="page">{"Profile"}</a></li>
                 </ul>
             </nav>
-            <h2>{"Profile"}</h2>
-            <hr/>
 
-            <ul>
-                <li>{"Name: "} {&model.player.name}</li>
-                <li>{"Age: "} {&model.player.age}</li>
-                <li>{"Nationality: "} {&model.player.nationality}</li>
-            </ul>
+            <div class="box">
+                <h2>{"Profile"}</h2>
+                <hr/>
 
-            { onclick_switch_screen(dispatch, Screen::MainNavigation, "Back") }
+                <ul>
+                    <li>{"Name: "} {&model.player.name}</li>
+                    <li>{"Age: "} {&model.player.age}</li>
+                    <li>{"Nationality: "} {&model.player.nationality}</li>
+                </ul>
+            </div>
         </div>
     }
 }
