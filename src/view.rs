@@ -33,19 +33,17 @@ fn onclick_switch_screen(dispatch: &Dispatch<Model>, screen: Screen, name: &str)
     }
 }
 
+fn link_styled(callback: Callback<MouseEvent>, link_text: &str) -> Html {
+    html! { <a href="#" onclick={callback}>{link_text}</a>}
+}
+
 fn link_switch_screen(dispatch: &Dispatch<Model>, screen: Screen, name: &str) -> Html {
-    html! { <a href="#" onclick={dispatch.apply_callback(move |_| Msg::SwitchScreen(screen.to_owned()))}>{name}</a>}
+    html! { link_styled(dispatch.apply_callback(move |_| Msg::SwitchScreen(screen.to_owned())), name) }
 }
 
 fn link_switch_location(dispatch: &Dispatch<Model>, location: PortLocation, name: &str) -> Html {
     html! {
-        <a href="#" onclick={dispatch.apply_callback(move |_| Msg::SwitchPlayerLocation(location))}>{name}</a>
-    }
-}
-
-fn onclick_switch_location(dispatch: &Dispatch<Model>, location: PortLocation, name: &str) -> Html {
-    html! {
-        { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SwitchPlayerLocation(location)), name) }
+        html! { link_styled(dispatch.apply_callback(move |_| Msg::SwitchPlayerLocation(location.to_owned())), name) }
     }
 }
 
@@ -229,6 +227,18 @@ fn player_info_box(player: &Player) -> Html {
             { styled_progress("hull", "Hull", player.ship.hull_capacity.into(), player.ship.hull.into()) }
             { styled_progress("crew", "Crew", player.ship.crew_capacity, player.ship.crew) }
             { styled_progress("cannons", "Cannons", player.ship.cannons_capacity.into(), player.ship.cannons.into()) }
+        </div>
+    }
+}
+
+fn enemy_info_box(enemy: &Enemy) -> Html {
+    html! {
+        <div class="box is-small">
+            <h4 class="title is-4">{&enemy.ship.name}</h4>
+            <p>{"Class: "} {&enemy.ship.class}</p>
+            { styled_progress("hull", "Hull", enemy.ship.hull_capacity.into(), enemy.ship.hull.into()) }
+            { styled_progress("crew", "Crew", enemy.ship.crew_capacity, enemy.ship.crew) }
+            { styled_progress("cannons", "Cannons", enemy.ship.cannons_capacity.into(), enemy.ship.cannons.into()) }
         </div>
     }
 }
@@ -472,11 +482,7 @@ fn show_skirmish_chase(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
                     </div>
 
                     <div class="tile is-parent is-vertical">
-                        { enemy_info(&model, dispatch) }
-                    </div>
-
-                    <div class="tile is-parent is-vertical">
-                    { enemy_info(&model, dispatch) }
+                    { enemy_info_box(&model.enemy.as_ref().unwrap()) }
                 </div>
                 </div>
                 <hr/>
