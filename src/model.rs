@@ -384,9 +384,9 @@ impl Default for Model {
                     PortLocation::Barbados,
                     Port {
                         name: String::from("Barbados"),
-                        description: String::default(),
+                        description: String::from("A large port, primarily known as the sugar plantation & trading paradise. Currently, controlled by the Spanish crown."),
                         population: PortPopulation::Large,
-                        nationality: Nationality::British,
+                        nationality: Nationality::Spanish,
                         cargos: Cargos {
                             food: Cargo {
                                 price: 8,
@@ -410,7 +410,7 @@ impl Default for Model {
                     PortLocation::PortRoyal,
                     Port {
                         name: String::from("Port Royal"),
-                        description: String::default(),
+                        description: String::from("A huge port with a wealthy, prosperous population. Controlled by the British empire."),
                         population: PortPopulation::Huge,
                         nationality: Nationality::British,
                         cargos: Cargos {
@@ -436,7 +436,7 @@ impl Default for Model {
                     PortLocation::Nassau,
                     Port {
                         name: String::from("Nassau"),
-                        description: String::default(),
+                        description: String::from("A medium port, dwelled by legendary figures. Currently in blockade by the British for the high piracy activity."),
                         population: PortPopulation::Medium,
                         nationality: Nationality::British,
                         cargos: Cargos {

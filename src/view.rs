@@ -228,10 +228,20 @@ fn player_info_box(player: &Player) -> Html {
 }
 
 fn show_main_navigation(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
+    let current_port = model.ports.get(&model.current_port_location).unwrap();
     html! {
         <div>
-            <h2 class="title is-2">{&model.current_port_location}</h2>
+            <h2 class="title is-2">{&current_port.name}</h2>
+            <h3 class="subtitle is-3">{&current_port.description}</h3>
+
             <br/>
+
+            <div>
+                <p>{"Date: "} {&model.date}</p>
+                <p>{"Coins: "} {&model.player.coins}</p>
+                <p>{"Food left: "} {&model.player.ship.cargos.food.unit}</p>
+            </div>
+
             <nav class="panel">
                 <p class="panel-tabs">
                     <a>{ link_switch_screen(dispatch, Screen::Profile, "Profile") }</a>
