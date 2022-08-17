@@ -1,7 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Sofia&display=swap');
 $sofia-font: 'Sofia', sans-serif;
 
+.main-menu {
+    background-image: url("img/border-bg.jpg");
+}
+
 body {
     font-family: $sofia-font;
     font-weight: normal;
+
 }

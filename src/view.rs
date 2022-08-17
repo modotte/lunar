@@ -67,7 +67,7 @@ fn show_about(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
 
 fn show_main_menu(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
-        <div class="tile is-ancestor">
+        <div class="tile is-ancestor main-menu">
             <div class="tile is-vertical is-8">
                 <div class="tile is-parent is-vertical">
                     <div class="tile">
