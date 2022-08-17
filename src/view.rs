@@ -37,6 +37,12 @@ fn link_switch_screen(dispatch: &Dispatch<Model>, screen: Screen, name: &str) ->
     html! { <a href="#" onclick={dispatch.apply_callback(move |_| Msg::SwitchScreen(screen.to_owned()))}>{name}</a>}
 }
 
+fn link_switch_location(dispatch: &Dispatch<Model>, location: PortLocation, name: &str) -> Html {
+    html! {
+        <a href="#" onclick={dispatch.apply_callback(move |_| Msg::SwitchPlayerLocation(location))}>{name}</a>
+    }
+}
+
 fn onclick_switch_location(dispatch: &Dispatch<Model>, location: PortLocation, name: &str) -> Html {
     html! {
         { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::SwitchPlayerLocation(location)), name) }
@@ -250,13 +256,13 @@ fn show_main_navigation(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
                 </p>
 
                 <a class="panel-block">
-                    { onclick_switch_location(dispatch, PortLocation::Barbados, "Barbados") } {" - Wealthy port"}
+                    { link_switch_location(dispatch, PortLocation::Barbados, "Barbados") } {" - Wealthy port"}
                 </a>
                 <a class="panel-block">
-                    { onclick_switch_location(dispatch, PortLocation::PortRoyal, "Port Royal") } {" - Prosperous port"}
+                    { link_switch_location(dispatch, PortLocation::PortRoyal, "Port Royal") } {" - Prosperous port"}
                 </a>
                 <a class="panel-block">
-                    { onclick_switch_location(dispatch, PortLocation::Nassau, "Nassau") } {" - Vibrant port"}
+                    { link_switch_location(dispatch, PortLocation::Nassau, "Nassau") } {" - Vibrant port"}
                 </a>
             </nav>
         </div>
