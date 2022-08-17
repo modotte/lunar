@@ -1,8 +1,8 @@
 name: Build project web client output and publish to github pages.
 
 on:
-  release:
-    types: [ published ]
+  push:
+    branches: [ main ]
 
 env:
   CARGO_TERM_COLOR: always

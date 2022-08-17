@@ -87,6 +87,13 @@ fn show_new_character(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
     html! {
         <div>
         { debug_header(dispatch) }
+
+        <div>
+            <h3 class="title is-3">{"Create a new character!"}</h3>
+        </div>
+
+        <hr/>
+
         <label>{"Name"}</label>
         <br/>
         <input class="input is-small" placeholder="Player" required=true type="text" value={player.name.to_string()}
@@ -221,10 +228,20 @@ fn player_info_box(player: &Player) -> Html {
 }
 
 fn show_main_navigation(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
+    let current_port = model.ports.get(&model.current_port_location).unwrap();
     html! {
         <div>
-            <h2 class="title is-2">{&model.current_port_location}</h2>
+            <h2 class="title is-2">{&current_port.name}</h2>
+            <h3 class="subtitle is-3">{&current_port.description}</h3>
+
             <br/>
+
+            <div>
+                <p>{"Date: "} {&model.date}</p>
+                <p>{"Coins: "} {&model.player.coins}</p>
+                <p>{"Food left: "} {&model.player.ship.cargos.food.unit}</p>
+            </div>
+
             <nav class="panel">
                 <p class="panel-tabs">
                     <a>{ link_switch_screen(dispatch, Screen::Profile, "Profile") }</a>
@@ -249,16 +266,17 @@ fn show_profile(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
                     <li class="is-active"><a href="#" aria-current="page">{"Profile"}</a></li>
                 </ul>
             </nav>
-            <h2>{"Profile"}</h2>
-            <hr/>
 
-            <ul>
-                <li>{"Name: "} {&model.player.name}</li>
-                <li>{"Age: "} {&model.player.age}</li>
-                <li>{"Nationality: "} {&model.player.nationality}</li>
-            </ul>
+            <div class="box">
+                <h2>{"Profile"}</h2>
+                <hr/>
 
-            { onclick_switch_screen(dispatch, Screen::MainNavigation, "Back") }
+                <ul>
+                    <li>{"Name: "} {&model.player.name}</li>
+                    <li>{"Age: "} {&model.player.age}</li>
+                    <li>{"Nationality: "} {&model.player.nationality}</li>
+                </ul>
+            </div>
         </div>
     }
 }
