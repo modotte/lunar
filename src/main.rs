@@ -24,7 +24,7 @@ fn choice_of<T: Clone>(sequence: &[T], default: &T) -> T {
         .to_owned()
 }
 
-fn replace_ship(model: &mut model::Model, sc: &model::ShipClass) {
+fn replace_ship(model: &mut model::Model, ship_class: &model::ShipClass) {
     let window = web_sys::window().unwrap();
     let port_cgs = &model
         .ports
@@ -36,7 +36,7 @@ fn replace_ship(model: &mut model::Model, sc: &model::ShipClass) {
         port_cgs.wood.price,
         port_cgs.sugar.price,
     );
-    let mut s = model::SHIPS.get(sc).unwrap().clone();
+    let mut s = model::SHIPS.get(ship_class).unwrap().clone();
     s.name = model.player.ship.name.to_string();
     // We gift player free food in new ship.
     s.cargos.wood.unit = 0;
@@ -44,7 +44,7 @@ fn replace_ship(model: &mut model::Model, sc: &model::ShipClass) {
 
     if model.player.coins >= s.price {
         if window
-            .confirm_with_message(format!("Are you sure you want to buy this {}?", sc).as_str())
+            .confirm_with_message(format!("Are you sure you want to buy this {}?", ship_class).as_str())
             .unwrap_or(false)
         {
             model.player.coins += model.player.ship.cargos.food.unit * food_price;
@@ -55,7 +55,7 @@ fn replace_ship(model: &mut model::Model, sc: &model::ShipClass) {
         }
     } else {
         window
-            .alert_with_message(format!("Insufficient fund to buy a {}!", sc).as_str())
+            .alert_with_message(format!("Insufficient fund to buy a {}!", ship_class).as_str())
             .unwrap();
     }
 }
