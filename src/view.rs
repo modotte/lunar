@@ -404,7 +404,13 @@ fn show_dock_shipyard(model: Rc<Model>, dispatch: &Dispatch<Model>) -> Html {
             { battle_participant_infobox(&model.player.ship) }
 
             <p>{"Cost to repair: "} { &model.player.ship.cost_to_repair() }</p>
-            {SHIP_CLASSES.iter().map(|x| onclick_styled_btn(dispatch.apply_callback(move |_| Msg::BuyAndReplaceShip(*x)), "")).collect::<Html>() }
+            {
+                SHIP_CLASSES
+                    .iter()
+                    .map(|x| onclick_styled_btn(dispatch.apply_callback(
+                        move |_| Msg::BuyAndReplaceShip(*x)),
+                        format!("Trade your ship for a {}", x).as_str()))
+                    .collect::<Html>() }
 
             { onclick_styled_btn(dispatch.apply_callback(move |_| Msg::RepairShip(model.player.coins)), "Repair all") }
             { onclick_switch_screen(dispatch, Screen::Dock, "Back") }
